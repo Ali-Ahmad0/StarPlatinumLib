@@ -6,7 +6,8 @@
 #include "../ecs//systems/System.hpp"
 
 
-Game::Game() : deltaTime(0), properties(60), isRunning(false), window(nullptr), renderer(nullptr) {}
+Game::Game(Properties properties) 
+	: deltaTime(0), properties(properties), isRunning(false), window(nullptr), renderer(nullptr) {}
 Game::~Game() {}
 
 EntityManager ecs;
@@ -14,23 +15,21 @@ SpriteSystem spriteSystem;
 
 SDL_Texture* playerTexture;
 
-void Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen) 
+void Game::init() 
 {
-	int flags = fullscreen ? SDL_WINDOW_FULLSCREEN : 0;
+	int flags = properties.fullscreen ? SDL_WINDOW_FULLSCREEN : 0;
 
 	// Initialize SDL
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0) 
 	{
 		printf("Initialized subsystems.\n");
 		
-
 		// Create window
-		Vector2 position((float)xpos, (float)ypos);
-		Vector2 dimensions((float)width, (float)height);
-		
 		window = SDL_CreateWindow(
-			title, (int)position.x, (int)position.y, (int)dimensions.x, (int)dimensions.y, flags
+			properties.title, (int)properties.windowPos.x, (int)properties.windowPos.y, 
+			(int)properties.windowSize.x, (int)properties.windowSize.y, flags
 		);
+
 		if (window)
 		{
 			printf("Window created.\n");
@@ -60,6 +59,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 
 bool spawnEntities = false;
 bool deleteEntities = false;
+bool showFPS = false;
 
 void Game::events()
 {
@@ -82,6 +82,11 @@ void Game::events()
 		if (event.key.keysym.sym == SDLK_DELETE) 
 		{
 			deleteEntities = true;
+		}
+
+		if (event.key.keysym.sym == SDLK_f) 
+		{
+			showFPS = true;
 		}
 		break;
 
@@ -177,7 +182,12 @@ void Game::gameLoop()
 			deltaTime = frameDrawTime;
 		}
 
-		printf("FPS: %f | Entities: %zu\n", ((float)targetDeltaTime / (float)deltaTime) * properties.targetFPS, ecs.getEntityCount());
+		if (showFPS)
+		{
+			printf("FPS: %f | Entities: %zu\n", ((float)targetDeltaTime / (float)deltaTime) * properties.targetFPS, ecs.getEntityCount());
+			showFPS = false;
+		}
+		
 	}
 }
 

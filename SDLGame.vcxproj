@@ -169,7 +169,6 @@
     <ClCompile Include="src\texture\TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\common\Properties.hpp" />
     <ClInclude Include="src\ecs\ECS.hpp" />
     <ClInclude Include="src\main\Game.hpp" />
     <ClInclude Include="src\texture\TextureManager.hpp" />

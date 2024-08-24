@@ -166,13 +166,13 @@
     <ClCompile Include="src\ecs\systems\System.hpp" />
     <ClCompile Include="src\main\Game.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\texture\SpriteManager.cpp" />
+    <ClCompile Include="src\texture\TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\Properties.hpp" />
     <ClInclude Include="src\ecs\ECS.hpp" />
     <ClInclude Include="src\main\Game.hpp" />
-    <ClInclude Include="src\texture\SpriteManager.hpp" />
+    <ClInclude Include="src\texture\TextureManager.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\character_move_down.png" />

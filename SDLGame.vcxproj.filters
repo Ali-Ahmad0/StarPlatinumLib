@@ -24,7 +24,7 @@
     <ClCompile Include="src\main\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\texture\SpriteManager.cpp">
+    <ClCompile Include="src\texture\TextureManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\common\Utils.hpp">
@@ -47,7 +47,7 @@
     <ClInclude Include="src\main\Game.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\texture\SpriteManager.hpp">
+    <ClInclude Include="src\texture\TextureManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ecs\ECS.hpp">

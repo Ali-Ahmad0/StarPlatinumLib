@@ -2,7 +2,7 @@
 
 #include "Game.hpp"
 #include "../ecs/ECS.hpp"
-#include "../texture/SpriteManager.hpp"
+#include "../texture/TextureManager.hpp"
 #include "../ecs//systems/System.hpp"
 
 

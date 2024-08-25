@@ -10,8 +10,10 @@ Game::Game(Properties properties)
 	: deltaTime(0), properties(properties), isRunning(false), window(nullptr), renderer(nullptr) {}
 Game::~Game() {}
 
-EntityManager ecs;
+ECS ecs;
 SpriteSystem spriteSystem;
+
+EntityID player;
 
 SDL_Texture* playerTexture;
 
@@ -22,7 +24,7 @@ void Game::init()
 	// Initialize SDL
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0) 
 	{
-		printf("Initialized subsystems.\n");
+		//printf("Initialized subsystems.\n");
 		
 		// Create window
 		window = SDL_CreateWindow(
@@ -32,7 +34,7 @@ void Game::init()
 
 		if (window)
 		{
-			printf("Window created.\n");
+			//printf("Window created.\n");
 		}
 
 		// Create renderer
@@ -42,18 +44,26 @@ void Game::init()
 			Color color("#000000");
 
 			SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
-			printf("Renderer created.\n");
+			//printf("Renderer created.\n");
 		}
 		isRunning = true;
 	}
 
 	else 
 	{
-		printf("Failed to initialize SDL");
+		//printf("Failed to initialize SDL");
 		isRunning = false;
 	}
 
-	playerTexture = SpriteManager::LoadTexture("assets/character_preview.png", renderer);
+	playerTexture = SpriteManager::LoadTexture("assets/character.png", renderer);
+	
+	// Create player entity
+	player = ecs.createEntity();
+
+	// Add components
+	ecs.addComponent(player, std::make_shared<SpriteComponent>(playerTexture, 3, 4, 6));
+	ecs.getComponent<TransformComponent>(player)->position = { 288, 172 };
+	ecs.getComponent<TransformComponent>(player)->scale = 4;
 	
 }
 
@@ -74,23 +84,41 @@ void Game::events()
 		break;
 
 	case SDL_KEYDOWN:
-		if (event.key.keysym.sym == SDLK_RETURN) // Check if "Enter" key is pressed
-		{
-			spawnEntities = true; // Set the flag to spawn new entities
-		}
+		//if (event.key.keysym.sym == SDLK_RETURN) // Check if "Enter" key is pressed
+		//{
+		//	spawnEntities = true; // Set the flag to spawn new entities
+		//}
 
-		if (event.key.keysym.sym == SDLK_DELETE) 
-		{
-			deleteEntities = true;
-		}
+		//if (event.key.keysym.sym == SDLK_DELETE) 
+		//{
+		//	deleteEntities = true;
+		//}
 
-		if (event.key.keysym.sym == SDLK_f) 
+		// Test animations
+		switch (event.key.keysym.sym)
 		{
+		case SDLK_DOWN:
+			ecs.getComponent<SpriteComponent>(player)->v_frame = 0;
+			break;
+
+		case SDLK_UP:
+			ecs.getComponent<SpriteComponent>(player)->v_frame = 1;
+			break;
+
+		case SDLK_LEFT:
+			ecs.getComponent<SpriteComponent>(player)->v_frame = 2;
+			break;
+
+		case SDLK_RIGHT:
+			ecs.getComponent<SpriteComponent>(player)->v_frame = 3;
+			break;
+
+		case SDLK_TAB:
 			showFPS = true;
+			break;
 		}
+
 		break;
-
-
 	default:
 		break;
 	}
@@ -98,46 +126,49 @@ void Game::events()
 
 void Game::update()
 {
-	// Testing entity spawning
-	if (spawnEntities)
-	{
-		// Seed the random number generator
-		srand(static_cast<unsigned int>(time(0)));
+	//// Testing entity spawning
+	//if (spawnEntities)
+	//{
+	//	// Seed the random number generator
+	//	srand(static_cast<unsigned int>(time(0)));
 
-		for (int i = 0; i < 100; i++)
-		{
-			Entity entity = ecs.createEntity();
+	//	for (int i = 0; i < 100; i++)
+	//	{
+	//		EntityID entity = ecs.createEntity();
 
-			// Assign components to the entity
-			
-			ecs.addComponent(entity, std::make_shared<SpriteComponent>(playerTexture));
+	//		// Assign components to the entity
+	//		
+	//		ecs.addComponent(entity, std::make_shared<SpriteComponent>(playerTexture));
 
-			// Set random positions within the screen bounds (640 x 480)
-			float randomX = static_cast<float>(rand() % 640);
-			float randomY = static_cast<float>(rand() % 480);
+	//		// Set random positions within the screen bounds (640 x 480)
+	//		float randomX = static_cast<float>(rand() % 640);
+	//		float randomY = static_cast<float>(rand() % 480);
 
-			ecs.getComponent<TransformComponent>(entity)->position = Vector2(randomX, randomY);
-			ecs.getComponent<TransformComponent>(entity)->scale = 2;
-		}
+	//		ecs.getComponent<TransformComponent>(entity)->position = Vector2(randomX, randomY);
+	//		ecs.getComponent<TransformComponent>(entity)->scale = 2;
+	//	}
 
-		// Reset the flag
-		spawnEntities = false;
-	}
+	//	// Reset the flag
+	//	spawnEntities = false;
+	//}
 
-	// Testing entity deletion
-	if (deleteEntities)
-	{
-		size_t firstEntity = ecs.getNextEntity() - ecs.getEntityCount();
+	//// Testing entity deletion
+	//if (deleteEntities)
+	//{
+	//	size_t firstEntity = ecs.getNextEntity() - ecs.getEntityCount();
 
-		for (size_t e = firstEntity; e < firstEntity + 100; e++)
-		{
-			ecs.deleteEntity(e);
-		}
+	//	for (size_t e = firstEntity; e < firstEntity + 100; e++)
+	//	{
+	//		ecs.deleteEntity(e);
+	//	}
 
-		deleteEntities = false;
-	}
+	//	deleteEntities = false;
+	//}
+
+	
 
 	spriteSystem.update(ecs);
+	
 }
 
 void Game::render()
@@ -184,7 +215,7 @@ void Game::gameLoop()
 
 		if (showFPS)
 		{
-			printf("FPS: %f | Entities: %zu\n", ((float)targetDeltaTime / (float)deltaTime) * properties.targetFPS, ecs.getEntityCount());
+			printf("FPS: %f | Entities: %zu\n", ((float)targetDeltaTime / (float)deltaTime) * properties.targetFPS, ecs.activeEntityList.size());
 			showFPS = false;
 		}
 		
@@ -197,5 +228,5 @@ void Game::exit()
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
 
-	printf("Game exited\n");
+	//printf("Game exited\n");
 }

@@ -2,12 +2,10 @@
 
 struct SpriteSystem
 {
-    void update(EntityManager& ecs)
-    {
-        // Update positions and animations for all entities with Transform and Sprite components
-        Entity firstEntity = ecs.getNextEntity() - ecs.getEntityCount();
 
-        for (Entity e = firstEntity; e < ecs.getNextEntity(); e++)
+    void update(ECS& ecs)
+    {
+        for (EntityID e : ecs.activeEntityList)
         {
             if (ecs.hasComponent<TransformComponent>(e) && ecs.hasComponent<SpriteComponent>(e))
             {
@@ -20,20 +18,19 @@ struct SpriteSystem
                 SDL_QueryTexture(sprite->texture, NULL, NULL, &textureWidth, &textureHeight);
 
                 // Calculate the width of each frame
-                int frameWidth = textureWidth / sprite->frames;
-                int frameHeight = textureHeight;
+                int frameWidth = textureWidth / sprite->h_frames;
+                int frameHeight = textureHeight / sprite->v_frames;
 
-                if (sprite->frames > 1 && sprite->speed > 0)
+                if (sprite->h_frames > 1 && sprite->speed > 0)
                 {
                     // Calculate current frame based on elapsed time
-                    sprite->frame = (SDL_GetTicks() / (1000 / sprite->speed)) % sprite->frames;
+                    sprite->h_frame = (SDL_GetTicks() / (1000 / sprite->speed)) % sprite->h_frames;
                     
                     // Set source rect to the current frame
-                    sprite->src.x = frameWidth * sprite->frame;
+                    sprite->src.x = frameWidth * sprite->h_frame;
                 }
-
        
-                sprite->src.y = 0;  // Assuming all frames are in a single row
+                sprite->src.y = sprite->v_frame * frameHeight;  // Assuming all frames are in a single row
                 sprite->src.w = frameWidth;
                 sprite->src.h = frameHeight;
 
@@ -47,11 +44,9 @@ struct SpriteSystem
     }
 
     // Render all sprites
-    void render(EntityManager& ecs, SDL_Renderer* renderer)
+    void render(ECS& ecs, SDL_Renderer* renderer)
     {
-        Entity firstEntity = ecs.getNextEntity() - ecs.getEntityCount();
-
-        for (Entity e = firstEntity; e < ecs.getNextEntity(); e++)
+        for (EntityID e : ecs.activeEntityList)
         {
 
             if (ecs.hasComponent<SpriteComponent>(e))

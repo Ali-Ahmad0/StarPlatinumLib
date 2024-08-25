@@ -58,7 +58,7 @@
     <Image Include="assets\character_preview.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="assets\character_move_down.png">
+    <Image Include="assets\character.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

@@ -26,13 +26,17 @@ struct SpriteComponent : public Component
     SDL_Rect dst;
 
     // In case of animated sprite
-    Uint32 frame; // Current frame
-    Uint32 frames; // Total frames
+    Uint32 h_frame; // Current horizontal frame
+    Uint32 v_frame; // Current vertical frame
+
+    Uint32 h_frames; // Total frames in one row
+    Uint32 v_frames; // Total frames in one column
 
     Uint32 speed; // Speed in frames per second
 
-    SpriteComponent(SDL_Texture* texture, int frames = 1, int speed = 0)
-        : texture(texture), src({ 0, 0, 0, 0 }), dst({ 0, 0, 0, 0 }), frame(1), frames(frames), speed(speed) {}
+    SpriteComponent(SDL_Texture* texture, int h_frames = 1, int v_frames = 1, int speed = 0)
+        : texture(texture), src({ 0, 0, 0, 0 }), dst({ 0, 0, 0, 0 }), 
+          h_frame(1), v_frame(0), h_frames(h_frames), v_frames(v_frames), speed(speed) {}
 };
 
 #endif // !COMPONENTS_HPP

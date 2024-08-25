@@ -174,7 +174,7 @@
     <ClInclude Include="src\texture\TextureManager.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="assets\character_move_down.png" />
+    <Image Include="assets\character.png" />
     <Image Include="assets\character_preview.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

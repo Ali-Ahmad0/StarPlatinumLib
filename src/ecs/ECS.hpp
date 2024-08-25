@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <unordered_map>
+#include <vector>
 #include <typeindex>
 #include <memory>
 #include <cstdio>  
@@ -10,30 +11,35 @@
 #include "../main/Game.hpp"
 #include "Components.hpp"
 
+
 // Entity type
-using Entity = std::size_t;
+using EntityID = std::size_t;
 
 // Entity Components registry
-class EntityManager
+class ECS
 {
 private:
-    std::unordered_map<Entity, std::unordered_map<std::type_index, std::shared_ptr<Component>>> entities;
-    Entity nextEntity = 0; // next available entity index
+    // Count of total living entities
+    size_t entityCount = 0;
+
+    std::unordered_map<EntityID, std::unordered_map<std::type_index, std::shared_ptr<Component>>> entities;
+    EntityID nextEntity = 0; // next available entity index
 
 public:
+    std::vector<EntityID> activeEntityList;
 
-    Entity createEntity();
-    void deleteEntity(Entity entity);
+    EntityID createEntity();
+    void deleteEntity(EntityID entity);
 
-    Entity getNextEntity() const;
-    Entity getEntityCount() const;
-    std::unordered_map<Entity, std::unordered_map<std::type_index, std::shared_ptr<Component>>> getAllEntities() const;
+    EntityID getNextEntity() const;
+    EntityID getEntityCount() const;
+    std::unordered_map<EntityID, std::unordered_map<std::type_index, std::shared_ptr<Component>>> getAllEntities() const;
 
-    void addComponent(Entity entity, std::shared_ptr<Component> component);
+    void addComponent(EntityID entity, std::shared_ptr<Component> component);
 
     // Remove a specific type of component
     template <typename T>
-    void removeComponent(Entity entity)
+    void removeComponent(EntityID entity)
     {
         // Find an entity
         auto entityIt = entities.find(entity);
@@ -63,7 +69,7 @@ public:
 
     // Checks if that component exists or not
     template <typename T>
-    bool hasComponent(Entity entity) const
+    bool hasComponent(EntityID entity) const
     {
         // Find the entity
         auto entityIt = entities.find(entity);
@@ -80,7 +86,7 @@ public:
 
     // Returns reference to a component
     template <typename T>
-    T* getComponent(Entity entity)
+    T* getComponent(EntityID entity)
     {
         // Find the entity
         auto entityIt = entities.find(entity);
@@ -105,4 +111,5 @@ public:
         return nullptr;
     }
 };
+
 #endif // ECS_HPP

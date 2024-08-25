@@ -1,15 +1,16 @@
 #include "ECS.hpp"
 
 // Create a new entity
-Entity EntityManager::createEntity() 
+EntityID ECS::createEntity() 
 {
     // Add transform component by default
     addComponent(nextEntity, std::make_shared<TransformComponent>(Vector2(0, 0), 1));
+
+    activeEntityList.push_back(nextEntity);
     return nextEntity++;
 }
 
-// Delete an entity and all its components
-void EntityManager::deleteEntity(Entity entity)
+void ECS::deleteEntity(EntityID entity)
 {
     // Find entity
     auto entityIt = entities.find(entity);
@@ -20,6 +21,31 @@ void EntityManager::deleteEntity(Entity entity)
 
         // Remove the entity itself
         entities.erase(entity);
+
+        // Update activeEntityList
+        auto& activeEntities = activeEntityList;  // Reference for convenience
+
+        // Ensure the entity exists in the list
+        auto it = std::find(activeEntities.begin(), activeEntities.end(), entity);
+        if (it != activeEntities.end())
+        {
+            // Swap with the last element
+            if (activeEntities.size() > 1)
+            {
+                // Get the last element
+                EntityID lastEntity = activeEntities.back();
+
+                // Swap the current entity with the last one
+                *it = lastEntity;
+            }
+
+            // Remove the last element
+            activeEntities.pop_back();
+        }
+        else
+        {
+            fprintf(stderr, "Entity %zu not found in activeEntityList\n", entity);
+        }
     }
     else
     {
@@ -28,24 +54,24 @@ void EntityManager::deleteEntity(Entity entity)
 }
 
 // Get the next available entity ID
-Entity EntityManager::getNextEntity() const 
+EntityID ECS::getNextEntity() const 
 {
     return nextEntity;
 }
 
 // Get total number of entities
-Entity EntityManager::getEntityCount() const
+EntityID ECS::getEntityCount() const
 {
-    return entities.size();
+    return activeEntityList.size();
 }
 
-std::unordered_map<Entity, std::unordered_map<std::type_index, std::shared_ptr<Component>>> EntityManager::getAllEntities() const 
+std::unordered_map<EntityID, std::unordered_map<std::type_index, std::shared_ptr<Component>>> ECS::getAllEntities() const 
 {
     return entities;
 }
 
 // Add a component
-void EntityManager::addComponent(Entity entity, std::shared_ptr<Component> component) 
+void ECS::addComponent(EntityID entity, std::shared_ptr<Component> component) 
 {
     entities[entity][std::type_index(typeid(*component))] = component;
 }

@@ -14,6 +14,11 @@ public:
 	std::vector<EntityID> GetAllEntities();
 	size_t GetEntityCount();
 
+	void SetSignature(EntityID entity, Signature s) 
+	{
+		
+	}
+
 private:
 	// Queue of available entity IDs
 	std::queue<EntityID> availableEntities;

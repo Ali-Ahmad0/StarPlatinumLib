@@ -8,6 +8,7 @@
 #include <cstdio>  
 #include <bitset>
 #include <queue>
+#include <array>
 
 using EntityID = std::size_t;
 const EntityID MAX_ENTITIES = 5000;

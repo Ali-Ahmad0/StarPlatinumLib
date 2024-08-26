@@ -14,6 +14,7 @@ EntityID EntityManager::CreateEntity()
     availableEntities.pop();
 
     activeEntityList.push_back(entity);
+    count++;
     return entity;
 }
 
@@ -27,6 +28,7 @@ void EntityManager::DeleteEntity(EntityID entity)
         availableEntities.push(entity);
         activeEntityList.erase(it);
     }
+    count--;
 }
 
 std::vector<EntityID> EntityManager::GetAllEntities()

@@ -27,12 +27,6 @@ void EntityManager::DeleteEntity(EntityID entity)
         availableEntities.push(entity);
         activeEntityList.erase(it);
     }
-
-    // Remove components associated with the entity
-    //for (auto& pair : componentPools)
-    //{
-    //    pair.second->EntityDestroyed(entity);
-    //}
 }
 
 std::vector<EntityID> EntityManager::GetAllEntities()

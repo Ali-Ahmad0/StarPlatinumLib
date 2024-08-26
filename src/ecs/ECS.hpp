@@ -27,6 +27,12 @@ public:
     void DeleteEntity(EntityID entity) 
     {
         entityManager->DeleteEntity(entity);
+
+        // Remove components associated with the entity
+        for (auto& pair : componentPools)
+        {
+            pair.second->EntityDestroyed(entity);
+        }
     }
 
     std::vector<EntityID> GetAllEntities() 

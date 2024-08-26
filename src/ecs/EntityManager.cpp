@@ -1,6 +1,6 @@
 #include "ECS.hpp"
 
-void ECS::Init() 
+void EntityManager::Init() 
 {
     for (EntityID e = 0; e < MAX_ENTITIES; e++)
     {
@@ -8,7 +8,7 @@ void ECS::Init()
     }
 }
 
-EntityID ECS::CreateEntity() 
+EntityID EntityManager::CreateEntity() 
 {
     EntityID entity = availableEntities.front();
     availableEntities.pop();
@@ -17,7 +17,7 @@ EntityID ECS::CreateEntity()
     return entity;
 }
 
-void ECS::DeleteEntity(EntityID entity) 
+void EntityManager::DeleteEntity(EntityID entity) 
 {
     // Remove entity from active entity list
     auto it = std::find(activeEntityList.begin(), activeEntityList.end(), entity);
@@ -29,13 +29,18 @@ void ECS::DeleteEntity(EntityID entity)
     }
 
     // Remove components associated with the entity
-    for (auto& pair : componentPools)
-    {
-        pair.second->EntityDestroyed(entity);
-    }
+    //for (auto& pair : componentPools)
+    //{
+    //    pair.second->EntityDestroyed(entity);
+    //}
 }
 
-size_t ECS::GetEntityCount() 
+std::vector<EntityID> EntityManager::GetAllEntities()
 {
-    return entityCount;
+    return activeEntityList;
+}
+
+size_t EntityManager::GetEntityCount() 
+{
+    return count;
 }

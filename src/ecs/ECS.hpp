@@ -5,23 +5,39 @@
 #include "components/Components.hpp"
 #include "components/ComponentPool.hpp"
 
+#include "EntityManager.hpp"
+
 // Entity Component System Manager
 class ECS
 {
 
 public:
-    void Init();
-
-    // Entity related methods
-    EntityID CreateEntity();
-    void DeleteEntity(EntityID entity);
-
-    std::vector<EntityID> GetAllEntities()
+    void Init() 
     {
-        return activeEntityList;
+        entityManager = std::make_unique<EntityManager>();
+        entityManager->Init();
     }
 
-    size_t GetEntityCount();
+    // Entity related methods
+    EntityID CreateEntity() 
+    {
+        return entityManager->CreateEntity();
+    }
+
+    void DeleteEntity(EntityID entity) 
+    {
+        entityManager->DeleteEntity(entity);
+    }
+
+    std::vector<EntityID> GetAllEntities() 
+    {
+        return entityManager->GetAllEntities();
+    }
+
+    size_t GetEntityCount() 
+    {
+        return entityManager->GetEntityCount();
+    }
 
     // Register a component type by creating its pool
     template <typename T>
@@ -60,17 +76,10 @@ public:
     }
 
 private:
-    // Queue of available entity IDs
-    std::queue<EntityID> availableEntities;
-
-    // Total entities
-    size_t entityCount = 0;
+    std::unique_ptr<EntityManager> entityManager;
 
     // Map that stores all registered component pools
     std::unordered_map<std::type_index, std::unique_ptr<IComponentPool>> componentPools;
-
-    // Active entity list to keep track of all active entities
-    std::vector<EntityID> activeEntityList;
 
     // Helper function to get the component pool for a specific type
     template <typename T>

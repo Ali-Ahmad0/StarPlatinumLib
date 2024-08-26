@@ -30,7 +30,7 @@
     <ClCompile Include="src\common\Utils.hpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ecs\ECS.cpp">
+    <ClCompile Include="src\ecs\EntityManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ecs\components\Components.hpp">
@@ -46,6 +46,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ecs\components\ComponentPool.hpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\EntityManager.hpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

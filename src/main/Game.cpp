@@ -57,15 +57,17 @@ void Game::init()
 
 	playerTexture = SpriteManager::LoadTexture("assets/character.png", renderer);
 	
-	// Create player entity
-	player = ecs.createEntity();
+	ecs.Init();
 
-	ecs.registerComponent<TransformComponent>();
-	ecs.registerComponent<SpriteComponent>();
+	// Create player entity
+	player = ecs.CreateEntity();
+
+	ecs.RegisterComponent<TransformComponent>();
+	ecs.RegisterComponent<SpriteComponent>();
 
 	// Add components
-	ecs.addComponent(player, TransformComponent(Vector2(288, 172), 4));
-	ecs.addComponent(player, SpriteComponent(playerTexture, 3, 4, 6));
+	ecs.AddComponent(player, TransformComponent(Vector2(288, 172), 4));
+	ecs.AddComponent(player, SpriteComponent(playerTexture, 3, 4, 6));
 }
 
 bool spawnEntities = false;
@@ -99,19 +101,19 @@ void Game::events()
 		switch (event.key.keysym.sym)
 		{
 		case SDLK_DOWN:
-			ecs.getComponent<SpriteComponent>(player)->v_frame = 0;
+			ecs.GetComponent<SpriteComponent>(player)->v_frame = 0;
 			break;
 
 		case SDLK_UP:
-			ecs.getComponent<SpriteComponent>(player)->v_frame = 1;
+			ecs.GetComponent<SpriteComponent>(player)->v_frame = 1;
 			break;
 
 		case SDLK_LEFT:
-			ecs.getComponent<SpriteComponent>(player)->v_frame = 2;
+			ecs.GetComponent<SpriteComponent>(player)->v_frame = 2;
 			break;
 
 		case SDLK_RIGHT:
-			ecs.getComponent<SpriteComponent>(player)->v_frame = 3;
+			ecs.GetComponent<SpriteComponent>(player)->v_frame = 3;
 			break;
 
 		case SDLK_TAB:
@@ -216,7 +218,7 @@ void Game::gameLoop()
 
 		if (showFPS)
 		{
-			printf("FPS: %f | Entities: %zu\n", ((float)targetDeltaTime / (float)deltaTime) * properties.targetFPS, ecs.getAllEntities().size());
+			printf("FPS: %f | Entities: %zu\n", ((float)targetDeltaTime / (float)deltaTime) * properties.targetFPS, ecs.GetAllEntities().size());
 			showFPS = false;
 		}
 		

@@ -3,15 +3,14 @@
 
 #include <cstddef>
 #include <unordered_map>
-#include <vector>
 #include <typeindex>
 #include <memory>
 #include <cstdio>  
 #include <bitset>
-#include <array>
+#include <queue>
 
 using EntityID = std::size_t;
-const EntityID MAX_ENTITIES = 2048;
+const EntityID MAX_ENTITIES = 5000;
 
 using ComponentID = std::size_t;
 const ComponentID MAX_COMPONENTS = 32;

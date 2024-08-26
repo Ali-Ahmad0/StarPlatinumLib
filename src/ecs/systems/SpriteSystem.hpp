@@ -5,13 +5,13 @@ struct SpriteSystem
 
     void update(ECS& ecs)
     {
-        for (EntityID e : ecs.getAllEntities())
+        for (EntityID e : ecs.GetAllEntities())
         {
-            if (ecs.hasComponent<TransformComponent>(e) && ecs.hasComponent<SpriteComponent>(e))
+            if (ecs.HasComponent<TransformComponent>(e) && ecs.HasComponent<SpriteComponent>(e))
             {
                 // Get transform and sprite components
-                TransformComponent* transform = ecs.getComponent<TransformComponent>(e);
-                SpriteComponent* sprite = ecs.getComponent<SpriteComponent>(e);
+                TransformComponent* transform = ecs.GetComponent<TransformComponent>(e);
+                SpriteComponent* sprite = ecs.GetComponent<SpriteComponent>(e);
 
                 // Get the full width and height of the texture
                 int textureWidth, textureHeight;
@@ -46,12 +46,12 @@ struct SpriteSystem
     // Render all sprites
     void render(ECS& ecs, SDL_Renderer* renderer)
     {
-        for (EntityID e : ecs.getAllEntities())
+        for (EntityID e : ecs.GetAllEntities())
         {
 
-            if (ecs.hasComponent<SpriteComponent>(e))
+            if (ecs.HasComponent<SpriteComponent>(e))
             {
-                SpriteComponent* sprite = ecs.getComponent<SpriteComponent>(e);
+                SpriteComponent* sprite = ecs.GetComponent<SpriteComponent>(e);
                 SDL_RenderCopy(renderer, sprite->texture, &sprite->src, &sprite->dst);
             }
         }

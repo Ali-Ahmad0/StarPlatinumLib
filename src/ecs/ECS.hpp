@@ -10,41 +10,22 @@ class ECS
 {
 
 public:
+    void Init();
+
     // Entity related methods
+    EntityID CreateEntity();
+    void DeleteEntity(EntityID entity);
 
-    EntityID createEntity()
-    {
-        EntityID id = nextEntity++;
-        activeEntityList.push_back(id);
-        return id;
-
-        printf("Entity created %zu", id);
-    }
-
-    void deleteEntity(EntityID entity)
-    {
-        // Remove entity from active entity list
-        auto it = std::find(activeEntityList.begin(), activeEntityList.end(), entity);
-        if (it != activeEntityList.end())
-        {
-            activeEntityList.erase(it);
-        }
-
-        // Remove components associated with the entity
-        for (auto& pair : componentPools)
-        {
-            pair.second->EntityDestroyed(entity);
-        }
-    }
-
-    std::vector<EntityID> getAllEntities()
+    std::vector<EntityID> GetAllEntities()
     {
         return activeEntityList;
     }
 
+    size_t GetEntityCount();
+
     // Register a component type by creating its pool
     template <typename T>
-    void registerComponent()
+    void RegisterComponent()
     {
         std::type_index typeIndex(typeid(T));
         componentPools[typeIndex] = std::make_unique<ComponentPool<T>>();
@@ -52,35 +33,38 @@ public:
 
     // Add a component to an entity
     template <typename T>
-    void addComponent(EntityID entity, T component)
+    void AddComponent(EntityID entity, T component)
     {
         getComponentPool<T>()->AddData(entity, component);
     }
 
     // Remove a component from an entity
     template <typename T>
-    void removeComponent(EntityID entity)
+    void RemoveComponent(EntityID entity)
     {
         getComponentPool<T>()->RemoveData(entity);
     }
 
     // Check if an entity has a specific component
     template <typename T>
-    bool hasComponent(EntityID entity) const
+    bool HasComponent(EntityID entity) const
     {
         return getComponentPool<T>()->HasData(entity);
     }
 
     // Get a reference to an entity's component
     template <typename T>
-    T* getComponent(EntityID entity)
+    T* GetComponent(EntityID entity)
     {
         return getComponentPool<T>()->GetData(entity);
     }
 
 private:
-    // next available entity ID
-    EntityID nextEntity = 0;
+    // Queue of available entity IDs
+    std::queue<EntityID> availableEntities;
+
+    // Total entities
+    size_t entityCount = 0;
 
     // Map that stores all registered component pools
     std::unordered_map<std::type_index, std::unique_ptr<IComponentPool>> componentPools;

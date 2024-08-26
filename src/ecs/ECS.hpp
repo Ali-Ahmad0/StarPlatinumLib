@@ -1,114 +1,104 @@
 #ifndef ECS_HPP
 #define ECS_HPP
 
-#include <cstddef>
-#include <unordered_map>
-#include <vector>
-#include <typeindex>
-#include <memory>
-#include <cstdio>  
+#include "defintions.hpp"
+#include "components/Components.hpp"
+#include "components/ComponentPool.hpp"
 
-#include "../main/Game.hpp"
-#include "Components.hpp"
-
-
-// Entity type
-using EntityID = std::size_t;
-
-// Entity Components registry
+// Entity Component System Manager
 class ECS
 {
-private:
-    // Count of total living entities
-    size_t entityCount = 0;
-
-    std::unordered_map<EntityID, std::unordered_map<std::type_index, std::shared_ptr<Component>>> entities;
-    EntityID nextEntity = 0; // next available entity index
 
 public:
-    std::vector<EntityID> activeEntityList;
+    // Entity related methods
 
-    EntityID createEntity();
-    void deleteEntity(EntityID entity);
+    EntityID createEntity()
+    {
+        EntityID id = nextEntity++;
+        activeEntityList.push_back(id);
+        return id;
 
-    EntityID getNextEntity() const;
-    EntityID getEntityCount() const;
-    std::unordered_map<EntityID, std::unordered_map<std::type_index, std::shared_ptr<Component>>> getAllEntities() const;
+        printf("Entity created %zu", id);
+    }
 
-    void addComponent(EntityID entity, std::shared_ptr<Component> component);
+    void deleteEntity(EntityID entity)
+    {
+        // Remove entity from active entity list
+        auto it = std::find(activeEntityList.begin(), activeEntityList.end(), entity);
+        if (it != activeEntityList.end())
+        {
+            activeEntityList.erase(it);
+        }
 
-    // Remove a specific type of component
+        // Remove components associated with the entity
+        for (auto& pair : componentPools)
+        {
+            pair.second->EntityDestroyed(entity);
+        }
+    }
+
+    std::vector<EntityID> getAllEntities()
+    {
+        return activeEntityList;
+    }
+
+    // Register a component type by creating its pool
+    template <typename T>
+    void registerComponent()
+    {
+        std::type_index typeIndex(typeid(T));
+        componentPools[typeIndex] = std::make_unique<ComponentPool<T>>();
+    }
+
+    // Add a component to an entity
+    template <typename T>
+    void addComponent(EntityID entity, T component)
+    {
+        getComponentPool<T>()->AddData(entity, component);
+    }
+
+    // Remove a component from an entity
     template <typename T>
     void removeComponent(EntityID entity)
     {
-        // Find an entity
-        auto entityIt = entities.find(entity);
-        if (entityIt != entities.end())
-        {
-            // Get unordered map of components
-            auto& components = entityIt->second;
-
-            // Find the component
-            auto compIt = components.find(std::type_index(typeid(T)));
-            if (compIt != components.end())
-            {
-                // Remove component
-                components.erase(compIt);
-            }
-            else
-            {
-                fprintf(stderr, "Component of type %s not found for entity %zu\n",
-                    typeid(T).name(), entity);
-            }
-        }
-        else
-        {
-            fprintf(stderr, "Entity %zu not found\n", entity);
-        }
+        getComponentPool<T>()->RemoveData(entity);
     }
 
-    // Checks if that component exists or not
+    // Check if an entity has a specific component
     template <typename T>
     bool hasComponent(EntityID entity) const
     {
-        // Find the entity
-        auto entityIt = entities.find(entity);
-        if (entityIt != entities.end())
-        {
-            // Find it's component
-            auto compIt = entityIt->second.find(std::type_index(typeid(T)));
-
-            // Check if component exists        
-            return compIt != entityIt->second.end();
-        }
-        return false;
+        return getComponentPool<T>()->HasData(entity);
     }
 
-    // Returns reference to a component
+    // Get a reference to an entity's component
     template <typename T>
     T* getComponent(EntityID entity)
     {
-        // Find the entity
-        auto entityIt = entities.find(entity);
-        if (entityIt != entities.end())
+        return getComponentPool<T>()->GetData(entity);
+    }
+
+private:
+    // next available entity ID
+    EntityID nextEntity = 0;
+
+    // Map that stores all registered component pools
+    std::unordered_map<std::type_index, std::unique_ptr<IComponentPool>> componentPools;
+
+    // Active entity list to keep track of all active entities
+    std::vector<EntityID> activeEntityList;
+
+    // Helper function to get the component pool for a specific type
+    template <typename T>
+    ComponentPool<T>* getComponentPool() const
+    {
+        std::type_index typeIndex(typeid(T));
+        auto it = componentPools.find(typeIndex);
+        if (it != componentPools.end())
         {
-            // Find its component 
-            auto compIt = entityIt->second.find(std::type_index(typeid(T)));
-            if (compIt != entityIt->second.end())
-            {
-                return static_cast<T*>(compIt->second.get());
-            }
-            else
-            {
-               fprintf(stderr, "Component of type %s not found for entity %zu\n",
-                    typeid(T).name(), entity);
-            }
+            return static_cast<ComponentPool<T>*>(it->second.get());
         }
-        else
-        {
-            fprintf(stderr, "Entity %zu not found\n", entity);
-        }
-        return nullptr;
+        throw std::runtime_error("Component pool for type not registered.");
     }
 };
 

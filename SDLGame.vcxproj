@@ -24,6 +24,7 @@
     <ProjectGuid>{9d503a81-bf61-4279-8e36-3cace57dab07}</ProjectGuid>
     <RootNamespace>SDLGame</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>UntitledGameEngine</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -160,7 +161,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\common\Utils.hpp" />
-    <ClCompile Include="src\ecs\Components.hpp" />
+    <ClCompile Include="src\ecs\components\ComponentPool.hpp" />
+    <ClCompile Include="src\ecs\components\Components.hpp" />
+    <ClCompile Include="src\ecs\defintions.hpp" />
     <ClCompile Include="src\ecs\ECS.cpp" />
     <ClCompile Include="src\ecs\systems\SpriteSystem.hpp" />
     <ClCompile Include="src\ecs\systems\System.hpp" />

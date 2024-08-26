@@ -5,7 +5,7 @@ struct SpriteSystem
 
     void update(ECS& ecs)
     {
-        for (EntityID e : ecs.activeEntityList)
+        for (EntityID e : ecs.getAllEntities())
         {
             if (ecs.hasComponent<TransformComponent>(e) && ecs.hasComponent<SpriteComponent>(e))
             {
@@ -46,7 +46,7 @@ struct SpriteSystem
     // Render all sprites
     void render(ECS& ecs, SDL_Renderer* renderer)
     {
-        for (EntityID e : ecs.activeEntityList)
+        for (EntityID e : ecs.getAllEntities())
         {
 
             if (ecs.hasComponent<SpriteComponent>(e))

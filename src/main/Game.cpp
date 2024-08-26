@@ -60,11 +60,12 @@ void Game::init()
 	// Create player entity
 	player = ecs.createEntity();
 
+	ecs.registerComponent<TransformComponent>();
+	ecs.registerComponent<SpriteComponent>();
+
 	// Add components
-	ecs.addComponent(player, std::make_shared<SpriteComponent>(playerTexture, 3, 4, 6));
-	ecs.getComponent<TransformComponent>(player)->position = { 288, 172 };
-	ecs.getComponent<TransformComponent>(player)->scale = 4;
-	
+	ecs.addComponent(player, TransformComponent(Vector2(288, 172), 4));
+	ecs.addComponent(player, SpriteComponent(playerTexture, 3, 4, 6));
 }
 
 bool spawnEntities = false;
@@ -215,7 +216,7 @@ void Game::gameLoop()
 
 		if (showFPS)
 		{
-			printf("FPS: %f | Entities: %zu\n", ((float)targetDeltaTime / (float)deltaTime) * properties.targetFPS, ecs.activeEntityList.size());
+			printf("FPS: %f | Entities: %zu\n", ((float)targetDeltaTime / (float)deltaTime) * properties.targetFPS, ecs.getAllEntities().size());
 			showFPS = false;
 		}
 		

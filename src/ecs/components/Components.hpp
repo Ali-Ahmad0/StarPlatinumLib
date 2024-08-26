@@ -1,7 +1,7 @@
 #ifndef COMPONENTS_HPP
 #define COMPONENTS_HPP
 
-#include "../main/Game.hpp" 
+#include "../../main/Game.hpp" 
 
 struct Component
 {

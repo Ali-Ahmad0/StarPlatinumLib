@@ -33,13 +33,19 @@
     <ClCompile Include="src\ecs\ECS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ecs\Components.hpp">
+    <ClCompile Include="src\ecs\components\Components.hpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ecs\systems\System.hpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ecs\systems\SpriteSystem.hpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\defintions.hpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\components\ComponentPool.hpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,8 +1,11 @@
+#ifndef SPRITE_SYSTEM_HPP
+#define SPRITE_SYSTEM_HPP
+
+#include "BaseSystem.hpp"
 #include "../ECS.hpp"
 
-struct SpriteSystem
+struct SpriteSystem : BaseSystem
 {
-
     void update(ECS& ecs)
     {
         for (EntityID e : ecs.GetAllEntities())
@@ -25,11 +28,11 @@ struct SpriteSystem
                 {
                     // Calculate current frame based on elapsed time
                     sprite->h_frame = (SDL_GetTicks() / (1000 / sprite->speed)) % sprite->h_frames;
-                    
+
                     // Set source rect to the current frame
                     sprite->src.x = frameWidth * sprite->h_frame;
                 }
-       
+
                 sprite->src.y = sprite->v_frame * frameHeight;  // Assuming all frames are in a single row
                 sprite->src.w = frameWidth;
                 sprite->src.h = frameHeight;
@@ -57,3 +60,7 @@ struct SpriteSystem
         }
     }
 };
+
+#endif // !SPRITE_SYSTEM_HPP
+
+

@@ -5,7 +5,6 @@
 #include "../texture/TextureManager.hpp"
 #include "../ecs//systems/System.hpp"
 
-
 Game::Game(Properties properties) 
 	: deltaTime(0), properties(properties), isRunning(false), window(nullptr), renderer(nullptr) {}
 Game::~Game() {}

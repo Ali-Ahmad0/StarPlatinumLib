@@ -166,6 +166,8 @@
     <ClCompile Include="src\ecs\defintions.hpp" />
     <ClCompile Include="src\ecs\EntityManager.cpp" />
     <ClCompile Include="src\ecs\EntityManager.hpp" />
+    <ClCompile Include="src\ecs\SystemManager.hpp" />
+    <ClCompile Include="src\ecs\systems\BaseSystem.hpp" />
     <ClCompile Include="src\ecs\systems\SpriteSystem.hpp" />
     <ClCompile Include="src\ecs\systems\System.hpp" />
     <ClCompile Include="src\main\Game.cpp" />

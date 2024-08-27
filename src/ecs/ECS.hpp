@@ -91,6 +91,19 @@ public:
         return getComponentPool<T>()->GetData(entity);
     }
 
+    // Get the component ID for a specific type
+    template <typename T>
+    ComponentID GetComponentID()
+    {
+        std::type_index typeIndex = typeid(T);
+
+        if (componentRegistry.find(typeIndex) != componentRegistry.end())
+        {
+            return componentRegistry[typeIndex];
+        }
+        throw std::runtime_error("Cannot get ID on unregistered component");
+    }
+
     // System related methods
     template <typename T>
     std::shared_ptr<T> RegisterSystem() 
@@ -99,15 +112,19 @@ public:
     }
 
     template <typename T>
+    std::shared_ptr<T> GetSystem()
+    {
+        return std::static_pointer_cast<T>(systemManager->GetSystem<T>());
+    }
+
+    template <typename T>
     void SetSystemSignature(Signature signature) 
     {
         return systemManager->SetSignatrue<T>(signature);
     }
-
-
-    std::unique_ptr<EntityManager> entityManager;
+   
 private:
-    
+    std::unique_ptr<EntityManager> entityManager;
     std::unique_ptr<SystemManager> systemManager;
 
     // Map that assigns an ID to each component type
@@ -118,19 +135,6 @@ private:
 
     // Next component ID
     ComponentID nextComponent = 0;
-
-    // Get the component ID for a specific type
-    template <typename T>
-    ComponentID getComponentID() 
-    {
-        std::type_index typeIndex = typeid(T);
-
-        if (componentRegistry.find(typeIndex) != componentRegistry.end()) 
-        {
-            return componentRegistry[typeIndex];
-        }
-        throw std::runtime_error("Cannot get ID on unregistered component");
-    }
 
     // Get the component pool for a specific type
     template <typename T>
@@ -150,7 +154,7 @@ private:
     void updateEntitySignature(EntityID entity, bool value) 
     {
         Signature signature = entityManager->GetSignature(entity);
-        signature.set(getComponentID<T>(), value);
+        signature.set(GetComponentID<T>(), value);
         entityManager->SetSignature(entity, signature);
 
         systemManager->EntitySignatureChanged(entity, signature);

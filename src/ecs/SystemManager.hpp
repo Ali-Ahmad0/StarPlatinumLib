@@ -6,7 +6,6 @@
 class SystemManager 
 {
 public:
-
 	template <typename T>
 	std::shared_ptr<T> RegisterSystem() 
 	{
@@ -14,9 +13,20 @@ public:
 		if (!isRegistered(typeIndex)) 
 		{
 			systems[typeIndex] = std::make_shared<T>();
-			return system;
+			return std::make_shared<T>();
 		}
 		throw std::runtime_error("System is already registered\n");
+	}
+
+	template <typename T>
+	std::shared_ptr<T> GetSystem()
+	{
+		std::type_index typeIndex = typeid(T);
+		if (isRegistered(typeIndex))
+		{
+			return std::static_pointer_cast<T>(systems[typeIndex]);
+		}
+		throw std::runtime_error("Cannot get unregistered system\n");
 	}
 
 	template <typename T>

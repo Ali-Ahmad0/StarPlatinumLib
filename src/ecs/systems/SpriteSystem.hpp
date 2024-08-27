@@ -8,7 +8,7 @@ struct SpriteSystem : BaseSystem
 {
     void update(ECS& ecs)
     {
-        for (EntityID e : ecs.GetAllEntities())
+        for (EntityID e : entities)
         {
             if (ecs.HasComponent<TransformComponent>(e) && ecs.HasComponent<SpriteComponent>(e))
             {
@@ -49,7 +49,7 @@ struct SpriteSystem : BaseSystem
     // Render all sprites
     void render(ECS& ecs, SDL_Renderer* renderer)
     {
-        for (EntityID e : ecs.GetAllEntities())
+        for (EntityID e : entities)
         {
 
             if (ecs.HasComponent<SpriteComponent>(e))

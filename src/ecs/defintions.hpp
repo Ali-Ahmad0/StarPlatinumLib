@@ -10,6 +10,7 @@
 #include <queue>
 #include <array>
 #include <set>
+#include <stdexcept>
 
 using EntityID = std::size_t;
 const EntityID MAX_ENTITIES = 5000;

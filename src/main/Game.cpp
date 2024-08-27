@@ -10,8 +10,6 @@ Game::Game(Properties properties)
 Game::~Game() {}
 
 ECS ecs;
-SpriteSystem spriteSystem;
-
 EntityID player;
 
 SDL_Texture* playerTexture;
@@ -63,6 +61,13 @@ void Game::init()
 
 	ecs.RegisterComponent<TransformComponent>();
 	ecs.RegisterComponent<SpriteComponent>();
+
+	// Register systems and set their signatures
+	auto spriteSystem = ecs.RegisterSystem<SpriteSystem>();
+	Signature spriteSignature;
+	spriteSignature.set(ecs.GetComponentID<TransformComponent>(), true);
+	spriteSignature.set(ecs.GetComponentID<SpriteComponent>(), true);
+	ecs.SetSystemSignature<SpriteSystem>(spriteSignature);
 
 	// Add components
 	ecs.AddComponent(player, TransformComponent(Vector2(288, 172), 4));
@@ -169,15 +174,14 @@ void Game::update()
 
 	
 
-	spriteSystem.update(ecs);
-	
+	ecs.GetSystem<SpriteSystem>()->update(ecs);
 }
 
 void Game::render()
 {
 	SDL_RenderClear(renderer);
 
-	spriteSystem.render(ecs, renderer);
+	ecs.GetSystem<SpriteSystem>()->render(ecs, renderer);
 
 	SDL_RenderPresent(renderer);
 

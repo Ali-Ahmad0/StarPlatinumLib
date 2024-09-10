@@ -1,7 +1,7 @@
 #ifndef ENTITY_MANAGER_HPP
 #define ENTITY_MANAGER_HPP
 
-#include "defintions.hpp"
+#include "../defintions.hpp"
 
 class EntityManager 
 {

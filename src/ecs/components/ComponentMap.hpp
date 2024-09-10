@@ -3,15 +3,15 @@
 
 #include "../defintions.hpp"
 
-class IComponentPool
+class IComponentMap
 {
 public:
-    virtual ~IComponentPool() = default;
+    virtual ~IComponentMap() = default;
     virtual void EntityDestroyed(EntityID e) = 0;
 };
 
 template <typename T>
-class ComponentPool : public IComponentPool
+class ComponentMap : public IComponentMap
 {
 public:
     // Add a component of Type T for entity e

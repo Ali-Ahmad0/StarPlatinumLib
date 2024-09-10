@@ -3,21 +3,16 @@
 
 #include "../../main/Game.hpp" 
 
-struct Component
-{
-    virtual ~Component() = default;
-};
-
-struct TransformComponent : public Component
+struct Transform
 {
     Vector2 position;
     int scale;
 
-    TransformComponent(Vector2 position, int scale)
+    Transform(Vector2 position, int scale)
         : position(position), scale(scale) { }
 };
 
-struct SpriteComponent : public Component
+struct Sprite
 {
     SDL_Texture* texture;
 
@@ -34,7 +29,7 @@ struct SpriteComponent : public Component
 
     Uint32 speed; // Speed in frames per second
 
-    SpriteComponent(SDL_Texture* texture, int h_frames = 1, int v_frames = 1, int speed = 0)
+    Sprite(SDL_Texture* texture, int h_frames = 1, int v_frames = 1, int speed = 0)
         : texture(texture), src({ 0, 0, 0, 0 }), dst({ 0, 0, 0, 0 }), 
           h_frame(1), v_frame(0), h_frames(h_frames), v_frames(v_frames), speed(speed) {}
 };

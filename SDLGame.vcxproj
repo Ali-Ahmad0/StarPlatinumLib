@@ -161,17 +161,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\common\Utils.hpp" />
-    <ClCompile Include="src\ecs\components\ComponentPool.hpp" />
+    <ClCompile Include="src\ecs\components\ComponentMap.hpp" />
     <ClCompile Include="src\ecs\components\Components.hpp" />
     <ClCompile Include="src\ecs\defintions.hpp" />
-    <ClCompile Include="src\ecs\EntityManager.cpp" />
-    <ClCompile Include="src\ecs\EntityManager.hpp" />
-    <ClCompile Include="src\ecs\SystemManager.hpp" />
+    <ClCompile Include="src\ecs\managers\EntityManager.cpp" />
+    <ClCompile Include="src\ecs\managers\EntityManager.hpp" />
+    <ClCompile Include="src\ecs\managers\SystemManager.cpp" />
+    <ClCompile Include="src\ecs\managers\SystemManager.hpp" />
     <ClCompile Include="src\ecs\systems\BaseSystem.hpp" />
     <ClCompile Include="src\ecs\systems\SpriteSystem.hpp" />
     <ClCompile Include="src\ecs\systems\System.hpp" />
     <ClCompile Include="src\main\Game.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\main\init\Init.cpp" />
+    <ClCompile Include="src\main\init\Init.hpp" />
     <ClCompile Include="src\texture\TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>

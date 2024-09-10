@@ -1,7 +1,7 @@
 #ifndef SYSTEM_MANAGER_HPP
 #define SYSTEM_MANAGER_HPP
 
-#include "systems/BaseSystem.hpp"
+#include "../systems/BaseSystem.hpp"
 
 class SystemManager 
 {
@@ -44,34 +44,8 @@ public:
 		}
 	}
 
-	void OnEntityDestroyed(EntityID entity) 
-	{
-		for (auto const& pair : systems) 
-		{
-			auto const& system = pair.second;
-			system->entities.erase(entity);
-		}
-	}
-
-	void EntitySignatureChanged(EntityID entity, Signature entitySignature) 
-	{
-		for (auto const& pair : systems) 
-		{
-			auto const& type = pair.first;
-			auto const& system = pair.second;
-
-			auto const& systemSignature = signatures[type];
-
-			if ((entitySignature & systemSignature) == systemSignature) 
-			{
-				system->entities.insert(entity);
-			}
-			else 
-			{
-				system->entities.erase(entity);
-			}
-		}
-	}
+	void OnEntityDestroyed(EntityID entity);
+	void OnEntitySignatureChanged(EntityID entity, Signature entitySignature);
 
 private:
 	std::unordered_map<std::type_index, Signature> signatures{};

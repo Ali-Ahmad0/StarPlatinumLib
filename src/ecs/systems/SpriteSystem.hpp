@@ -10,11 +10,11 @@ struct SpriteSystem : BaseSystem
     {
         for (EntityID e : entities)
         {
-            if (ecs.HasComponent<TransformComponent>(e) && ecs.HasComponent<SpriteComponent>(e))
+            if (ecs.HasComponent<Transform>(e) && ecs.HasComponent<Sprite>(e))
             {
                 // Get transform and sprite components
-                TransformComponent* transform = ecs.GetComponent<TransformComponent>(e);
-                SpriteComponent* sprite = ecs.GetComponent<SpriteComponent>(e);
+                Transform* transform = ecs.GetComponent<Transform>(e);
+                Sprite* sprite = ecs.GetComponent<Sprite>(e);
 
                 // Get the full width and height of the texture
                 int textureWidth, textureHeight;
@@ -52,9 +52,9 @@ struct SpriteSystem : BaseSystem
         for (EntityID e : entities)
         {
 
-            if (ecs.HasComponent<SpriteComponent>(e))
+            if (ecs.HasComponent<Sprite>(e))
             {
-                SpriteComponent* sprite = ecs.GetComponent<SpriteComponent>(e);
+                Sprite* sprite = ecs.GetComponent<Sprite>(e);
                 SDL_RenderCopy(renderer, sprite->texture, &sprite->src, &sprite->dst);
             }
         }

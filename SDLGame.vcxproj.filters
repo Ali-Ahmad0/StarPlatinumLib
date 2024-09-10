@@ -30,7 +30,7 @@
     <ClCompile Include="src\common\Utils.hpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ecs\EntityManager.cpp">
+    <ClCompile Include="src\ecs\managers\EntityManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ecs\components\Components.hpp">
@@ -45,16 +45,25 @@
     <ClCompile Include="src\ecs\defintions.hpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ecs\components\ComponentPool.hpp">
+    <ClCompile Include="src\ecs\components\ComponentMap.hpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ecs\EntityManager.hpp">
+    <ClCompile Include="src\ecs\managers\EntityManager.hpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ecs\systems\BaseSystem.hpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ecs\SystemManager.hpp">
+    <ClCompile Include="src\ecs\managers\SystemManager.hpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main\init\Init.hpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main\init\Init.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\managers\SystemManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

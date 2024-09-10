@@ -1,4 +1,4 @@
-#include "ECS.hpp"
+#include "EntityManager.hpp"
 
 void EntityManager::Init() 
 {

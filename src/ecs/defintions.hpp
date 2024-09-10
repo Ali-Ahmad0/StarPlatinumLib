@@ -13,10 +13,10 @@
 #include <stdexcept>
 
 using EntityID = std::size_t;
-const EntityID MAX_ENTITIES = 5000;
+const EntityID MAX_ENTITIES = 2048;
 
 using ComponentID = std::size_t;
-const ComponentID MAX_COMPONENTS = 32;
+const ComponentID MAX_COMPONENTS = 16;
 
 using Signature = std::bitset<MAX_COMPONENTS>;
 

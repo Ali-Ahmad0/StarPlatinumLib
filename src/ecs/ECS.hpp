@@ -3,10 +3,10 @@
 
 #include "defintions.hpp"
 #include "components/Components.hpp"
-#include "components/ComponentPool.hpp"
+#include "components/ComponentMap.hpp"
 
-#include "EntityManager.hpp"
-#include "SystemManager.hpp"
+#include "managers/EntityManager.hpp"
+#include "managers/SystemManager.hpp"
 
 // Entity Component System Manager
 class ECS
@@ -54,7 +54,7 @@ public:
     void RegisterComponent()
     {
         std::type_index typeIndex(typeid(T));
-        componentPools[typeIndex] = std::make_unique<ComponentPool<T>>();
+        componentPools[typeIndex] = std::make_unique<ComponentMap<T>>();
 
         // Assign component ID
         componentRegistry[typeIndex] = nextComponent;
@@ -131,20 +131,20 @@ private:
     std::unordered_map<std::type_index, ComponentID> componentRegistry{};
 
     // Map that stores all registered component pools
-    std::unordered_map<std::type_index, std::unique_ptr<IComponentPool>> componentPools{};
+    std::unordered_map<std::type_index, std::unique_ptr<IComponentMap>> componentPools{};
 
     // Next component ID
     ComponentID nextComponent = 0;
 
     // Get the component pool for a specific type
     template <typename T>
-    ComponentPool<T>* getComponentPool() const
+    ComponentMap<T>* getComponentPool() const
     {
         std::type_index typeIndex(typeid(T));
         auto it = componentPools.find(typeIndex);
         if (it != componentPools.end())
         {
-            return static_cast<ComponentPool<T>*>(it->second.get());
+            return static_cast<ComponentMap<T>*>(it->second.get());
         }
         throw std::runtime_error("Component pool for type not registered.");
     }
@@ -157,7 +157,7 @@ private:
         signature.set(GetComponentID<T>(), value);
         entityManager->SetSignature(entity, signature);
 
-        systemManager->EntitySignatureChanged(entity, signature);
+        systemManager->OnEntitySignatureChanged(entity, signature);
     }
 };
 

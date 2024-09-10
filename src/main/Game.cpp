@@ -1,9 +1,11 @@
 #include <vector>
 
 #include "Game.hpp"
+#include "init/Init.hpp"
+
 #include "../ecs/ECS.hpp"
 #include "../texture/TextureManager.hpp"
-#include "../ecs//systems/System.hpp"
+#include "../ecs/systems/System.hpp"
 
 Game::Game(Properties properties) 
 	: deltaTime(0), properties(properties), isRunning(false), window(nullptr), renderer(nullptr) {}
@@ -56,22 +58,18 @@ void Game::init()
 	
 	ecs.Init();
 
+	// Register components
+	Init::InitComponents(ecs);
+
 	// Create player entity
 	player = ecs.CreateEntity();
 
-	ecs.RegisterComponent<TransformComponent>();
-	ecs.RegisterComponent<SpriteComponent>();
-
 	// Register systems and set their signatures
-	auto spriteSystem = ecs.RegisterSystem<SpriteSystem>();
-	Signature spriteSignature;
-	spriteSignature.set(ecs.GetComponentID<TransformComponent>(), true);
-	spriteSignature.set(ecs.GetComponentID<SpriteComponent>(), true);
-	ecs.SetSystemSignature<SpriteSystem>(spriteSignature);
+	Init::InitSystems(ecs);
 
 	// Add components
-	ecs.AddComponent(player, TransformComponent(Vector2(288, 172), 4));
-	ecs.AddComponent(player, SpriteComponent(playerTexture, 3, 4, 6));
+	ecs.AddComponent(player, Transform(Vector2(288, 172), 4));
+	ecs.AddComponent(player, Sprite(playerTexture, 3, 4, 6));
 }
 
 bool spawnEntities = false;
@@ -105,19 +103,19 @@ void Game::events()
 		switch (event.key.keysym.sym)
 		{
 		case SDLK_DOWN:
-			ecs.GetComponent<SpriteComponent>(player)->v_frame = 0;
+			ecs.GetComponent<Sprite>(player)->v_frame = 0;
 			break;
 
 		case SDLK_UP:
-			ecs.GetComponent<SpriteComponent>(player)->v_frame = 1;
+			ecs.GetComponent<Sprite>(player)->v_frame = 1;
 			break;
 
 		case SDLK_LEFT:
-			ecs.GetComponent<SpriteComponent>(player)->v_frame = 2;
+			ecs.GetComponent<Sprite>(player)->v_frame = 2;
 			break;
 
 		case SDLK_RIGHT:
-			ecs.GetComponent<SpriteComponent>(player)->v_frame = 3;
+			ecs.GetComponent<Sprite>(player)->v_frame = 3;
 			break;
 
 		case SDLK_TAB:

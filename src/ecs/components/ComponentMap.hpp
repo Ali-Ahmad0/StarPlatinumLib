@@ -3,11 +3,12 @@
 
 #include "../defintions.hpp"
 
+// Interface for a component map
 class IComponentMap
 {
 public:
     virtual ~IComponentMap() = default;
-    virtual void EntityDestroyed(EntityID e) = 0;
+    virtual void OnEntityDestroyed(EntityID e) = 0;
 };
 
 template <typename T>
@@ -29,28 +30,22 @@ public:
     // Get a pointer to the component of Type T for entity e
     T* GetData(EntityID e)
     {
-        auto registry = registries.find(e);
-        if (HasData(e))
+        auto it = registries.find(e);
+        if (it != registries.end())
         {
-            return registry->second.get();
+            return it->second.get();
         }
-
-        else
-        {
-            fprintf(stderr, "Entity %zu does not have component of type: %s", e, typeid(T).name());
-        }
+        fprintf(stderr, "Entity %zu does not have component of type: %s", e, typeid(T).name());
         return nullptr;
     }
 
-    // Remove component of type T for entity e
     void RemoveData(EntityID e)
     {
-        auto registry = registries.find(e);
-        if (HasData(e))
+        auto it = registries.find(e);
+        if (it != registries.end())
         {
-            registries.erase(registry);
+            registries.erase(it);
         }
-
         else
         {
             fprintf(stderr, "Entity %zu does not have component of type: %s", e, typeid(T).name());
@@ -58,7 +53,7 @@ public:
     }
 
     // Remove data for entity when it is destroyed
-    void EntityDestroyed(EntityID e) override
+    void OnEntityDestroyed(EntityID e) override
     {
         RemoveData(e);
     }

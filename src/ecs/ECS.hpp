@@ -13,6 +13,7 @@ class ECS
 {
 
 public:
+    // Initialize ECS
     void Init() 
     {
         entityManager = std::make_unique<EntityManager>();
@@ -33,15 +34,10 @@ public:
         // Remove components associated with the entity
         for (auto& pair : componentPools)
         {
-            pair.second->EntityDestroyed(entity);
+            pair.second->OnEntityDestroyed(entity);
         }
 
         systemManager->OnEntityDestroyed(entity);
-    }
-
-    std::vector<EntityID> GetAllEntities() 
-    {
-        return entityManager->GetAllEntities();
     }
 
     size_t GetEntityCount() 
@@ -49,7 +45,7 @@ public:
         return entityManager->GetEntityCount();
     }
 
-    // Register a component type by creating its pool
+    // Component related methods
     template <typename T>
     void RegisterComponent()
     {
@@ -61,7 +57,6 @@ public:
         nextComponent++;
     }
 
-    // Add a component to an entity
     template <typename T>
     void AddComponent(EntityID entity, T component)
     {
@@ -69,7 +64,6 @@ public:
         updateEntitySignature<T>(entity, true);
     }
 
-    // Remove a component from an entity
     template <typename T>
     void RemoveComponent(EntityID entity)
     {
@@ -77,28 +71,28 @@ public:
         updateEntitySignature<T>(entity, false);
     }
 
-    // Check if an entity has a specific component
     template <typename T>
     bool HasComponent(EntityID entity) const
     {
         return getComponentPool<T>()->HasData(entity);
     }
 
-    // Get a reference to an entity's component
     template <typename T>
     T* GetComponent(EntityID entity)
     {
+        // Returns reference to a component
         return getComponentPool<T>()->GetData(entity);
     }
 
-    // Get the component ID for a specific type
     template <typename T>
     ComponentID GetComponentID()
     {
         std::type_index typeIndex = typeid(T);
-
+        
+        // Find component ID of component
         if (componentRegistry.find(typeIndex) != componentRegistry.end())
         {
+            // Return ID
             return componentRegistry[typeIndex];
         }
         throw std::runtime_error("Cannot get ID on unregistered component");
@@ -124,6 +118,7 @@ public:
     }
    
 private:
+    // Managers
     std::unique_ptr<EntityManager> entityManager;
     std::unique_ptr<SystemManager> systemManager;
 

@@ -1,6 +1,6 @@
 #include "TextureManager.hpp"
 
-SDL_Texture* SpriteManager::LoadTexture(const char* path, SDL_Renderer* renderer)
+SDL_Texture* TextureManager::LoadTexture(const char* path, SDL_Renderer* renderer)
 {
 	// Load image as texture by using a temporary surface
 	SDL_Surface* tmpSurface = IMG_Load(path);

@@ -15,8 +15,9 @@ ECS ecs;
 EntityID player;
 
 SDL_Texture* playerTexture;
+SDL_Texture* playerPreview;
 
-void Game::init() 
+void Game::Init() 
 {
 	int flags = properties.fullscreen ? SDL_WINDOW_FULLSCREEN : 0;
 
@@ -54,7 +55,8 @@ void Game::init()
 		isRunning = false;
 	}
 
-	playerTexture = SpriteManager::LoadTexture("assets/character.png", renderer);
+	playerTexture = TextureManager::LoadTexture("assets/character.png", renderer);
+	playerPreview = TextureManager::LoadTexture("assets/character_preview.png", renderer);
 	
 	ecs.Init();
 
@@ -76,7 +78,7 @@ bool spawnEntities = false;
 bool deleteEntities = false;
 bool showFPS = false;
 
-void Game::events()
+void Game::Events()
 {
 	SDL_Event event;
 	SDL_PollEvent(&event);
@@ -89,16 +91,6 @@ void Game::events()
 		break;
 
 	case SDL_KEYDOWN:
-		//if (event.key.keysym.sym == SDLK_RETURN) // Check if "Enter" key is pressed
-		//{
-		//	spawnEntities = true; // Set the flag to spawn new entities
-		//}
-
-		//if (event.key.keysym.sym == SDLK_DELETE) 
-		//{
-		//	deleteEntities = true;
-		//}
-
 		// Test animations
 		switch (event.key.keysym.sym)
 		{
@@ -118,8 +110,14 @@ void Game::events()
 			ecs.GetComponent<Sprite>(player)->v_frame = 3;
 			break;
 
+		// Show FPS
 		case SDLK_TAB:
 			showFPS = true;
+			break;
+
+		// Spawn 100 entites
+		case SDLK_RETURN:
+			spawnEntities = true;
 			break;
 		}
 
@@ -129,64 +127,44 @@ void Game::events()
 	}
 }
 
-void Game::update()
+void Game::Update()
 {
-	//// Testing entity spawning
-	//if (spawnEntities)
-	//{
-	//	// Seed the random number generator
-	//	srand(static_cast<unsigned int>(time(0)));
+	// Testing entity spawning
+	if (spawnEntities)
+	{
+		// Seed the random number generator
+		srand(static_cast<unsigned int>(time(0)));
 
-	//	for (int i = 0; i < 100; i++)
-	//	{
-	//		EntityID entity = ecs.createEntity();
+		for (int i = 0; i < 100; i++)
+		{
+			EntityID entity = ecs.CreateEntity();
 
-	//		// Assign components to the entity
-	//		
-	//		ecs.addComponent(entity, std::make_shared<SpriteComponent>(playerTexture));
+			// Set random positions within the screen bounds (640 x 480)
+			float randomX = static_cast<float>(rand() % 640);
+			float randomY = static_cast<float>(rand() % 480);
 
-	//		// Set random positions within the screen bounds (640 x 480)
-	//		float randomX = static_cast<float>(rand() % 640);
-	//		float randomY = static_cast<float>(rand() % 480);
+			// Assign components to the entity
+			ecs.AddComponent(entity, Transform(Vector2(randomX, randomY), 2));
+			ecs.AddComponent(entity, Sprite(playerPreview));
+		}
 
-	//		ecs.getComponent<TransformComponent>(entity)->position = Vector2(randomX, randomY);
-	//		ecs.getComponent<TransformComponent>(entity)->scale = 2;
-	//	}
-
-	//	// Reset the flag
-	//	spawnEntities = false;
-	//}
-
-	//// Testing entity deletion
-	//if (deleteEntities)
-	//{
-	//	size_t firstEntity = ecs.getNextEntity() - ecs.getEntityCount();
-
-	//	for (size_t e = firstEntity; e < firstEntity + 100; e++)
-	//	{
-	//		ecs.deleteEntity(e);
-	//	}
-
-	//	deleteEntities = false;
-	//}
-
-	
+		// Reset the flag
+		spawnEntities = false;
+	}
 
 	ecs.GetSystem<SpriteSystem>()->update(ecs);
 }
 
-void Game::render()
+void Game::Render()
 {
 	SDL_RenderClear(renderer);
 
 	ecs.GetSystem<SpriteSystem>()->render(ecs, renderer);
 
 	SDL_RenderPresent(renderer);
-
-	
 }
 
-void Game::gameLoop() 
+void Game::GameLoop() 
 {
 	// Times in miliseconds
 	int targetDeltaTime = 1000 / properties.targetFPS;
@@ -194,13 +172,13 @@ void Game::gameLoop()
 	Uint32 frameStartTime;
 	int frameDrawTime;
 
-	while (running())
+	while (Running())
 	{
 		frameStartTime = SDL_GetTicks();
 
-		events();
-		update();
-		render();
+		Events();
+		Update();
+		Render();
 
 		frameDrawTime = SDL_GetTicks() - frameStartTime;
 
@@ -219,14 +197,14 @@ void Game::gameLoop()
 
 		if (showFPS)
 		{
-			printf("FPS: %f | Entities: %zu\n", ((float)targetDeltaTime / (float)deltaTime) * properties.targetFPS, ecs.GetAllEntities().size());
+			printf("FPS: %f | Entities: %zu\n", ((float)targetDeltaTime / (float)deltaTime) * properties.targetFPS, ecs.GetEntityCount());
 			showFPS = false;
 		}
 		
 	}
 }
 
-void Game::exit()
+void Game::Exit()
 {
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);

@@ -6,28 +6,33 @@
 class EntityManager 
 {
 public:
+	// Initialize all available entity IDs
 	void Init();
 
+	// Returns whether entity exists or not
 	bool IsActive(EntityID entity);
 
+	// Return an available entity ID
 	EntityID CreateEntity();
+	
+	// Make entity ID available again
 	void DeleteEntity(EntityID entity);
 	
-	std::vector<EntityID> GetAllEntities();
+	// Returns number of entities
 	size_t GetEntityCount();
 
+	// Update the signature of an entity
 	void SetSignature(EntityID entity, Signature signature);
+	
+	// Return the signature of an entity
 	Signature GetSignature(EntityID entity);
 
 private:
 	// Queue of available entity IDs
 	std::queue<EntityID> availableEntities;
 
-	// Active entity list to keep track of all active entities
-	std::vector<EntityID> activeEntityList;
-
-	// A map that stores whether an entity is active or not
-	std::unordered_map<EntityID, bool> entityStatus{};
+	// An array that stores whether an entity is active or not
+	std::array<bool, MAX_ENTITIES> entityStatus;
 
 	// Array of signatures for each entity
 	// Array index represents entity ID

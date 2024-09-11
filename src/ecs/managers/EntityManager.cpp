@@ -22,7 +22,6 @@ EntityID EntityManager::CreateEntity()
         availableEntities.pop();
         entityStatus[entity] = true;
 
-        activeEntityList.push_back(entity);
         count++;
         return entity;
     }
@@ -31,14 +30,10 @@ EntityID EntityManager::CreateEntity()
 
 void EntityManager::DeleteEntity(EntityID entity) 
 {
-    // Remove entity from active entity list
-    auto it = std::find(activeEntityList.begin(), activeEntityList.end(), entity);
-
-    if (it != activeEntityList.end())
+    if (IsActive(entity))
     {
         availableEntities.push(entity);
         entityStatus[entity] = false;
-        activeEntityList.erase(it);
         count--;
     }
     else 
@@ -46,11 +41,6 @@ void EntityManager::DeleteEntity(EntityID entity)
         fprintf(stderr, "Cannot delete non existent entity");
     }
     
-}
-
-std::vector<EntityID> EntityManager::GetAllEntities()
-{
-    return activeEntityList;
 }
 
 size_t EntityManager::GetEntityCount() 

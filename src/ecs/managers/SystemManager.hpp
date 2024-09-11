@@ -6,18 +6,22 @@
 class SystemManager 
 {
 public:
+
+	// Register a new system
 	template <typename T>
 	std::shared_ptr<T> RegisterSystem() 
 	{
 		std::type_index typeIndex = typeid(T);
 		if (!isRegistered(typeIndex)) 
 		{
-			systems[typeIndex] = std::make_shared<T>();
-			return std::make_shared<T>();
+			auto system = std::make_shared<T>();
+			systems[typeIndex] = system;
+			return system;
 		}
 		throw std::runtime_error("System is already registered\n");
 	}
 
+	// Return pointer to a system
 	template <typename T>
 	std::shared_ptr<T> GetSystem()
 	{
@@ -29,6 +33,7 @@ public:
 		throw std::runtime_error("Cannot get unregistered system\n");
 	}
 
+	// Assign signature to a system
 	template <typename T>
 	void SetSignatrue(Signature signature) 
 	{
@@ -44,15 +49,20 @@ public:
 		}
 	}
 
+	// Notify all systems that an entity has been destroyed
 	void OnEntityDestroyed(EntityID entity);
+
+	// Notify all systems that entity signature has changed
 	void OnEntitySignatureChanged(EntityID entity, Signature entitySignature);
 
 private:
+	// Map from type of system to signature
 	std::unordered_map<std::type_index, Signature> signatures{};
 
 	// Map from type of system to the system
 	std::unordered_map<std::type_index, std::shared_ptr<BaseSystem>> systems{};
 
+	// Returns if system has been registered or not
 	bool isRegistered(std::type_index typeIndex) 
 	{
 		return systems.find(typeIndex) != systems.end();

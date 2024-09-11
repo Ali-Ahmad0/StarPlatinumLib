@@ -7,9 +7,9 @@ int main()
 {
 	game = new Game(Properties("Game"));
 	
-	game->init();
-	game->gameLoop();
-	game->exit();
+	game->Init();
+	game->GameLoop();
+	game->Exit();
 
 	return 0;
 }

@@ -5,8 +5,8 @@
 
 struct Transform
 {
-    Vector2 position;
-    int scale;
+    Vector2 position; // Position in a 2D space
+    int scale; // Scale of entity
 
     Transform(Vector2 position, int scale)
         : position(position), scale(scale) { }

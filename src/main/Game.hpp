@@ -30,26 +30,26 @@ public:
 	Game(Properties properties);
 	~Game();
 
-	void init();
+	void Init();
 
-	void events();
-	void update();
-	void render();
+	void Events();
+	void Update();
+	void Render();
 
-	void gameLoop();
+	void GameLoop();
 
-	void exit();
+	void Exit();
 
-	bool running() { return isRunning; }
+	bool Running() { return isRunning; }
 
 	// Get delta time in miliseconds
-	int getDeltaTimeMiliSeconds()
+	int GetDeltaTimeMiliSeconds()
 	{
 		return deltaTime;
 	}
 
 	// Get delta time in seconds
-	double getDeltaTimeSeconds()
+	double GetDeltaTimeSeconds()
 	{
 		return (double)deltaTime / 1000;
 	}

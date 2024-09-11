@@ -3,10 +3,11 @@
 
 #include "../main/Game.hpp"
 
-class SpriteManager
+class TextureManager
 {
 
 public:
+	// Load an image as SDL texture using path
 	static SDL_Texture* LoadTexture(const char* path, SDL_Renderer* renderer);
 };
 

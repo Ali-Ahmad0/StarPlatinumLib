@@ -17,7 +17,7 @@ void Game::Init()
 	// Initialize SDL
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0) 
 	{
-		//printf("Initialized subsystems.\n");
+		printf("Initialized subsystems.\n");
 		
 		// Create window
 		window = SDL_CreateWindow(
@@ -27,7 +27,7 @@ void Game::Init()
 
 		if (window)
 		{
-			//printf("Window created.\n");
+			printf("Window created.\n");
 		}
 
 		// Create renderer
@@ -37,14 +37,14 @@ void Game::Init()
 			Color color("#000000");
 
 			SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
-			//printf("Renderer created.\n");
+			printf("Renderer created.\n");
 		}
 		isRunning = true;
 	}
 
 	else 
 	{
-		//printf("Failed to initialize SDL");
+		printf("Failed to initialize SDL");
 		isRunning = false;
 	}
 
@@ -130,17 +130,26 @@ void Game::Update()
 		// Seed the random number generator
 		srand(static_cast<unsigned int>(time(nullptr)));
 
-		for (int i = 0; i < 100; i++)
+		try 
 		{
-			EntityID entity = ecs.CreateEntity();
+			for (int i = 0; i < 100; i++)
+			{
+				EntityID entity = ecs.CreateEntity();
 
-			// Set random positions within the screen bounds (640 x 480)
-			float randomX = static_cast<float>(rand() % 640);
-			float randomY = static_cast<float>(rand() % 480);
+				// Set random positions within the screen bounds (640 x 480)
+				float randomX = static_cast<float>(rand() % 640);
+				float randomY = static_cast<float>(rand() % 480);
 
-			// Assign components to the entity
-			ecs.AddComponent(entity, Transform(Vector2(randomX, randomY), 2));
-			ecs.AddComponent(entity, Sprite(playerPreview));
+				// Assign components to the entity
+				ecs.AddComponent(entity, Transform(Vector2(randomX, randomY), 2));
+				ecs.AddComponent(entity, Sprite(playerPreview));
+
+			}
+		}
+
+		catch (const std::runtime_error& e) 
+		{
+			printf("%s\n", e.what());
 		}
 
 		// Reset the flag
@@ -205,5 +214,5 @@ void Game::Exit()
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
 
-	//printf("Game exited\n");
+	printf("Game exited\n");
 }

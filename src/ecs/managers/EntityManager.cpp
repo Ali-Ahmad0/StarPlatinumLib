@@ -25,7 +25,9 @@ EntityID EntityManager::CreateEntity()
         count++;
         return entity;
     }
+
     throw std::runtime_error("Max entity limit reached");
+    
 }
 
 void EntityManager::DeleteEntity(const EntityID entity)

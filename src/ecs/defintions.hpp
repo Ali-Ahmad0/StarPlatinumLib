@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include <limits>
 #include <unordered_map>
 #include <typeindex>
 #include <memory>
@@ -12,7 +13,7 @@
 #include <stdexcept>
 
 using EntityID = std::size_t;
-constexpr EntityID MAX_ENTITIES = 10240;
+constexpr EntityID MAX_ENTITIES = 5120;
 
 using ComponentID = std::size_t;
 constexpr ComponentID MAX_COMPONENTS = 16;

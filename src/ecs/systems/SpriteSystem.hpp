@@ -1,5 +1,4 @@
-#ifndef SPRITE_SYSTEM_HPP
-#define SPRITE_SYSTEM_HPP
+#pragma once
 
 #include "BaseSystem.hpp"
 #include "../ECS.hpp"
@@ -9,11 +8,11 @@ struct SpriteSystem : BaseSystem
     void update(ECS& ecs)
     {
         // Update and animate all sprites
-        for (EntityID e : entities)
+        for (const EntityID e : entities)
         {
             // Get transform and sprite components
-            Transform* transform = ecs.GetComponent<Transform>(e);
-            Sprite* sprite = ecs.GetComponent<Sprite>(e);
+            auto* transform = ecs.GetComponent<Transform>(e);
+            auto* sprite = ecs.GetComponent<Sprite>(e);
 
             // Get the full width and height of the texture
             int textureWidth, textureHeight;
@@ -47,14 +46,12 @@ struct SpriteSystem : BaseSystem
     // Render all sprites
     void render(ECS& ecs, SDL_Renderer* renderer)
     {
-        for (EntityID e : entities)
+        for (const EntityID e : entities)
         {
-            Sprite* sprite = ecs.GetComponent<Sprite>(e);
+            auto* sprite = ecs.GetComponent<Sprite>(e);
             SDL_RenderCopy(renderer, sprite->texture, &sprite->src, &sprite->dst);
         }
     }
 };
-
-#endif // !SPRITE_SYSTEM_HPP
 
 

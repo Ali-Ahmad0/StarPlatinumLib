@@ -1,4 +1,5 @@
 #include "Init.hpp"
+#include "../../ecs/systems/System.hpp"
 
 void Init::InitComponents(ECS& ecs) 
 {

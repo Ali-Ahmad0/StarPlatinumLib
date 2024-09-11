@@ -1,5 +1,4 @@
-#ifndef COMPONENTS_HPP
-#define COMPONENTS_HPP
+#pragma once
 
 #include "../../main/Game.hpp" 
 
@@ -8,7 +7,7 @@ struct Transform
     Vector2 position; // Position in a 2D space
     int scale; // Scale of entity
 
-    Transform(Vector2 position=Vector2(0, 0), int scale = 1)
+    explicit Transform(const Vector2 position=Vector2(0, 0), const int scale = 1)
         : position(position), scale(scale) { }
 };
 
@@ -34,4 +33,3 @@ struct Sprite
           h_frame(1), v_frame(0), h_frames(h_frames), v_frames(v_frames), speed(speed) {}
 };
 
-#endif // !COMPONENTS_HPP

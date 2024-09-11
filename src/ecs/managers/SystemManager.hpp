@@ -1,5 +1,4 @@
-#ifndef SYSTEM_MANAGER_HPP
-#define SYSTEM_MANAGER_HPP
+#pragma once
 
 #include "../systems/BaseSystem.hpp"
 
@@ -11,7 +10,7 @@ public:
 	template <typename T>
 	std::shared_ptr<T> RegisterSystem() 
 	{
-		std::type_index typeIndex = typeid(T);
+		const std::type_index typeIndex = typeid(T);
 		if (!isRegistered(typeIndex)) 
 		{
 			auto system = std::make_shared<T>();
@@ -25,7 +24,7 @@ public:
 	template <typename T>
 	std::shared_ptr<T> GetSystem()
 	{
-		std::type_index typeIndex = typeid(T);
+		const std::type_index typeIndex = typeid(T);
 		if (isRegistered(typeIndex))
 		{
 			return std::static_pointer_cast<T>(systems[typeIndex]);
@@ -35,9 +34,9 @@ public:
 
 	// Assign signature to a system
 	template <typename T>
-	void SetSignatrue(Signature signature) 
+	void SetSignature(Signature signature)
 	{
-		std::type_index typeIndex = typeid(T);
+		const std::type_index typeIndex = typeid(T);
 		if (isRegistered(typeIndex)) 
 		{
 			signatures[typeIndex] = signature;
@@ -50,7 +49,7 @@ public:
 	}
 
 	// Notify all systems that an entity has been destroyed
-	void OnEntityDestroyed(EntityID entity);
+	void OnEntityDestroyed(EntityID entity) const;
 
 	// Notify all systems that entity signature has changed
 	void OnEntitySignatureChanged(EntityID entity, Signature entitySignature);
@@ -69,4 +68,3 @@ private:
 	}
 };
 
-#endif // !SYSTEM_MANAGER_HPP

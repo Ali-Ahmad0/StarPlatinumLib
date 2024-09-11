@@ -9,7 +9,7 @@ void EntityManager::Init()
     }
 }
 
-bool EntityManager::IsActive(EntityID entity) 
+bool EntityManager::IsActive(const EntityID entity) const
 {
     return entity < MAX_ENTITIES && entityStatus[entity];
 }
@@ -18,7 +18,7 @@ EntityID EntityManager::CreateEntity()
 {
     if (count < MAX_ENTITIES) 
     {
-        EntityID entity = availableEntities.front();
+        const EntityID entity = availableEntities.front();
         availableEntities.pop();
         entityStatus[entity] = true;
 
@@ -28,7 +28,7 @@ EntityID EntityManager::CreateEntity()
     throw std::runtime_error("Max entity limit reached");
 }
 
-void EntityManager::DeleteEntity(EntityID entity) 
+void EntityManager::DeleteEntity(const EntityID entity)
 {
     if (IsActive(entity))
     {
@@ -43,12 +43,12 @@ void EntityManager::DeleteEntity(EntityID entity)
     
 }
 
-size_t EntityManager::GetEntityCount() 
+size_t EntityManager::GetEntityCount() const
 {
     return count;
 }
 
-void EntityManager::SetSignature(EntityID entity, Signature signature) 
+void EntityManager::SetSignature(const EntityID entity, const Signature signature)
 {
     if (IsActive(entity)) 
     {
@@ -60,7 +60,7 @@ void EntityManager::SetSignature(EntityID entity, Signature signature)
     }
 }
 
-Signature EntityManager::GetSignature(EntityID entity) 
+Signature EntityManager::GetSignature(const EntityID entity) const
 {
     if (IsActive(entity)) 
     {

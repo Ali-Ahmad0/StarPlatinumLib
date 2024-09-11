@@ -1,15 +1,16 @@
 #include <vector>
 
 #include "Game.hpp"
-#include "init/Init.hpp"
 
+#include "init/Init.hpp"
 #include "../ecs/ECS.hpp"
+
 #include "../texture/TextureManager.hpp"
 #include "../ecs/systems/System.hpp"
 
-Game::Game(Properties properties) 
+Game::Game(const Properties &properties)
 	: deltaTime(0), properties(properties), isRunning(false), window(nullptr), renderer(nullptr) {}
-Game::~Game() {}
+Game::~Game() = default;
 
 ECS ecs;
 EntityID player;
@@ -119,6 +120,8 @@ void Game::Events()
 		case SDLK_RETURN:
 			spawnEntities = true;
 			break;
+
+		default: ;
 		}
 
 		break;
@@ -133,7 +136,7 @@ void Game::Update()
 	if (spawnEntities)
 	{
 		// Seed the random number generator
-		srand(static_cast<unsigned int>(time(0)));
+		srand(static_cast<unsigned int>(time(nullptr)));
 
 		for (int i = 0; i < 100; i++)
 		{
@@ -166,7 +169,7 @@ void Game::Render()
 
 void Game::GameLoop() 
 {
-	// Times in miliseconds
+	// Times in milliseconds
 	int targetDeltaTime = 1000 / properties.targetFPS;
 
 	Uint32 frameStartTime;

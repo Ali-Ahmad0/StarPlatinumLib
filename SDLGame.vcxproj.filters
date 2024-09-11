@@ -27,37 +27,7 @@
     <ClCompile Include="src\texture\TextureManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\common\Utils.hpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\ecs\managers\EntityManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ecs\components\Components.hpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ecs\systems\System.hpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ecs\systems\SpriteSystem.hpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ecs\defintions.hpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ecs\components\ComponentMap.hpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ecs\managers\EntityManager.hpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ecs\systems\BaseSystem.hpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ecs\managers\SystemManager.hpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\main\init\Init.hpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\main\init\Init.cpp">
@@ -65,6 +35,36 @@
     </ClCompile>
     <ClCompile Include="src\ecs\managers\SystemManager.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\managers\EntityManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\managers\SystemManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\systems\BaseSystem.hpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\components\ComponentMap.hpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\components\Components.hpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\defintions.hpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main\init\Init.hpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\systems\SpriteSystem.hpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\systems\System.hpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\common\Utils.hpp">
+      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

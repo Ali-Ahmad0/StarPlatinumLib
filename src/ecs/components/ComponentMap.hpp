@@ -12,7 +12,7 @@ public:
 };
 
 template <typename T>
-class ComponentMap : public IComponentMap
+class ComponentMap final : public IComponentMap
 {
 public:
     // Add a component of Type T for entity e

@@ -19,7 +19,7 @@ struct Properties
 
 	bool fullscreen;
 
-	Properties(const char* title, int targetFPS = 60, Vector2 windowPos = Vector2(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED),  
+	explicit Properties(const char* title, int targetFPS = 60, Vector2 windowPos = Vector2(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED),
 		Vector2 windowSize = Vector2(640, 480), bool fullscreen = false) 
 		: title(title), targetFPS(targetFPS), windowPos(windowPos), windowSize(windowSize), fullscreen(fullscreen) {}
 };
@@ -27,7 +27,7 @@ struct Properties
 class Game {
 public:
 	// Constructor and destructor
-	Game(Properties properties);
+	explicit Game(const Properties &properties);
 	~Game();
 
 	void Init();
@@ -40,16 +40,16 @@ public:
 
 	void Exit();
 
-	bool Running() { return isRunning; }
+	bool Running() const { return isRunning; }
 
 	// Get delta time in miliseconds
-	int GetDeltaTimeMiliSeconds()
+	int GetDeltaTimeMilliSeconds() const
 	{
 		return deltaTime;
 	}
 
 	// Get delta time in seconds
-	double GetDeltaTimeSeconds()
+	double GetDeltaTimeSeconds() const
 	{
 		return (double)deltaTime / 1000;
 	}
@@ -57,7 +57,7 @@ public:
 private:
 	bool isRunning;
 
-	// Delta time in miliseconds
+	// Delta time in milliseconds
 	int deltaTime;
 
 	SDL_Window* window;

@@ -1,5 +1,4 @@
-#ifndef ENTITY_MANAGER_HPP
-#define ENTITY_MANAGER_HPP
+#pragma once
 
 #include "../defintions.hpp"
 
@@ -10,7 +9,7 @@ public:
 	void Init();
 
 	// Returns whether entity exists or not
-	bool IsActive(EntityID entity);
+	bool IsActive(EntityID entity) const;
 
 	// Return an available entity ID
 	EntityID CreateEntity();
@@ -19,20 +18,20 @@ public:
 	void DeleteEntity(EntityID entity);
 	
 	// Returns number of entities
-	size_t GetEntityCount();
+	size_t GetEntityCount() const;
 
 	// Update the signature of an entity
 	void SetSignature(EntityID entity, Signature signature);
 	
 	// Return the signature of an entity
-	Signature GetSignature(EntityID entity);
+	Signature GetSignature(EntityID entity) const;
 
 private:
 	// Queue of available entity IDs
 	std::queue<EntityID> availableEntities;
 
 	// An array that stores whether an entity is active or not
-	std::array<bool, MAX_ENTITIES> entityStatus;
+	std::array<bool, MAX_ENTITIES> entityStatus{};
 
 	// Array of signatures for each entity
 	// Array index represents entity ID
@@ -41,5 +40,3 @@ private:
 	// Total entities
 	size_t count = 0;
 };
-
-#endif // !ENTITY_MANAGER_HPP

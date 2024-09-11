@@ -1,7 +1,9 @@
+#pragma once
+
 #include <algorithm>
 #include <cmath>
-#include <sstream>   
 #include <iomanip>   
+#include <string>
 
 struct Color
 {
@@ -11,11 +13,11 @@ struct Color
     int a;
 
     // Constructor to initialize color values using RGB values
-    Color(int red, int green, int blue, int alpha = 255)
+    Color(const int red, const int green, const int blue, const int alpha = 255)
         : r(clamp(red)), g(clamp(green)), b(clamp(blue)), a(clamp(alpha)) {}
 
     // Constructor to initialize color values using HSV values
-    Color(float h, float s, float v, int alpha = 255)
+    Color(const float h,const float s, const float v, const int alpha = 255)
     {
         // Temporary variables to store the normalized RGB values
         float r = 0, g = 0, b = 0;
@@ -32,12 +34,13 @@ struct Color
         // Determine the RGB values based on the hue sector
         switch (i % 6)
         {
-        case 0: r = v, g = t, b = p; break; // Hue in the range [0, 60) degrees
-        case 1: r = q, g = v, b = p; break; // Hue in the range [60, 120) degrees
-        case 2: r = p, g = v, b = t; break; // Hue in the range [120, 180) degrees
-        case 3: r = p, g = q, b = v; break; // Hue in the range [180, 240) degrees
-        case 4: r = t, g = p, b = v; break; // Hue in the range [240, 300) degrees
-        case 5: r = v, g = p, b = q; break; // Hue in the range [300, 360) degrees
+            case 0: r = v, g = t, b = p; break; // Hue in the range [0, 60) degrees
+            case 1: r = q, g = v, b = p; break; // Hue in the range [60, 120) degrees
+            case 2: r = p, g = v, b = t; break; // Hue in the range [120, 180) degrees
+            case 3: r = p, g = q, b = v; break; // Hue in the range [180, 240) degrees
+            case 4: r = t, g = p, b = v; break; // Hue in the range [240, 300) degrees
+            case 5: r = v, g = p, b = q; break; // Hue in the range [300, 360) degrees
+            default: ;
         }
 
         // Convert the normalized RGB values (0.0 to 1.0) to 8-bit values (0 to 255)
@@ -48,7 +51,7 @@ struct Color
     }
 
     // Constructor to initialize color values using a hex code
-    Color(const std::string& hexCode)
+    explicit Color(const std::string& hexCode)
     {
         // Remove the hash if it exists
         std::string hex = hexCode;
@@ -96,7 +99,7 @@ struct Color
 
 private:
     // Clamp values between 0 and 255
-    int clamp(int value) const
+    [[nodiscard]] static int clamp(const int value)
     {
         return std::max(0, std::min(255, value));
     }
@@ -112,62 +115,62 @@ struct Vector2
     Vector2(float xpos, float ypos) : x(xpos), y(ypos) {}
 
     // Add a vector
-    Vector2 add(Vector2& b) const
+    [[nodiscard]] Vector2 add(const Vector2& b) const
     {
-        return Vector2(x + b.x, y + b.y);
+        return {x + b.x, y + b.y};
     }
 
     // Subtract a vector
-    Vector2 subtract(Vector2& b) const
+    [[nodiscard]] Vector2 subtract(const Vector2& b) const
     {
-        return Vector2(x - b.x, y - b.y);
+        return {x - b.x, y - b.y};
     }
 
     // Multiply the vector by a number
-    Vector2 multiply(float value) const
+    [[nodiscard]] Vector2 multiply(const float value) const
     {
-        return Vector2(x * value, y * value);
+        return {x * value, y * value};
     }
 
     // Divide the vector by a number
-    Vector2 divide(float value) const 
+    [[nodiscard]] Vector2 divide(const float value) const
     {
-        return Vector2(x / value, y / value);
+        return {x / value, y / value};
     }
 
     // Dot product of vector
-    Vector2 dot(Vector2& b) const
+    [[nodiscard]] Vector2 dot(const Vector2& b) const
     {
-        return Vector2(x * b.x, y * b.y);
+        return {x * b.x, y * b.y};
     }
 
     // Get length squared of a vector
-    float magnitudeSquared() const 
+    [[nodiscard]] float magnitudeSquared() const
     {
         return x * x + y * y;
     }
 
     // Get length of vector
-    float magnitude() const
+    [[nodiscard]] float magnitude() const
     {
         return std::sqrt(magnitudeSquared());
     }
 
     // Convert into unit vector
-    Vector2 normalize() const
+    [[nodiscard]] Vector2 normalize() const
     {
-        float length = magnitude();
+        const float length = magnitude();
 
         if (length == 0)
         {
-            return Vector2(0, 0);
+            return {0, 0};
         }
 
-        return Vector2(x / length, y / length);
+        return {x / length, y / length};
     }
 
     // Check if 2 vectors are equal
-    bool equals(Vector2& b) const
+    [[nodiscard]] bool equals(const Vector2& b) const
     {
         return x == b.x && y == b.y;
     }

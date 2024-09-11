@@ -1,5 +1,4 @@
-#ifndef ECS_HPP
-#define ECS_HPP
+#pragma once
 
 #include "defintions.hpp"
 #include "components/Components.hpp"
@@ -22,12 +21,12 @@ public:
     }
 
     // Entity related methods
-    EntityID CreateEntity() 
+    EntityID CreateEntity() const
     {
         return entityManager->CreateEntity();
     }
 
-    void DeleteEntity(EntityID entity) 
+    void DeleteEntity(const EntityID entity) const
     {
         entityManager->DeleteEntity(entity);
 
@@ -40,7 +39,7 @@ public:
         systemManager->OnEntityDestroyed(entity);
     }
 
-    size_t GetEntityCount() 
+    size_t GetEntityCount() const
     {
         return entityManager->GetEntityCount();
     }
@@ -49,7 +48,7 @@ public:
     template <typename T>
     void RegisterComponent()
     {
-        std::type_index typeIndex(typeid(T));
+        const std::type_index typeIndex(typeid(T));
         componentPools[typeIndex] = std::make_unique<ComponentMap<T>>();
 
         // Assign component ID
@@ -112,9 +111,9 @@ public:
     }
 
     template <typename T>
-    void SetSystemSignature(Signature signature) 
+    void SetSystemSignature(const Signature signature) const
     {
-        return systemManager->SetSignatrue<T>(signature);
+        return systemManager->SetSignature<T>(signature);
     }
    
 private:
@@ -135,8 +134,8 @@ private:
     template <typename T>
     ComponentMap<T>* getComponentPool() const
     {
-        std::type_index typeIndex(typeid(T));
-        auto it = componentPools.find(typeIndex);
+        const std::type_index typeIndex(typeid(T));
+        const auto it = componentPools.find(typeIndex);
         if (it != componentPools.end())
         {
             return static_cast<ComponentMap<T>*>(it->second.get());
@@ -156,4 +155,3 @@ private:
     }
 };
 
-#endif // ECS_HPP

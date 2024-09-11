@@ -1,6 +1,6 @@
 #include "SystemManager.hpp"
 
-void SystemManager::OnEntityDestroyed(EntityID entity) 
+void SystemManager::OnEntityDestroyed(const EntityID entity) const
 {
 	for (auto const& pair : systems)
 	{
@@ -9,7 +9,7 @@ void SystemManager::OnEntityDestroyed(EntityID entity)
 	}
 }
 
-void SystemManager::OnEntitySignatureChanged(EntityID entity, Signature entitySignature) 
+void SystemManager::OnEntitySignatureChanged(const EntityID entity, const Signature entitySignature)
 {
 	{
 		for (auto const& pair : systems)

@@ -1,7 +1,6 @@
-#ifndef INIT_HPP
-#define INIT_HPP
-
+#pragma once
 #include "../../ecs/ECS.hpp"
+#include "../../ecs/systems/System.hpp"
 
 // Includes code for registration of built in components and systems
 // Purpose is to reduce code in the init function of the game class
@@ -16,5 +15,3 @@ public:
 	static void InitSystems(ECS& ecs);
 };
 
-
-#endif // !INIT_HPP

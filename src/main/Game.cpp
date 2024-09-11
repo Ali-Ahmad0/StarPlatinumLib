@@ -1,12 +1,4 @@
-#include <vector>
-
 #include "Game.hpp"
-
-#include "init/Init.hpp"
-#include "../ecs/ECS.hpp"
-
-#include "../texture/TextureManager.hpp"
-#include "../ecs/systems/System.hpp"
 
 Game::Game(const Properties &properties)
 	: deltaTime(0), properties(properties), isRunning(false), window(nullptr), renderer(nullptr) {}

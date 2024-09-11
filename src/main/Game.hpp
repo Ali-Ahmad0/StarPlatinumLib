@@ -1,15 +1,19 @@
-#ifndef GAME_HPP
-#define GAME_HPP
+#pragma once
 
 #include <stdio.h>
-#include "SDL.h"
-#include "SDL_image.h"
+#include <SDL.h>
+#include <SDL_image.h>
+
+#include "init/Init.hpp"
+#include "../ecs/ECS.hpp"
+
+#include "../texture/TextureManager.hpp"
+#include "../ecs/systems/System.hpp"
 
 #include "../common/Utils.hpp"
 
 struct Properties
 {
-
 	const char* title;
 
 	int targetFPS;
@@ -66,5 +70,4 @@ private:
 	Properties properties;
 };
 
-#endif // !GAME_HPP
 

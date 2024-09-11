@@ -1,5 +1,4 @@
-#ifndef COMPONENT_POOL_HPP
-#define COMPONENT_POOL_HPP
+#pragma once
 
 #include "../defintions.hpp"
 
@@ -63,4 +62,3 @@ private:
     std::unordered_map<EntityID, std::unique_ptr<T>> registries;
 };
 
-#endif // !COMPONENT_POOL_HPP

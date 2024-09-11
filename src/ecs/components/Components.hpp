@@ -1,6 +1,7 @@
 #pragma once
 
-#include "../../main/Game.hpp" 
+#include "../../common/Utils.hpp"
+#include <SDL.h>
 
 struct Transform
 {

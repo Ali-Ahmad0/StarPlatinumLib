@@ -123,10 +123,16 @@ struct Vector2
         return Vector2(x - b.x, y - b.y);
     }
 
-    // Scale the vector
-    Vector2 scale(float value) const
+    // Multiply the vector by a number
+    Vector2 multiply(float value) const
     {
         return Vector2(x * value, y * value);
+    }
+
+    // Divide the vector by a number
+    Vector2 divide(float value) const 
+    {
+        return Vector2(x / value, y / value);
     }
 
     // Dot product of vector
@@ -135,10 +141,16 @@ struct Vector2
         return Vector2(x * b.x, y * b.y);
     }
 
+    // Get length squared of a vector
+    float magnitudeSquared() const 
+    {
+        return x * x + y * y;
+    }
+
     // Get length of vector
     float magnitude() const
     {
-        return std::sqrt(x * x + y * y);
+        return std::sqrt(magnitudeSquared());
     }
 
     // Convert into unit vector
@@ -152,5 +164,11 @@ struct Vector2
         }
 
         return Vector2(x / length, y / length);
+    }
+
+    // Check if 2 vectors are equal
+    bool equals(Vector2& b) const
+    {
+        return x == b.x && y == b.y;
     }
 };

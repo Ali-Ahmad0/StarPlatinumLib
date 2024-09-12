@@ -110,10 +110,13 @@ public:
         return std::static_pointer_cast<T>(systemManager->GetSystem<T>());
     }
 
-    template <typename T>
-    void SetSystemSignature(const Signature signature) const
+    template <typename T, typename U>
+    void AddComponentToSystem() 
     {
-        return systemManager->SetSignature<T>(signature);
+        Signature signature = systemManager->GetSignature<U>();
+        signature.set(GetComponentID<T>(), true);
+        systemManager->SetSignature<U>(signature);
+        
     }
    
 private:

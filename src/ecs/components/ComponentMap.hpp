@@ -17,7 +17,7 @@ public:
     // Add a component of Type T for entity e
     void AddData(EntityID e, T component)
     {
-        registries[e] = std::make_unique<T>(component);
+        registries[e] = std::move(component);
     }
 
     // Check if entity e has a component of type T
@@ -32,7 +32,7 @@ public:
         auto it = registries.find(e);
         if (it != registries.end())
         {
-            return it->second.get();
+            return &it->second;
         }
         fprintf(stderr, "Entity %zu does not have component of type: %s", e, typeid(T).name());
         return nullptr;
@@ -59,6 +59,6 @@ public:
 
 private:
     // Entity and it's corresponding component of type T
-    std::unordered_map<EntityID, std::unique_ptr<T>> registries;
+    std::unordered_map<EntityID, T> registries;
 };
 

@@ -11,9 +11,6 @@ void Init::InitSystems(ECS& ecs)
 	// Sprite System
 	auto spriteSystem = ecs.RegisterSystem<SpriteSystem>();
 
-	Signature spriteSignature;
-	spriteSignature.set(ecs.GetComponentID<Transform>(), true);
-	spriteSignature.set(ecs.GetComponentID<Sprite>(), true);
-
-	ecs.SetSystemSignature<SpriteSystem>(spriteSignature);
+	ecs.AddComponentToSystem<Transform, SpriteSystem>();
+	ecs.AddComponentToSystem<Sprite, SpriteSystem>();
 }

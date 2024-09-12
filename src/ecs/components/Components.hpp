@@ -29,7 +29,7 @@ struct Sprite
 
     Uint32 speed; // Speed in frames per second
 
-    Sprite(SDL_Texture* texture, int h_frames = 1, int v_frames = 1, int speed = 0)
+    Sprite(SDL_Texture* texture=nullptr, int h_frames = 1, int v_frames = 1, int speed = 0)
         : texture(texture), src({ 0, 0, 0, 0 }), dst({ 0, 0, 0, 0 }), 
           h_frame(1), v_frame(0), h_frames(h_frames), v_frames(v_frames), speed(speed) {}
 };

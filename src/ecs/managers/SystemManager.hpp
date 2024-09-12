@@ -32,7 +32,18 @@ public:
 		throw std::runtime_error("Cannot get unregistered system\n");
 	}
 
-	// Assign signature to a system
+	template <typename T>
+	Signature GetSignature()
+	{
+		const std::type_index typeIndex = typeid(T);
+		if (isRegistered(typeIndex))
+		{
+			return signatures[typeIndex];
+		}
+
+		throw std::runtime_error("Cannot get signature on unregistered system");
+	}
+	
 	template <typename T>
 	void SetSignature(Signature signature)
 	{

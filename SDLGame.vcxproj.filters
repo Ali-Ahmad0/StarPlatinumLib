@@ -45,7 +45,7 @@
     <ClCompile Include="src\ecs\systems\BaseSystem.hpp">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ecs\components\ComponentMap.hpp">
+    <ClCompile Include="src\ecs\components\ComponentSparseSet.hpp">
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ecs\components\Components.hpp">

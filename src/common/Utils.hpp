@@ -99,7 +99,7 @@ struct Color
 
 private:
     // Clamp values between 0 and 255
-    [[nodiscard]] static int clamp(const int value)
+    static int clamp(const int value)
     {
         return std::max(0, std::min(255, value));
     }
@@ -115,49 +115,49 @@ struct Vector2
     Vector2(float xpos, float ypos) : x(xpos), y(ypos) {}
 
     // Add a vector
-    [[nodiscard]] Vector2 add(const Vector2& b) const
+    Vector2 add(const Vector2& b)
     {
         return {x + b.x, y + b.y};
     }
 
     // Subtract a vector
-    [[nodiscard]] Vector2 subtract(const Vector2& b) const
+    Vector2 subtract(const Vector2& b)
     {
         return {x - b.x, y - b.y};
     }
 
     // Multiply the vector by a number
-    [[nodiscard]] Vector2 multiply(const float value) const
+    Vector2 multiply(const float value)
     {
         return {x * value, y * value};
     }
 
     // Divide the vector by a number
-    [[nodiscard]] Vector2 divide(const float value) const
+    Vector2 divide(const float value)
     {
         return {x / value, y / value};
     }
 
     // Dot product of vector
-    [[nodiscard]] Vector2 dot(const Vector2& b) const
+    Vector2 dot(const Vector2& b)
     {
         return {x * b.x, y * b.y};
     }
 
     // Get length squared of a vector
-    [[nodiscard]] float magnitudeSquared() const
+    float magnitudeSquared()
     {
         return x * x + y * y;
     }
 
     // Get length of vector
-    [[nodiscard]] float magnitude() const
+    float magnitude()
     {
         return std::sqrt(magnitudeSquared());
     }
 
     // Convert into unit vector
-    [[nodiscard]] Vector2 normalize() const
+    Vector2 normalize()
     {
         const float length = magnitude();
 
@@ -170,7 +170,7 @@ struct Vector2
     }
 
     // Check if 2 vectors are equal
-    [[nodiscard]] bool equals(const Vector2& b) const
+    bool equals(const Vector2& b) const
     {
         return x == b.x && y == b.y;
     }

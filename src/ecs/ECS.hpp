@@ -2,7 +2,7 @@
 
 #include "defintions.hpp"
 #include "components/Components.hpp"
-#include "components/ComponentMap.hpp"
+#include "components/ComponentSparseSet.hpp"
 
 #include "managers/EntityManager.hpp"
 #include "managers/SystemManager.hpp"
@@ -49,7 +49,7 @@ public:
     void RegisterComponent()
     {
         const std::type_index typeIndex(typeid(T));
-        componentPools[typeIndex] = std::make_unique<ComponentMap<T>>();
+        componentPools[typeIndex] = std::make_unique<ComponentSparseSet<T>>();
 
         // Assign component ID
         componentRegistry[typeIndex] = nextComponent;
@@ -59,28 +59,28 @@ public:
     template <typename T>
     void AddComponent(EntityID entity, T component)
     {
-        getComponentPool<T>()->AddData(entity, component);
+        getComponentMap<T>()->AddData(entity, component);
         updateEntitySignature<T>(entity, true);
     }
 
     template <typename T>
     void RemoveComponent(EntityID entity)
     {
-        getComponentPool<T>()->RemoveData(entity);
+        getComponentMap<T>()->RemoveData(entity);
         updateEntitySignature<T>(entity, false);
     }
 
     template <typename T>
     bool HasComponent(EntityID entity) const
     {
-        return getComponentPool<T>()->HasData(entity);
+        return getComponentMap<T>()->HasData(entity);
     }
 
     template <typename T>
     T* GetComponent(EntityID entity)
     {
         // Returns reference to a component
-        return getComponentPool<T>()->GetData(entity);
+        return getComponentMap<T>()->GetData(entity);
     }
 
     template <typename T>
@@ -128,22 +128,22 @@ private:
     std::unordered_map<std::type_index, ComponentID> componentRegistry{};
 
     // Map that stores all registered component pools
-    std::unordered_map<std::type_index, std::unique_ptr<IComponentMap>> componentPools{};
+    std::unordered_map<std::type_index, std::unique_ptr<IComponentSparseSet>> componentPools{};
 
     // Next component ID
     ComponentID nextComponent = 0;
 
     // Get the component pool for a specific type
     template <typename T>
-    ComponentMap<T>* getComponentPool() const
+    ComponentSparseSet<T>* getComponentMap() const
     {
         const std::type_index typeIndex(typeid(T));
         const auto it = componentPools.find(typeIndex);
         if (it != componentPools.end())
         {
-            return static_cast<ComponentMap<T>*>(it->second.get());
+            return static_cast<ComponentSparseSet<T>*>(it->second.get());
         }
-        throw std::runtime_error("Component pool for type not registered.");
+        throw std::runtime_error("Component map for type not registered.");
     }
 
     // Update the signature of an entity and notify system manager

@@ -161,7 +161,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\common\Utils.hpp" />
-    <ClCompile Include="src\ecs\components\ComponentMap.hpp" />
+    <ClCompile Include="src\ecs\components\ComponentSparseSet.hpp" />
     <ClCompile Include="src\ecs\components\Components.hpp" />
     <ClCompile Include="src\ecs\defintions.hpp" />
     <ClCompile Include="src\ecs\managers\EntityManager.cpp" />

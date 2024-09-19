@@ -28,7 +28,7 @@ public:
 
 private:
 	// Queue of available entity IDs
-	std::queue<EntityID> availableEntities;
+	std::queue<EntityID> availableEntities{};
 
 	// An array that stores whether an entity is active or not
 	std::array<bool, MAX_ENTITIES> entityStatus{};

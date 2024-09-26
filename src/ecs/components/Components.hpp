@@ -8,7 +8,7 @@ struct Transform
     Vector2 position; // Position in a 2D space
     int scale; // Scale of entity
 
-    explicit Transform(const Vector2 position=Vector2(0, 0), const int scale = 1)
+    Transform(const Vector2 position=Vector2(0, 0), const int scale = 1)
         : position(position), scale(scale) { }
 };
 

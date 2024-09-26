@@ -66,6 +66,12 @@
     <ClCompile Include="src\common\Utils.hpp">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\tilemap\Tilemap.hpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tilemap\Tilemap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\main\Game.hpp">
@@ -85,5 +91,11 @@
     <Image Include="assets\character.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="assets\tileset.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\level\tilemap.json" />
   </ItemGroup>
 </Project>

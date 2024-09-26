@@ -1,14 +1,18 @@
 #include "Game.hpp"
 
+
 Game::Game(const Properties &properties)
 	: deltaTime(0), properties(properties), isRunning(false), window(nullptr), renderer(nullptr) {}
 Game::~Game() = default;
 
 ECS ecs;
+
 EntityID player;
 
 SDL_Texture* playerTexture;
 SDL_Texture* playerPreview;
+
+Tilemap tilemap;
 
 void Game::Init() 
 {
@@ -51,6 +55,10 @@ void Game::Init()
 	playerTexture = TextureManager::LoadTexture("assets/character.png", renderer);
 	playerPreview = TextureManager::LoadTexture("assets/character_preview.png", renderer);
 	
+	
+	tilemap = Tilemap("assets/tileset.png", 16, 8, 13, renderer);
+	tilemap.LoadMap(renderer, "assets/level/tilemap.json");
+
 	ecs.Init();
 
 	// Register components
@@ -163,6 +171,7 @@ void Game::Render()
 {
 	SDL_RenderClear(renderer);
 
+	tilemap.DrawMap(renderer, 4);
 	ecs.GetSystem<SpriteSystem>()->render(ecs, renderer);
 
 	SDL_RenderPresent(renderer);

@@ -82,13 +82,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin\intermediates\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>D:\Programs\Programming\Libraries\C++\SDL2_image-2.0.1\include;$(IncludePath)</IncludePath>
+    <IncludePath>D:\Programs\Programming\Libraries\C++\SDL2_image-2.0.1\include;D:\Programs\Programming\Libraries\C++\json\single_include;$(IncludePath)</IncludePath>
     <LibraryPath>D:\Programs\Programming\Libraries\C++\SDL2_image-2.0.1\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin\intermediates\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>D:\Programs\Programming\Libraries\C++\SDL2_image-2.0.1\include;$(IncludePath)</IncludePath>
+    <IncludePath>D:\Programs\Programming\Libraries\C++\SDL2_image-2.0.1\include;D:\Programs\Programming\Libraries\C++\json\single_include;$(IncludePath)</IncludePath>
     <LibraryPath>D:\Programs\Programming\Libraries\C++\SDL2_image-2.0.1\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -131,7 +131,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Programs\Programming\Libraries\C++\SDL2_image-2.0.1\include;D:\Programs\Programming\Libraries\C++\SDL2-2.30.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Programs\Programming\Libraries\C++\json\single_include;D:\Programs\Programming\Libraries\C++\SDL2_image-2.0.1\include;D:\Programs\Programming\Libraries\C++\SDL2-2.30.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -148,7 +148,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Programs\Programming\Libraries\C++\SDL2_image-2.0.1\include;D:\Programs\Programming\Libraries\C++\SDL2-2.30.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Programs\Programming\Libraries\C++\json\single_include;D:\Programs\Programming\Libraries\C++\SDL2_image-2.0.1\include;D:\Programs\Programming\Libraries\C++\SDL2-2.30.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -176,6 +176,8 @@
     <ClCompile Include="src\main\init\Init.cpp" />
     <ClCompile Include="src\main\init\Init.hpp" />
     <ClCompile Include="src\texture\TextureManager.cpp" />
+    <ClCompile Include="src\tilemap\Tilemap.cpp" />
+    <ClCompile Include="src\tilemap\Tilemap.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ecs\ECS.hpp" />
@@ -185,6 +187,10 @@
   <ItemGroup>
     <Image Include="assets\character.png" />
     <Image Include="assets\character_preview.png" />
+    <Image Include="assets\tileset.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\level\tilemap.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

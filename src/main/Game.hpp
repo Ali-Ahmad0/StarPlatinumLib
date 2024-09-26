@@ -8,6 +8,8 @@
 #include "../ecs/ECS.hpp"
 
 #include "../texture/TextureManager.hpp"
+#include "../tilemap/Tilemap.hpp"
+
 #include "../ecs/systems/System.hpp"
 
 #include "../common/Utils.hpp"

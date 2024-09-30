@@ -69,49 +69,55 @@ void Tilemap::LoadMap(SDL_Renderer* renderer, const char* path)
 	width = cols;
 
 	// Get the layout for the layer
-	auto layout = mapfilejson["layers"][0]["data"];
-	
-	// Preload the tilemap as a single texture
-
-	// Height and width of tilemap (in number of pixels)
-	size_t mapWidth = cols * tilesize;
-	size_t mapHeight = rows * tilesize;
-
-	// Create a texture to hold the entire map
-	tilemapTexture = SDL_CreateTexture(renderer, 
-		SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, (int)mapWidth, (int)mapHeight);
-
-	// Set the target to be the map texture
-	SDL_SetRenderTarget(renderer, tilemapTexture);
-
-	// Draw each tile onto the map texture
-	for (size_t row = 0; row < rows; row++)
+	for (int i = 0; i < mapfilejson["layers"].size(); i++) 
 	{
-		for (size_t col = 0; col < cols; col++)
+		auto layout = mapfilejson["layers"][i]["data"];
+
+		// Preload the tilemap as a single texture
+
+		// Height and width of tilemap (in number of pixels)
+		size_t mapWidth = cols * tilesize;
+		size_t mapHeight = rows * tilesize;
+
+		// Create a texture to hold the entire map
+		layers.push_back(SDL_CreateTexture(renderer,
+			SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, (int)mapWidth, (int)mapHeight));
+
+		// Set the target to be the map texture
+		SDL_SetRenderTarget(renderer, layers[i]);
+
+		// Draw each tile onto the map texture
+		for (size_t row = 0; row < rows; row++)
 		{
-			int index = layout[row * cols + col] - 1;
-
-			// Consider these as empty tiles
-			if (index < 0 || index >= tiles.size())
+			for (size_t col = 0; col < cols; col++)
 			{
-				continue;
+				int index = layout[row * cols + col] - 1;
+
+				// Consider these as empty tiles
+				if (index < 0 || index >= tiles.size())
+				{
+					continue;
+				}
+
+				SDL_Rect dst = { (int)(col * tilesize), (int)(row * tilesize), (int)tilesize, (int)tilesize };
+				SDL_RenderCopy(renderer, tiles[index], NULL, &dst);
 			}
-
-			SDL_Rect dst = { (int)(col * tilesize), (int)(row * tilesize), (int)tilesize, (int)tilesize };
-			SDL_RenderCopy(renderer, tiles[index], NULL, &dst);
 		}
-	}
 
-	// Reset the render target to the default renderer target
-	SDL_SetRenderTarget(renderer, NULL);
+		// Reset the render target to the default renderer target
+		SDL_SetRenderTarget(renderer, NULL);
+	}
 }
 
 void Tilemap::DrawMap(SDL_Renderer* renderer, size_t scale)
 {
-	// Draw the preloaded map texture
-	if (tilemapTexture)
+	for (auto& texture : layers) 
 	{
-		SDL_Rect dst = { 0, 0, (int)(width * tilesize * scale), static_cast<int>(height * tilesize * scale) };
-		SDL_RenderCopy(renderer, tilemapTexture, NULL, &dst);
+		// Draw the preloaded map texture
+		if (texture)
+		{
+			SDL_Rect dst = { 0, 0, (int)(width * tilesize * scale), (int)(height * tilesize * scale) };
+			SDL_RenderCopy(renderer, texture, NULL, &dst);
+		}
 	}
 }

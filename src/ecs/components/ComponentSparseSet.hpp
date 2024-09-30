@@ -86,7 +86,8 @@ public:
     }
 private:
     static constexpr int NULL_INDEX = -1;
+
     // Non-paginated sparse set implementation
-    std::vector<EntityID> sparse;
+    std::vector<int> sparse;
     std::vector<T> dense;
 };

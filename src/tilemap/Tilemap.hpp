@@ -28,5 +28,5 @@ private:
 	size_t width = 0;
 	size_t height = 0;
 	
-	SDL_Texture* tilemapTexture = nullptr;
+	std::vector<SDL_Texture*> layers;
 };

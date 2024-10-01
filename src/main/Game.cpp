@@ -59,6 +59,7 @@ void Game::Init()
 	tilemap = Tilemap("assets/tileset.png", 16, 8, 13, renderer);
 	tilemap.LoadMap(renderer, "assets/level/tilemap.json");
 
+
 	ecs.Init();
 
 	// Register components

@@ -85,9 +85,10 @@ public:
         RemoveData(e);
     }
 private:
-    static constexpr int NULL_INDEX = -1;
-
-    // Non-paginated sparse set implementation
-    std::vector<int> sparse;
+    // Sparse set implementation
+    std::vector<size_t> sparse;
     std::vector<T> dense;
+
+    static constexpr size_t NULL_INDEX = std::numeric_limits<size_t>::max();
+
 };

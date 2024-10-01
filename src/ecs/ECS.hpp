@@ -17,6 +17,7 @@ public:
     {
         entityManager = std::make_unique<EntityManager>();
         systemManager = std::make_unique<SystemManager>();
+        
         entityManager->Init();
     }
 
@@ -59,28 +60,28 @@ public:
     template <typename T>
     void AddComponent(EntityID entity, T component)
     {
-        getComponentMap<T>()->AddData(entity, component);
+        getComponentSparseSet<T>()->AddData(entity, component);
         updateEntitySignature<T>(entity, true);
     }
 
     template <typename T>
     void RemoveComponent(EntityID entity)
     {
-        getComponentMap<T>()->RemoveData(entity);
+        getComponentSparseSet<T>()->RemoveData(entity);
         updateEntitySignature<T>(entity, false);
     }
 
     template <typename T>
     bool HasComponent(EntityID entity) const
     {
-        return getComponentMap<T>()->HasData(entity);
+        return getComponentSparseSet<T>()->HasData(entity);
     }
 
     template <typename T>
     T* GetComponent(EntityID entity)
     {
         // Returns reference to a component
-        return getComponentMap<T>()->GetData(entity);
+        return getComponentSparseSet<T>()->GetData(entity);
     }
 
     template <typename T>
@@ -135,7 +136,7 @@ private:
 
     // Get the component pool for a specific type
     template <typename T>
-    ComponentSparseSet<T>* getComponentMap() const
+    ComponentSparseSet<T>* getComponentSparseSet() const
     {
         const std::type_index typeIndex(typeid(T));
         const auto it = componentPools.find(typeIndex);

@@ -87,21 +87,21 @@ void Tilemap::LoadMap(SDL_Renderer* renderer, const char* path)
 		SDL_SetRenderTarget(renderer, layers[i]);
 
 		// Draw each tile onto the map texture
-		for (size_t row = 0; row < rows; row++)
+		for (size_t i = 0; i < layout.size(); i++)
 		{
-			for (size_t col = 0; col < cols; col++)
+			size_t row = i / cols;
+			size_t col = i % cols;
+
+			int index = layout[i] - 1;
+
+			// Consider these as empty tiles
+			if (index < 0 || index >= tiles.size())
 			{
-				int index = layout[row * cols + col] - 1;
-
-				// Consider these as empty tiles
-				if (index < 0 || index >= tiles.size())
-				{
-					continue;
-				}
-
-				SDL_Rect dst = { (int)(col * tilesize), (int)(row * tilesize), (int)tilesize, (int)tilesize };
-				SDL_RenderCopy(renderer, tiles[index], NULL, &dst);
+				continue;
 			}
+
+			SDL_Rect dst = { (int)(col * tilesize), (int)(row * tilesize), (int)tilesize, (int)tilesize };
+			SDL_RenderCopy(renderer, tiles[index], NULL, &dst);
 		}
 
 		// Reset the render target to the default renderer target

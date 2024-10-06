@@ -34,3 +34,35 @@ struct Sprite
           h_frame(1), v_frame(0), h_frames(h_frames), v_frames(v_frames), speed(speed) {}
 };
 
+struct AABB 
+{
+    // Size
+    Vector2 dimensions;
+
+    // Boundaries
+    Vector2 min;
+    Vector2 max;
+
+    AABB(const Vector2& dimensions) : dimensions(dimensions) 
+    {
+        min = Vector2(-dimensions.x / 2, -dimensions.y / 2);
+        max = Vector2(dimensions.x / 2, dimensions.y / 2);
+    }
+
+    // Check for AABB overlap
+    void check(const AABB& other) 
+    {
+        // Set isColliding to true if there is overlap on both the X and Y axes
+        isColliding = !(max.x < other.min.x || min.x > other.max.x || max.y < other.min.y || min.y > other.max.y);
+    }
+
+    // Return whether a collision has occurred
+    bool colliding() 
+    {
+        return isColliding;
+    }
+
+private:
+    bool isColliding = false;
+};
+

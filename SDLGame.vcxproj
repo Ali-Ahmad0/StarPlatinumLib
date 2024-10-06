@@ -162,6 +162,7 @@
   <ItemGroup>
     <ClCompile Include="res\scenes\TestScene.cpp" />
     <ClCompile Include="res\scenes\TestScene.hpp" />
+    <ClCompile Include="src\ecs\systems\AABBSystem.hpp" />
     <ClCompile Include="src\scene\InitialScene.cpp" />
     <ClCompile Include="src\scene\SceneManager.cpp" />
     <ClCompile Include="src\common\Utils.hpp" />

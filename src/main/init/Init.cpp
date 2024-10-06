@@ -4,6 +4,7 @@ void Init::InitComponents()
 {
 	Engine::GetECS().RegisterComponent<Transform>();
 	Engine::GetECS().RegisterComponent<Sprite>();
+	Engine::GetECS().RegisterComponent<AABB>();
 }
 
 void Init::InitSystems() 
@@ -13,4 +14,10 @@ void Init::InitSystems()
 
 	Engine::GetECS().AddComponentToSystem<Transform, SpriteSystem>();
 	Engine::GetECS().AddComponentToSystem<Sprite, SpriteSystem>();
+
+	// AABB system
+	auto aabbSystem = Engine::GetECS().RegisterSystem<AABBSystem>();
+
+	Engine::GetECS().AddComponentToSystem<Transform, AABBSystem>();
+	Engine::GetECS().AddComponentToSystem<AABB, AABBSystem>();
 }

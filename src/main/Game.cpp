@@ -149,6 +149,8 @@ void Engine::Update()
 	//}
 
 	ecs.GetSystem<SpriteSystem>()->update(ecs);
+	ecs.GetSystem<AABBSystem>()->update(ecs);
+
 	SceneManager::Update(deltaTime);
 }
 

@@ -112,7 +112,7 @@ struct Vector2
     float x;
     float y;
 
-    Vector2(float xpos, float ypos) : x(xpos), y(ypos) {}
+    Vector2(float x=0, float y=0) : x(x), y(y) {}
 
     // Add a vector
     Vector2 add(const Vector2& b)

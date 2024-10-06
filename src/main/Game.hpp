@@ -5,13 +5,15 @@
 #include <SDL_image.h>
 
 #include "init/Init.hpp"
+#include "../ecs/systems/System.hpp"
 #include "../ecs/ECS.hpp"
 
-#include "../texture/TextureManager.hpp"
 #include "../tilemap/Tilemap.hpp"
 
-#include "../ecs/systems/System.hpp"
+#include "../scene/SceneManager.hpp"
+#include "../scene/InitialScene.hpp"
 
+#include "../texture/TextureManager.hpp"
 #include "../common/Utils.hpp"
 
 struct Properties
@@ -30,11 +32,11 @@ struct Properties
 		: title(title), targetFPS(targetFPS), windowPos(windowPos), windowSize(windowSize), fullscreen(fullscreen) {}
 };
 
-class Game {
+class Engine {
 public:
 	// Constructor and destructor
-	explicit Game(const Properties &properties);
-	~Game();
+	explicit Engine(const Properties &properties);
+	~Engine();
 
 	void Init();
 
@@ -48,17 +50,8 @@ public:
 
 	bool Running() const { return isRunning; }
 
-	// Get delta time in miliseconds
-	int GetDeltaTimeMilliSeconds() const
-	{
-		return deltaTime;
-	}
-
-	// Get delta time in seconds
-	double GetDeltaTimeSeconds() const
-	{
-		return (double)deltaTime / 1000;
-	}
+	static SDL_Renderer* GetRenderer() { return renderer; }
+	static ECS& GetECS() { return ecs; }
 
 private:
 	bool isRunning;
@@ -67,8 +60,9 @@ private:
 	int deltaTime;
 
 	SDL_Window* window;
-	SDL_Renderer* renderer;
-
+	static SDL_Renderer* renderer;
+	
+	static ECS ecs;
 	Properties properties;
 };
 

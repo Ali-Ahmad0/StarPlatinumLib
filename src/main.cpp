@@ -1,12 +1,12 @@
 #include "main/Game.hpp"
 #undef main
 
-Game* game = nullptr;
+Engine* game = nullptr;
 
 int main() 
 {
-	game = new Game(Properties("Game"));
-	
+	game = new Engine(Properties("Game"));
+
 	// Run game
 	game->Init();
 	game->GameLoop();

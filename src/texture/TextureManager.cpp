@@ -1,6 +1,7 @@
 #include "TextureManager.hpp"
 
-SDL_Texture* TextureManager::LoadTexture(const char* path, SDL_Renderer* renderer)
+
+SDL_Texture* TextureManager::LoadTexture(const char* path)
 {
 	// Load image as texture by using a temporary surface
 	SDL_Surface* tmpSurface = IMG_Load(path);
@@ -9,7 +10,7 @@ SDL_Texture* TextureManager::LoadTexture(const char* path, SDL_Renderer* rendere
 		printf("Unable to load image: %s\n", IMG_GetError());
 	}
 
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, tmpSurface);
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(Engine::GetRenderer(), tmpSurface);
 
 	SDL_FreeSurface(tmpSurface);
 	return texture;

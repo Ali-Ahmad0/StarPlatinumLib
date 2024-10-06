@@ -32,7 +32,7 @@ public:
         entityManager->DeleteEntity(entity);
 
         // Remove components associated with the entity
-        for (auto& pair : componentPools)
+        for (auto& pair : sparseSets)
         {
             pair.second->OnEntityDestroyed(entity);
         }
@@ -50,7 +50,11 @@ public:
     void RegisterComponent()
     {
         const std::type_index typeIndex(typeid(T));
-        componentPools[typeIndex] = std::make_unique<ComponentSparseSet<T>>();
+        
+        auto sparseSet = std::make_unique<ComponentSparseSet<T>>();        
+        sparseSet->Init();
+
+        sparseSets[typeIndex] = std::move(sparseSet);
 
         // Assign component ID
         componentRegistry[typeIndex] = nextComponent;
@@ -129,7 +133,7 @@ private:
     std::unordered_map<std::type_index, ComponentID> componentRegistry{};
 
     // Map that stores all registered component pools
-    std::unordered_map<std::type_index, std::unique_ptr<IComponentSparseSet>> componentPools{};
+    std::unordered_map<std::type_index, std::unique_ptr<IComponentSparseSet>> sparseSets{};
 
     // Next component ID
     ComponentID nextComponent = 0;
@@ -139,8 +143,8 @@ private:
     ComponentSparseSet<T>* getComponentSparseSet() const
     {
         const std::type_index typeIndex(typeid(T));
-        const auto it = componentPools.find(typeIndex);
-        if (it != componentPools.end())
+        const auto it = sparseSets.find(typeIndex);
+        if (it != sparseSets.end())
         {
             return static_cast<ComponentSparseSet<T>*>(it->second.get());
         }

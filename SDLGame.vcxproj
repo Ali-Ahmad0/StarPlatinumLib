@@ -160,6 +160,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="res\scenes\TestScene.cpp" />
+    <ClCompile Include="res\scenes\TestScene.hpp" />
+    <ClCompile Include="src\scene\InitialScene.cpp" />
+    <ClCompile Include="src\scene\SceneManager.cpp" />
     <ClCompile Include="src\common\Utils.hpp" />
     <ClCompile Include="src\ecs\components\ComponentSparseSet.hpp" />
     <ClCompile Include="src\ecs\components\Components.hpp" />
@@ -180,9 +184,13 @@
     <ClCompile Include="src\tilemap\Tilemap.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\scene\InitialScene.hpp" />
+    <ClInclude Include="src\scene\Scene.hpp" />
+    <ClInclude Include="src\scene\SceneManager.hpp" />
     <ClInclude Include="src\ecs\ECS.hpp" />
     <ClInclude Include="src\main\Game.hpp" />
     <ClInclude Include="src\texture\TextureManager.hpp" />
+    <ClInclude Include="src\test\TestScene.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\character.png" />

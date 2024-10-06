@@ -1,20 +1,15 @@
 #include "Game.hpp"
 
 
-Game::Game(const Properties &properties)
-	: deltaTime(0), properties(properties), isRunning(false), window(nullptr), renderer(nullptr) {}
-Game::~Game() = default;
 
-ECS ecs;
+Engine::Engine(const Properties &properties)
+	: deltaTime(0), properties(properties), isRunning(false), window(nullptr) {}
+Engine::~Engine() = default;
 
-EntityID player;
+SDL_Renderer* Engine::renderer = nullptr;
+ECS Engine::ecs;
 
-SDL_Texture* playerTexture;
-SDL_Texture* playerPreview;
-
-Tilemap tilemap;
-
-void Game::Init() 
+void Engine::Init() 
 {
 	int flags = properties.fullscreen ? SDL_WINDOW_FULLSCREEN : 0;
 
@@ -51,36 +46,22 @@ void Game::Init()
 		printf("Failed to initialize SDL");
 		isRunning = false;
 	}
-
-	playerTexture = TextureManager::LoadTexture("assets/character.png", renderer);
-	playerPreview = TextureManager::LoadTexture("assets/character_preview.png", renderer);
 	
-	
-	tilemap = Tilemap("assets/tileset.png", 16, 8, 13, renderer);
-	tilemap.LoadMap(renderer, "assets/level/tilemap.json");
-
-
 	ecs.Init();
 
 	// Register components
-	Init::InitComponents(ecs);
+	Init::InitComponents();
+	Init::InitSystems();
 
-	// Create player entity
-	player = ecs.CreateEntity();
-
-	// Register systems and set their signatures
-	Init::InitSystems(ecs);
-
-	// Add components
-	ecs.AddComponent(player, Transform(Vector2(288, 172), 4));
-	ecs.AddComponent(player, Sprite(playerTexture, 3, 4, 6));
+	SceneManager::AddScene<InitialScene>("initial_scene");
+	SceneManager::ChangeScene("initial_scene");
 }
 
 bool spawnEntities = false;
 bool deleteEntities = false;
 bool showFPS = false;
 
-void Game::Events()
+void Engine::Events()
 {
 	SDL_Event event;
 	SDL_PollEvent(&event);
@@ -92,38 +73,40 @@ void Game::Events()
 		isRunning = false;
 		break;
 
-	case SDL_KEYDOWN:
-		// Test animations
-		switch (event.key.keysym.sym)
-		{
-		case SDLK_DOWN:
-			ecs.GetComponent<Sprite>(player)->v_frame = 0;
-			break;
+	//case SDL_KEYDOWN:
+	//	// Test animations
+	//	switch (event.key.keysym.sym)
+	//	{
+	//	//case SDLK_DOWN:
+	//	//	ecs.GetComponent<Sprite>(player)->v_frame = 0;
+	//	//	break;
 
-		case SDLK_UP:
-			ecs.GetComponent<Sprite>(player)->v_frame = 1;
-			break;
+	//	//case SDLK_UP:
+	//	//	ecs.GetComponent<Sprite>(player)->v_frame = 1;
+	//	//	break;
 
-		case SDLK_LEFT:
-			ecs.GetComponent<Sprite>(player)->v_frame = 2;
-			break;
+	//	//case SDLK_LEFT:
+	//	//	ecs.GetComponent<Sprite>(player)->v_frame = 2;
+	//	//	break;
 
-		case SDLK_RIGHT:
-			ecs.GetComponent<Sprite>(player)->v_frame = 3;
-			break;
+	//	//case SDLK_RIGHT:
+	//	//	ecs.GetComponent<Sprite>(player)->v_frame = 3;
+	//	//	break;
 
-		// Show FPS
-		case SDLK_TAB:
-			showFPS = true;
-			break;
 
-		// Spawn 100 entites
-		case SDLK_RETURN:
-			spawnEntities = true;
-			break;
+	//	// Show FPS
+	//	case SDLK_TAB:
+	//		showFPS = true;
+	//		break;
 
-		default: ;
-		}
+	//	// Spawn 100 entites
+	//	case SDLK_RETURN:
+	//		spawnEntities = true;
+	//		break;
+
+	//	default: 
+	//		break;
+	//	}
 
 		break;
 	default:
@@ -131,54 +114,55 @@ void Game::Events()
 	}
 }
 
-void Game::Update()
+void Engine::Update()
 {
-	// Testing entity spawning
-	if (spawnEntities)
-	{
-		// Seed the random number generator
-		srand(static_cast<unsigned int>(time(nullptr)));
+	//// Testing entity spawning
+	//if (spawnEntities)
+	//{
+	//	// Seed the random number generator
+	//	srand(static_cast<unsigned int>(time(nullptr)));
 
-		try 
-		{
-			for (int i = 0; i < 500; i++)
-			{
-				EntityID entity = ecs.CreateEntity();
+	//	try 
+	//	{
+	//		for (int i = 0; i < 500; i++)
+	//		{
+	//			EntityID entity = ecs.CreateEntity();
 
-				// Set random positions within the screen bounds (640 x 480)
-				float randomX = static_cast<float>(rand() % 640);
-				float randomY = static_cast<float>(rand() % 480);
+	//			// Set random positions within the screen bounds (640 x 480)
+	//			float randomX = static_cast<float>(rand() % 640);
+	//			float randomY = static_cast<float>(rand() % 480);
 
-				// Assign components to the entity
-				ecs.AddComponent(entity, Transform(Vector2(randomX, randomY), 2));
-				ecs.AddComponent(entity, Sprite(playerPreview));
+	//			// Assign components to the entity
+	//			ecs.AddComponent(entity, Transform(Vector2(randomX, randomY), 2));
+	//			ecs.AddComponent(entity, Sprite(playerPreview));
 
-			}
-		}
+	//		}
+	//	}
 
-		catch (const std::runtime_error& e) 
-		{
-			printf("%s\n", e.what());
-		}
+	//	catch (const std::runtime_error& e) 
+	//	{
+	//		printf("%s\n", e.what());
+	//	}
 
-		// Reset the flag
-		spawnEntities = false;
-	}
+	//	// Reset the flag
+	//	spawnEntities = false;
+	//}
 
 	ecs.GetSystem<SpriteSystem>()->update(ecs);
+	SceneManager::Update(deltaTime);
 }
 
-void Game::Render()
+void Engine::Render()
 {
 	SDL_RenderClear(renderer);
 
-	tilemap.DrawMap(renderer, 4);
+	SceneManager::Draw();
 	ecs.GetSystem<SpriteSystem>()->render(ecs, renderer);
 
 	SDL_RenderPresent(renderer);
 }
 
-void Game::GameLoop() 
+void Engine::GameLoop() 
 {
 	// Times in milliseconds
 	int targetDeltaTime = 1000 / properties.targetFPS;
@@ -209,16 +193,15 @@ void Game::GameLoop()
 			deltaTime = frameDrawTime;
 		}
 
-		if (showFPS)
-		{
-			printf("FPS: %f | Entities: %zu\n", ((float)targetDeltaTime / (float)deltaTime) * properties.targetFPS, ecs.GetEntityCount());
-			showFPS = false;
-		}
-		
+		//if (showFPS)
+		//{
+		//	printf("FPS: %f | Entities: %zu\n", ((float)targetDeltaTime / (float)deltaTime) * properties.targetFPS, ecs.GetEntityCount());
+		//	showFPS = false;
+		//}		
 	}
 }
 
-void Game::Exit()
+void Engine::Exit()
 {
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);

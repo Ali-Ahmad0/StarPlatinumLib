@@ -1,3 +1,5 @@
+#pragma once
+
 #include <SDL.h>
 #include <vector>
 #include <fstream>
@@ -5,6 +7,7 @@
 #include <stdio.h>
 
 #include "..\texture\TextureManager.hpp"
+#include "..\main\Game.hpp"
 
 class Tilemap 
 {
@@ -12,11 +15,11 @@ public:
 
 	Tilemap() = default;
 
-	Tilemap(const char* path, int tilesize, int rows, int columns, SDL_Renderer* renderer);
+	Tilemap(const char* path, size_t rows, size_t columns, size_t tilesize=16);
 	~Tilemap() = default;
 
-	void LoadMap(SDL_Renderer* renderer, const char* path);
-	void DrawMap(SDL_Renderer* renderer, size_t scale);
+	void LoadMap(const char* path);
+	void DrawMap(size_t scale=1);
 
 private:
 	SDL_Texture* tileset;

@@ -14,6 +14,13 @@ template <typename T>
 class ComponentSparseSet final : public IComponentSparseSet
 {
 public:
+    // Reserve memory for sparse and dense arrays
+    void Init() 
+    {
+        sparse.reserve(MAX_ENTITIES);
+        dense.reserve(MAX_COMPONENTS);
+    }
+
     // Add a component of Type T for entity e
     void AddData(EntityID e, T component)
     {
@@ -29,6 +36,7 @@ public:
         // Add component to the dense array
         dense.push_back(std::move(component));    
     }
+
     // Check if entity e has a component of type T
     bool HasData(EntityID e)
     {
@@ -38,6 +46,7 @@ public:
         }
         return sparse[e] != NULL_INDEX;
     }
+
     // Get a pointer to the component of Type T for entity e
     T* GetData(EntityID e)
     {
@@ -49,6 +58,7 @@ public:
 
         return &dense[sparse[e]];
     }
+
     // Remove a component of Type T for entity e
     void RemoveData(EntityID e)
     {
@@ -84,6 +94,7 @@ public:
     {
         RemoveData(e);
     }
+
 private:
     // Sparse set implementation
     std::vector<size_t> sparse;

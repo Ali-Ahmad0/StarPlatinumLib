@@ -1,16 +1,16 @@
 #include "Init.hpp"
 
-void Init::InitComponents(ECS& ecs) 
+void Init::InitComponents() 
 {
-	ecs.RegisterComponent<Transform>();
-	ecs.RegisterComponent<Sprite>();
+	Engine::GetECS().RegisterComponent<Transform>();
+	Engine::GetECS().RegisterComponent<Sprite>();
 }
 
-void Init::InitSystems(ECS& ecs) 
+void Init::InitSystems() 
 {
 	// Sprite System
-	auto spriteSystem = ecs.RegisterSystem<SpriteSystem>();
+	auto spriteSystem = Engine::GetECS().RegisterSystem<SpriteSystem>();
 
-	ecs.AddComponentToSystem<Transform, SpriteSystem>();
-	ecs.AddComponentToSystem<Sprite, SpriteSystem>();
+	Engine::GetECS().AddComponentToSystem<Transform, SpriteSystem>();
+	Engine::GetECS().AddComponentToSystem<Sprite, SpriteSystem>();
 }

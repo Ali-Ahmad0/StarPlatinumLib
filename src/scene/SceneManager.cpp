@@ -11,6 +11,14 @@ void SceneManager::Update(double delta)
 	}
 }
 
+void SceneManager::Events(SDL_Event event) 
+{
+	if (currentScene) 
+	{
+		currentScene->Events(event);
+	}
+}
+
 void SceneManager::Draw() 
 {
 	if (currentScene) 

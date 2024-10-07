@@ -22,11 +22,20 @@ void TestScene::Update(double delta)
 {
 	//printf("Update...\n");
 
-	std::cout 
-		<< "X Boundary: (" << Engine::GetECS().GetComponent<AABB>(player)->min.x << ", " << Engine::GetECS().GetComponent<AABB>(player)->max.x << ")\n"
-		<< "Y Boundary: (" << Engine::GetECS().GetComponent<AABB>(player)->min.y << ", " << Engine::GetECS().GetComponent<AABB>(player)->max.y << ")\n";
+	//std::cout 
+	//	<< "X Boundary: (" << Engine::GetECS().GetComponent<AABB>(player)->min.x << ", " << Engine::GetECS().GetComponent<AABB>(player)->max.x << ")\n"
+	//	<< "Y Boundary: (" << Engine::GetECS().GetComponent<AABB>(player)->min.y << ", " << Engine::GetECS().GetComponent<AABB>(player)->max.y << ")\n";
 
-	std::cout << "Collision: " << Engine::GetECS().GetComponent<AABB>(player)->colliding() << "\n";
+	//std::cout << "Collision: " << Engine::GetECS().GetComponent<AABB>(player)->colliding() << "\n";
+}
+
+
+void TestScene::Events(SDL_Event event)
+{
+	if (event.key.keysym.sym == SDLK_RETURN) 
+	{
+		printf("Hello World\n");
+	}
 }
 
 void TestScene::Draw() 

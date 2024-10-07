@@ -8,6 +8,7 @@ class TestScene : public IScene
 public:
 	void Ready() override;
 	void Update(double delta) override;
+	void Events(SDL_Event event) override;
 	void Draw() override;
 
 private:

@@ -1,12 +1,14 @@
 #pragma once
 #pragma once
+#include <SDL.h>
 
 // All scenes will extend this
 class IScene 
 {
 public:
 	virtual ~IScene() = default;
-	virtual void Ready() = 0;
-	virtual void Update(double delta) = 0;
-	virtual void Draw() = 0;
+	virtual void Ready() {}
+	virtual void Update(double delta) {}
+	virtual void Events(SDL_Event event) {}
+	virtual void Draw() {}
 };

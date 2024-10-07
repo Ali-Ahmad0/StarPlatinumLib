@@ -112,6 +112,8 @@ void Engine::Events()
 	default:
 		break;
 	}
+
+	SceneManager::Events(event);
 }
 
 void Engine::Update()

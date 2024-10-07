@@ -194,12 +194,12 @@
     <ClInclude Include="src\test\TestScene.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="assets\character.png" />
-    <Image Include="assets\character_preview.png" />
-    <Image Include="assets\tileset.png" />
+    <Image Include="res\assets\character.png" />
+    <Image Include="res\assets\character_preview.png" />
+    <Image Include="res\assets\tileset.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets\level\tilemap.json" />
+    <None Include="res\assets\level\tilemap.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

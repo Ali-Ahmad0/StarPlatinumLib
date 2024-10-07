@@ -112,17 +112,17 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="assets\character_preview.png">
+    <Image Include="res\assets\character_preview.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="assets\character.png">
+    <Image Include="res\assets\character.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="assets\tileset.png">
+    <Image Include="res\assets\tileset.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets\level\tilemap.json" />
+    <None Include="res\assets\level\tilemap.json" />
   </ItemGroup>
 </Project>

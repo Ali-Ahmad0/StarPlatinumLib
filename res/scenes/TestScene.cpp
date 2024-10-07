@@ -3,8 +3,8 @@
 
 void TestScene::Ready() 
 {
-	playerTexture = TextureManager::LoadTexture("assets/character.png");
-	playerPreview = TextureManager::LoadTexture("assets/character_preview.png");
+	playerTexture = TextureManager::LoadTexture("res/assets/character.png");
+	playerPreview = TextureManager::LoadTexture("res/assets/character_preview.png");
 
 	// Create player entity
 	player = Engine::GetECS().CreateEntity();
@@ -14,8 +14,8 @@ void TestScene::Ready()
 	Engine::GetECS().AddComponent(player, Sprite(playerTexture, 3, 4, 6));
 	Engine::GetECS().AddComponent(player, AABB(Vector2(16, 16)));
 
-	tilemap = Tilemap("assets/tileset.png", 8, 13);
-	tilemap.LoadMap("assets/level/tilemap.json");
+	tilemap = Tilemap("res/assets/tileset.png", 8, 13);
+	tilemap.LoadMap("res/assets/level/tilemap.json");
 }
 
 void TestScene::Update(double delta) 

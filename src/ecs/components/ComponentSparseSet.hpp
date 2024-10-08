@@ -1,5 +1,4 @@
 #pragma once
-
 #include "../defintions.hpp"
 
 // Interface for a component map
@@ -14,79 +13,73 @@ template <typename T>
 class ComponentSparseSet final : public IComponentSparseSet
 {
 public:
-    // Reserve memory for sparse and dense arrays
-    void Init() 
+    // Reserve memory at initialization to reduce allocations
+    void Init()
     {
-        sparse.reserve(MAX_ENTITIES);
         dense.reserve(MAX_COMPONENTS);
+        denseToEntity.reserve(MAX_COMPONENTS);
     }
 
     // Add a component of Type T for entity e
     void AddData(EntityID e, T component)
     {
-        // Ensure the sparse vector has enough entries
-        if (e >= sparse.size())
+        // Overrite existing data
+        if (HasData(e))
         {
-            sparse.resize(e + 1, NULL_INDEX);
+            *GetData(e) = std::move(component);
+            return;
         }
 
-        // Set the dense index in the sparse vector
-        sparse[e] = dense.size(); 
-
         // Add component to the dense array
-        dense.push_back(std::move(component));    
+        SetDenseIndex(e, dense.size());
+        dense.push_back(std::move(component));
+        denseToEntity.push_back(e);
+        
     }
 
     // Check if entity e has a component of type T
     bool HasData(EntityID e)
     {
-        if (e >= sparse.size())
-        {
-            return false;
-        }
-        return sparse[e] != NULL_INDEX;
+        return GetDenseIndex(e) != NULL_INDEX;
     }
 
     // Get a pointer to the component of Type T for entity e
     T* GetData(EntityID e)
     {
-        if (!HasData(e))
+        size_t index = GetDenseIndex(e);
+        if (index == NULL_INDEX)
         {
             fprintf(stderr, "Entity %zu does not have component of type: %s\n", e, typeid(T).name());
             return nullptr;
         }
-
-        return &dense[sparse[e]];
+        
+        return &dense[index];
     }
 
     // Remove a component of Type T for entity e
     void RemoveData(EntityID e)
     {
-        if (!HasData(e))
+        size_t index = GetDenseIndex(e);
+        if (index == NULL_INDEX)
         {
             fprintf(stderr, "Entity %zu does not have component of type: %s\n", e, typeid(T).name());
             return;
         }
-        
-        // Index of component to delete
-        size_t componentIndex = sparse[e];
 
         // Entity of the last dense element
-        EntityID backEntity = sparse.back();  
-        
-        // Swap with the last element in dense
-        std::swap(dense[componentIndex], dense.back());
+        EntityID lastEntity = denseToEntity.back();
 
-        // Mark the sparse entry as removed
-        sparse[e] = NULL_INDEX;
+        // Swap the element to be deleted with the last element
+        std::swap(dense[index], dense.back());
+        std::swap(denseToEntity[index], denseToEntity.back());
 
-        if (backEntity != NULL_INDEX)
-        {
-            sparse[backEntity] = componentIndex;
-        }
-        
-        // Remove the last component
-        dense.pop_back();  
+        // Update the index for entities
+        SetDenseIndex(lastEntity, index);
+        SetDenseIndex(e, NULL_INDEX);
+
+        // Remove the last component and its corresponding entity ID
+        dense.pop_back();
+        denseToEntity.pop_back();
     }
 
     // Remove data for entity when it is destroyed
@@ -96,10 +89,45 @@ public:
     }
 
 private:
-    // Sparse set implementation
-    std::vector<size_t> sparse;
-    std::vector<T> dense;
-
+    std::vector<std::vector<size_t>> sparsePages; 
+    std::vector<T> dense; 
+    
+    std::vector<EntityID> denseToEntity; 
+    
     static constexpr size_t NULL_INDEX = std::numeric_limits<size_t>::max();
+    static constexpr size_t MAX_PAGE_SIZE = 512;
 
+    // Map an index of a component to an entity 
+    void SetDenseIndex(EntityID e, size_t index)
+    {
+        size_t page = e / MAX_PAGE_SIZE;
+        size_t pageIndex = e % MAX_PAGE_SIZE;
+
+        // Create a new page if needed
+        if (page >= sparsePages.size())
+        {
+
+            sparsePages.resize(page + 1);
+            sparsePages[page].resize(MAX_PAGE_SIZE, NULL_INDEX);
+        }
+
+        // Set the dense index for this entity
+        sparsePages[page][pageIndex] = index;
+    }
+
+    // Get the dense index for an entity
+    size_t GetDenseIndex(EntityID e)
+    {
+        size_t page = e / MAX_PAGE_SIZE;
+        size_t pageIndex = e % MAX_PAGE_SIZE;
+
+        // Check if the page exists and the entity has a valid index
+        if (page < sparsePages.size())
+        {
+            return sparsePages[page][pageIndex];
+        }
+
+        // Return NULL_INDEX if the entity doesn't have a component
+        return NULL_INDEX;
+    }
 };

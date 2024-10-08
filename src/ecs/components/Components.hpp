@@ -50,7 +50,7 @@ struct AABB
     }
 
     // Check for AABB overlap
-    void check(const AABB& other) 
+    void check(AABB& other) 
     {
         // Set isColliding to true if there is overlap on both the X and Y axes
         isColliding = !(max.x < other.min.x || min.x > other.max.x || max.y < other.min.y || min.y > other.max.y);

@@ -64,6 +64,12 @@ public:
     template <typename T>
     void AddComponent(EntityID entity, T component)
     {
+        if (!entityManager->IsActive(entity)) 
+        {
+            fprintf(stderr, "Cannot add component on non existing entity");
+            return;
+        }
+
         getComponentSparseSet<T>()->AddData(entity, component);
         updateEntitySignature<T>(entity, true);
     }
@@ -71,6 +77,12 @@ public:
     template <typename T>
     void RemoveComponent(EntityID entity)
     {
+        if (!entityManager->IsActive(entity))
+        {
+            fprintf(stderr, "Cannot remove component on non existing entity");
+            return;
+        }
+
         getComponentSparseSet<T>()->RemoveData(entity);
         updateEntitySignature<T>(entity, false);
     }
@@ -84,7 +96,6 @@ public:
     template <typename T>
     T* GetComponent(EntityID entity)
     {
-        // Returns reference to a component
         return getComponentSparseSet<T>()->GetData(entity);
     }
 

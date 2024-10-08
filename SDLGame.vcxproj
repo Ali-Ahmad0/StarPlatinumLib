@@ -159,32 +159,32 @@
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
+<ItemGroup>
     <ClCompile Include="res\scenes\TestScene.cpp" />
-    <ClCompile Include="res\scenes\TestScene.hpp" />
-    <ClCompile Include="src\ecs\systems\AABBSystem.hpp" />
     <ClCompile Include="src\scene\InitialScene.cpp" />
     <ClCompile Include="src\scene\SceneManager.cpp" />
-    <ClCompile Include="src\common\Utils.hpp" />
-    <ClCompile Include="src\ecs\components\ComponentSparseSet.hpp" />
-    <ClCompile Include="src\ecs\components\Components.hpp" />
-    <ClCompile Include="src\ecs\defintions.hpp" />
     <ClCompile Include="src\ecs\managers\EntityManager.cpp" />
-    <ClCompile Include="src\ecs\managers\EntityManager.hpp" />
     <ClCompile Include="src\ecs\managers\SystemManager.cpp" />
-    <ClCompile Include="src\ecs\managers\SystemManager.hpp" />
-    <ClCompile Include="src\ecs\systems\BaseSystem.hpp" />
-    <ClCompile Include="src\ecs\systems\SpriteSystem.hpp" />
-    <ClCompile Include="src\ecs\systems\System.hpp" />
     <ClCompile Include="src\main\Game.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\main\init\Init.cpp" />
-    <ClCompile Include="src\main\init\Init.hpp" />
     <ClCompile Include="src\texture\TextureManager.cpp" />
     <ClCompile Include="src\tilemap\Tilemap.cpp" />
-    <ClCompile Include="src\tilemap\Tilemap.hpp" />
-  </ItemGroup>
-  <ItemGroup>
+</ItemGroup>
+<ItemGroup>
+    <ClInclude Include="res\scenes\TestScene.hpp" />
+    <ClInclude Include="src\ecs\systems\AABBSystem.hpp" />
+    <ClInclude Include="src\common\Utils.hpp" />
+    <ClInclude Include="src\ecs\components\ComponentSparseSet.hpp" />
+    <ClInclude Include="src\ecs\components\Components.hpp" />
+    <ClInclude Include="src\ecs\defintions.hpp" />
+    <ClInclude Include="src\ecs\managers\EntityManager.hpp" />
+    <ClInclude Include="src\ecs\managers\SystemManager.hpp" />
+    <ClInclude Include="src\ecs\systems\BaseSystem.hpp" />
+    <ClInclude Include="src\ecs\systems\SpriteSystem.hpp" />
+    <ClInclude Include="src\ecs\systems\System.hpp" />
+    <ClInclude Include="src\main\init\Init.hpp" />
+    <ClInclude Include="src\tilemap\Tilemap.hpp" />
     <ClInclude Include="src\scene\InitialScene.hpp" />
     <ClInclude Include="src\scene\Scene.hpp" />
     <ClInclude Include="src\scene\SceneManager.hpp" />
@@ -192,7 +192,7 @@
     <ClInclude Include="src\main\Game.hpp" />
     <ClInclude Include="src\texture\TextureManager.hpp" />
     <ClInclude Include="src\test\TestScene.hpp" />
-  </ItemGroup>
+</ItemGroup>
   <ItemGroup>
     <Image Include="res\assets\character.png" />
     <Image Include="res\assets\character_preview.png" />

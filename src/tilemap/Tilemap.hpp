@@ -15,7 +15,7 @@ public:
 
 	Tilemap() = default;
 
-	Tilemap(const char* path, size_t rows, size_t columns, size_t tilesize=16);
+	Tilemap(const char* path, size_t tilesize=16);
 	~Tilemap() = default;
 
 	void LoadMap(const char* path);

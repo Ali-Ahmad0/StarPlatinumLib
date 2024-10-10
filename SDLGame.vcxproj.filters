@@ -36,39 +36,6 @@
     <ClCompile Include="src\ecs\managers\SystemManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ecs\managers\EntityManager.hpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ecs\managers\SystemManager.hpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ecs\systems\BaseSystem.hpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ecs\components\ComponentSparseSet.hpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ecs\components\Components.hpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ecs\defintions.hpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\main\init\Init.hpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ecs\systems\SpriteSystem.hpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ecs\systems\System.hpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\common\Utils.hpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\tilemap\Tilemap.hpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\tilemap\Tilemap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -78,13 +45,7 @@
     <ClCompile Include="src\scene\InitialScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="res\scenes\TestScene.hpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="res\scenes\TestScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ecs\systems\AABBSystem.hpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -110,6 +71,45 @@
     <ClInclude Include="src\scene\InitialScene.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="res\scenes\TestScene.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\systems\AABBSystem.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\Utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\components\ComponentSparseSet.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\components\Components.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\defintions.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\managers\EntityManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\managers\SystemManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\systems\BaseSystem.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\systems\SpriteSystem.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\systems\System.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main\init\Init.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tilemap\Tilemap.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\assets\character_preview.png">
@@ -121,8 +121,12 @@
     <Image Include="res\assets\tileset.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\assets\untitled.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\assets\level\tilemap.json" />
+    <None Include="res\assets\level\untitled.json" />
   </ItemGroup>
 </Project>

@@ -159,7 +159,7 @@
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-<ItemGroup>
+  <ItemGroup>
     <ClCompile Include="res\scenes\TestScene.cpp" />
     <ClCompile Include="src\scene\InitialScene.cpp" />
     <ClCompile Include="src\scene\SceneManager.cpp" />
@@ -170,8 +170,8 @@
     <ClCompile Include="src\main\init\Init.cpp" />
     <ClCompile Include="src\texture\TextureManager.cpp" />
     <ClCompile Include="src\tilemap\Tilemap.cpp" />
-</ItemGroup>
-<ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="res\scenes\TestScene.hpp" />
     <ClInclude Include="src\ecs\systems\AABBSystem.hpp" />
     <ClInclude Include="src\common\Utils.hpp" />
@@ -192,14 +192,16 @@
     <ClInclude Include="src\main\Game.hpp" />
     <ClInclude Include="src\texture\TextureManager.hpp" />
     <ClInclude Include="src\test\TestScene.hpp" />
-</ItemGroup>
+  </ItemGroup>
   <ItemGroup>
     <Image Include="res\assets\character.png" />
     <Image Include="res\assets\character_preview.png" />
     <Image Include="res\assets\tileset.png" />
+    <Image Include="res\assets\untitled.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\assets\level\tilemap.json" />
+    <None Include="res\assets\level\untitled.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

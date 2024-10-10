@@ -1,8 +1,7 @@
 #include "Tilemap.hpp"
 #include <nlohmann/json.hpp>
 
-Tilemap::Tilemap(const char* path, size_t rows, size_t columns, size_t tilesize)
-	: tilesize(tilesize)
+Tilemap::Tilemap(const char* path, size_t tilesize) : tilesize(tilesize)
 {
 	// Load tileset texture
 	tileset = TextureManager::LoadTexture(path);
@@ -10,6 +9,9 @@ Tilemap::Tilemap(const char* path, size_t rows, size_t columns, size_t tilesize)
 	// Get width and height of tileset
 	int width, height;
 	SDL_QueryTexture(tileset, NULL, NULL, &width, &height);
+
+    size_t rows = height / tilesize;
+    size_t columns = width / tilesize;
 
 	for (int i = 0; i < rows; i++) 
 	{
@@ -36,77 +38,83 @@ Tilemap::Tilemap(const char* path, size_t rows, size_t columns, size_t tilesize)
 	}
 }
 
-void Tilemap::LoadMap(const char* path) 
+void Tilemap::LoadMap(const char* path)
 {
-	// Open file
-	std::ifstream mapfile(path);
+    // Open file
+    std::ifstream mapfile(path);
 
-	if (!mapfile.is_open()) 
-	{
-		fprintf(stderr, "Failed to open map\n");
-		return;
-	}
+    if (!mapfile.is_open())
+    {
+        fprintf(stderr, "Failed to open map\n");
+        return;
+    }
 
-	// Load file as json
-	nlohmann::json mapfilejson;
-	try
-	{
-		// Pass the file stream to parse the JSON content
-		mapfilejson = nlohmann::json::parse(mapfile);
-	}
+    // Load file as json
+    nlohmann::json mapfilejson;
+    try
+    {
+        // Pass the file stream to parse the JSON content
+        mapfilejson = nlohmann::json::parse(mapfile);
+    }
 
-	catch (const nlohmann::json::parse_error& e)
-	{
-		fprintf(stderr, "Unable to load tilemap: %s", e.what());
-		return;
-	}
+    catch (const nlohmann::json::parse_error& e)
+    {
+        fprintf(stderr, "Unable to load tilemap: %s", e.what());
+        return;
+    }
 
-	// Height and width of tilemap (in number of tiles)
-	size_t rows = mapfilejson["height"];
-	size_t cols = mapfilejson["width"];
+    // Height and width of tilemap (in number of tiles)
+    size_t rows = mapfilejson["height"];
+    size_t cols = mapfilejson["width"];
 
-	height = rows;
-	width = cols;
+    height = rows;
+    width = cols;
 
-	// Get the layout for the layer
-	for (int i = 0; i < mapfilejson["layers"].size(); i++) 
-	{
-		auto layout = mapfilejson["layers"][i]["data"];
+    // Get the layout for the layer
+    for (int i = 0; i < mapfilejson["layers"].size(); i++)
+    {
+        auto layout = mapfilejson["layers"][i]["data"];
 
-		// Preload the tilemap as a single texture
+        // Preload the tilemap as a single texture
+        // Height and width of tilemap (in number of pixels)
+        size_t mapWidth = cols * tilesize;
+        size_t mapHeight = rows * tilesize;
 
-		// Height and width of tilemap (in number of pixels)
-		size_t mapWidth = cols * tilesize;
-		size_t mapHeight = rows * tilesize;
+        // Create a texture to hold the entire map
+        layers.push_back(SDL_CreateTexture(Engine::GetRenderer(),
+            SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, (int)mapWidth, (int)mapHeight));
 
-		// Create a texture to hold the entire map
-		layers.push_back(SDL_CreateTexture(Engine::GetRenderer(),
-			SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, (int)mapWidth, (int)mapHeight));
+        // Set the texture to blend mode for transparency
+        SDL_SetTextureBlendMode(layers[i], SDL_BLENDMODE_BLEND);
 
-		// Set the target to be the map texture
-		SDL_SetRenderTarget(Engine::GetRenderer(), layers[i]);
+        // Set the target to be the map texture
+        SDL_SetRenderTarget(Engine::GetRenderer(), layers[i]);
 
-		// Draw each tile onto the map texture
-		for (size_t i = 0; i < layout.size(); i++)
-		{
-			size_t row = i / cols;
-			size_t col = i % cols;
+        // Clear the texture with transparent color
+        SDL_SetRenderDrawColor(Engine::GetRenderer(), 0, 0, 0, 0);
+        SDL_RenderClear(Engine::GetRenderer());
 
-			int index = layout[i] - 1;
+        // Draw each tile onto the map texture
+        for (size_t j = 0; j < layout.size(); j++)
+        {
+            size_t row = j / cols;
+            size_t col = j % cols;
 
-			// Consider these as empty tiles
-			if (index < 0 || index >= tiles.size())
-			{
-				continue;
-			}
+            int index = layout[j] - 1;
 
-			SDL_Rect dst = { (int)(col * tilesize), (int)(row * tilesize), (int)tilesize, (int)tilesize };
-			SDL_RenderCopy(Engine::GetRenderer(), tiles[index], NULL, &dst);
-		}
+            // Consider these as empty tiles
+            if (index < 0 || index >= tiles.size())
+            {
+                continue;
+            }
 
-		// Reset the render target to the default renderer target
-		SDL_SetRenderTarget(Engine::GetRenderer(), NULL);
-	}
+            SDL_Rect dst = { (int)(col * tilesize), (int)(row * tilesize), (int)tilesize, (int)tilesize };
+            SDL_RenderCopy(Engine::GetRenderer(), tiles[index], NULL, &dst);
+        }
+
+        // Reset the render target to the default renderer target
+        SDL_SetRenderTarget(Engine::GetRenderer(), NULL);
+    }
 }
 
 void Tilemap::DrawMap(size_t scale)

@@ -1,7 +1,7 @@
 #include "TestScene.hpp"
 #include "../../src/main/Game.hpp"
 
-void TestScene::Ready() 
+void TestScene::Ready()
 {
 	playerTexture = TextureManager::LoadTexture("res/assets/character.png");
 	playerPreview = TextureManager::LoadTexture("res/assets/character_preview.png");
@@ -15,11 +15,11 @@ void TestScene::Ready()
 
 	Engine::GetECS().AddComponent(player, AABB(Vector2(16, 16)));
 
-	tilemap = Tilemap("res/assets/tileset.png", 8, 13);
-	tilemap.LoadMap("res/assets/level/tilemap.json");
+	tilemap = Tilemap("res/assets/untitled.png");
+	tilemap.LoadMap("res/assets/level/untitled.json");
 }
 
-void TestScene::Update(double delta) 
+void TestScene::Update(double delta)
 {
 	//printf("Update...\n");
 
@@ -66,11 +66,11 @@ void TestScene::Events(SDL_Event event)
 				EntityID entity = Engine::GetECS().CreateEntity();
 
 				// Set random positions within the screen bounds (640 x 480)
-				float randomX = static_cast<float>(rand() % 640);
-				float randomY = static_cast<float>(rand() % 480);
+				float randomX = (float)(rand() % 640);
+				float randomY = (float)(rand() % 480) - 32;
 
 				// Assign components to the entity
-				Engine::GetECS().AddComponent(entity, Transform(Vector2(randomX, randomY), 2));
+				Engine::GetECS().AddComponent(entity, Transform(Vector2(randomX, randomY), 3));
 				Engine::GetECS().AddComponent(entity, Sprite(playerPreview));
 
 			}

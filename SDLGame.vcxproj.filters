@@ -110,6 +110,9 @@
     <ClInclude Include="src\tilemap\Tilemap.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\ecs\systems\MovementSystem.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\assets\character_preview.png">

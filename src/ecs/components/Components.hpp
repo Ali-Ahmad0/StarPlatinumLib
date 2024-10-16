@@ -34,6 +34,14 @@ struct Sprite
           h_frame(1), v_frame(0), h_frames(h_frames), v_frames(v_frames), speed(speed) {}
 };
 
+struct Movement 
+{
+    Vector2 direction;
+    float scale;
+
+    Movement(Vector2 direction=Vector2(0, 0), float scale = 0) : direction(direction), scale(scale) {}
+};
+
 struct AABB 
 {
     // Size

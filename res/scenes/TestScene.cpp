@@ -13,9 +13,11 @@ void TestScene::Ready()
 	Engine::GetECS().AddComponent(player, Transform(Vector2(288, 172), 4));
 	Engine::GetECS().AddComponent(player, Sprite(playerTexture, 3, 4, 6));
 
+	Engine::GetECS().AddComponent(player, Movement());
+
 	Engine::GetECS().AddComponent(player, AABB(Vector2(16, 16)));
 
-	tilemap = Tilemap("res/assets/untitled.png");
+	tilemap.AddTileset("res/assets/untitled.png");
 	tilemap.LoadMap("res/assets/level/untitled.json");
 }
 
@@ -34,24 +36,33 @@ void TestScene::Update(double delta)
 void TestScene::Events(SDL_Event event)
 {
 	auto sprite = Engine::GetECS().GetComponent<Sprite>(player);
+	auto movement = Engine::GetECS().GetComponent<Movement>(player);
+
+	movement->scale = 30;
+
+	auto transform = Engine::GetECS().GetComponent<Transform>(player);
 
 	// Input and animation test
 	switch (event.key.keysym.sym)
 	{
 	case SDLK_UP:
 		sprite->v_frame = 1;
+		movement->direction = Vector2(0, -1);
 		break;
 
 	case SDLK_DOWN:
 		sprite->v_frame = 0;
+		movement->direction = Vector2(0, 1);
 		break;
 
 	case SDLK_LEFT:
 		sprite->v_frame = 2;
+		movement->direction = Vector2(-1, 0);
 		break;
 
 	case SDLK_RIGHT:
 		sprite->v_frame = 3;
+		movement->direction = Vector2(1, 0);
 		break;
 
 	// Stress test

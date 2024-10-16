@@ -12,11 +12,12 @@
 class Tilemap 
 {
 public:
-
-	Tilemap() = default;
-
-	Tilemap(const char* path, size_t tilesize=16);
+	Tilemap(size_t tilesize=16);
 	~Tilemap() = default;
+
+	void SetTilesize(size_t size);
+
+	void AddTileset(const char* path);
 
 	void LoadMap(const char* path);
 	void DrawMap(size_t scale=1);

@@ -1,41 +1,48 @@
 #include "Tilemap.hpp"
 #include <nlohmann/json.hpp>
 
-Tilemap::Tilemap(const char* path, size_t tilesize) : tilesize(tilesize)
+Tilemap::Tilemap(size_t tilesize) : tileset(nullptr), tilesize(tilesize) { }
+
+void Tilemap::AddTileset(const char* path)
 {
-	// Load tileset texture
-	tileset = TextureManager::LoadTexture(path);
-	
-	// Get width and height of tileset
-	int width, height;
-	SDL_QueryTexture(tileset, NULL, NULL, &width, &height);
+    // Load tileset texture
+    tileset = TextureManager::LoadTexture(path);
+
+    // Get width and height of tileset
+    int width, height;
+    SDL_QueryTexture(tileset, NULL, NULL, &width, &height);
 
     size_t rows = height / tilesize;
     size_t columns = width / tilesize;
 
-	for (int i = 0; i < rows; i++) 
-	{
-		for (int j = 0; j < columns; j++) 
-		{
-			// Create texture for an individual tile
-			SDL_Texture* tile = SDL_CreateTexture(Engine::GetRenderer(),
-				SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, (int)tilesize, (int)tilesize);
-			
-			SDL_Rect src = { (int)(j * tilesize), (int)(i * tilesize), (int)tilesize, (int)tilesize };
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < columns; j++)
+        {
+            // Create texture for an individual tile
+            SDL_Texture* tile = SDL_CreateTexture(Engine::GetRenderer(),
+                SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, (int)tilesize, (int)tilesize);
 
-			// Set the target texture to the new tile texture
-			SDL_SetRenderTarget(Engine::GetRenderer(), tile);
+            SDL_Rect src = { (int)(j * tilesize), (int)(i * tilesize), (int)tilesize, (int)tilesize };
 
-			// Copy Current tile into the tile texture
-			SDL_RenderCopy(Engine::GetRenderer(), tileset, &src, NULL);
+            // Set the target texture to the new tile texture
+            SDL_SetRenderTarget(Engine::GetRenderer(), tile);
 
-			// Reset the render target 
-			SDL_SetRenderTarget(Engine::GetRenderer(), NULL);
+            // Copy Current tile into the tile texture
+            SDL_RenderCopy(Engine::GetRenderer(), tileset, &src, NULL);
 
-			// Add the new tile texture to the tiles vector
-			tiles.push_back(tile);
-		}
-	}
+            // Reset the render target 
+            SDL_SetRenderTarget(Engine::GetRenderer(), NULL);
+
+            // Add the new tile texture to the tiles vector
+            tiles.push_back(tile);
+        }
+    }
+}
+
+void Tilemap::SetTilesize(size_t size) 
+{
+    tilesize = size;
 }
 
 void Tilemap::LoadMap(const char* path)

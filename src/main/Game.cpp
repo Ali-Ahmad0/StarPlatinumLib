@@ -1,7 +1,5 @@
 #include "Game.hpp"
 
-
-
 Engine::Engine(const Properties &properties)
 	: deltaTime(0), properties(properties), isRunning(false), window(nullptr) {}
 Engine::~Engine() = default;
@@ -119,6 +117,7 @@ void Engine::Events()
 void Engine::Update()
 {
 	ecs.GetSystem<SpriteSystem>()->update(ecs);
+	ecs.GetSystem<MovementSystem>()->update(ecs, (double)deltaTime / 1000);
 	ecs.GetSystem<AABBSystem>()->update(ecs);
 
 	SceneManager::Update(deltaTime);

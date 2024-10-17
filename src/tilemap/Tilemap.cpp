@@ -1,5 +1,4 @@
 #include "Tilemap.hpp"
-#include <nlohmann/json.hpp>
 
 Tilemap::Tilemap(size_t tilesize) : tileset(nullptr), tilesize(tilesize) { }
 

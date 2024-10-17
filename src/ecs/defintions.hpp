@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <typeindex>
 #include <memory>
-#include <cstdio>  
+#include <iostream>  
 #include <bitset>
 #include <queue>
 #include <array>

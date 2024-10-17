@@ -2,7 +2,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
-#include <stdio.h>
+#include <iostream>
 #include "../common/Utils.hpp"
 #include "../main/Game.hpp"
 

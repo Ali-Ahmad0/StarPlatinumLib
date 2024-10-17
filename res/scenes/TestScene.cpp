@@ -8,6 +8,7 @@ void TestScene::Ready()
 
 	// Create player entity
 	player = Engine::GetECS().CreateEntity();
+	player2 = Engine::GetECS().CreateEntity();
 
 	// Add components
 	Engine::GetECS().AddComponent(player, Transform(Vector2(288, 172), 4));
@@ -15,7 +16,11 @@ void TestScene::Ready()
 
 	Engine::GetECS().AddComponent(player, Movement());
 
-	Engine::GetECS().AddComponent(player, AABB(Vector2(16, 16)));
+	Engine::GetECS().AddComponent(player, AABB(Vector2(12, 12), true));
+
+	Engine::GetECS().AddComponent(player2, Transform(Vector2(288, 100), 4));
+	Engine::GetECS().AddComponent(player2, Sprite(playerPreview));
+	Engine::GetECS().AddComponent(player2, AABB(Vector2(12, 12), true));
 
 	tilemap.AddTileset("res/assets/untitled.png");
 	tilemap.LoadMap("res/assets/level/untitled.json");
@@ -29,18 +34,18 @@ void TestScene::Update(double delta)
 	//	<< "X Boundary: (" << Engine::GetECS().GetComponent<AABB>(player)->min.x << ", " << Engine::GetECS().GetComponent<AABB>(player)->max.x << ")\n"
 	//	<< "Y Boundary: (" << Engine::GetECS().GetComponent<AABB>(player)->min.y << ", " << Engine::GetECS().GetComponent<AABB>(player)->max.y << ")\n";
 
-	//std::cout << "Collision: " << Engine::GetECS().GetComponent<AABB>(player)->colliding() << "\n";
-}
+	//std::cout << "Collision: " << (Engine::GetECS().GetComponent<AABB>(player)->colliding() 
+		//&& Engine::GetECS().GetComponent<AABB>(player2)->colliding()) << "\n";
 
+	//std::cout << transform->position.x << " " << transform->position.y << '\n';
+}
 
 void TestScene::Events(SDL_Event event)
 {
 	auto sprite = Engine::GetECS().GetComponent<Sprite>(player);
 	auto movement = Engine::GetECS().GetComponent<Movement>(player);
 
-	movement->scale = 30;
-
-	auto transform = Engine::GetECS().GetComponent<Transform>(player);
+	movement->scale = 100;
 
 	// Input and animation test
 	switch (event.key.keysym.sym)

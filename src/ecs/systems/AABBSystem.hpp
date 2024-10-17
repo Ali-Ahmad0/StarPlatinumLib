@@ -31,6 +31,48 @@ struct AABBSystem : public BaseSystem
 
 				// Check for collisions between 2 bounding boxes
 				box1->check(*box2);
+
+				// Resolve collision
+				if (box1->colliding() && box2->colliding()) 
+				{
+					if (box1->isSolid && box2->isSolid) 
+					{
+						// Calculate overlap on the x and y axes
+						float overlapX = std::min(box1->max.x - box2->min.x, box2->max.x - box1->min.x);
+						float overlapY = std::min(box1->max.y - box2->min.y, box2->max.y - box1->min.y);
+
+						// Find the axis with the least overlap and move the entities along that axis
+						if (overlapX < overlapY)
+						{
+							// Move the entities apart along the x-axis
+							if (t1->position.x < t2->position.x)
+							{
+								t1->position.x -= overlapX / 2;
+								t2->position.x += overlapX / 2;
+							}
+							else
+							{
+								t1->position.x += overlapX / 2;
+								t2->position.x -= overlapX / 2;
+							}
+						}
+
+						else
+						{
+							// Move the entities apart along the y-axis
+							if (t1->position.y < t2->position.y)
+							{
+								t1->position.y -= overlapY / 2;
+								t2->position.y += overlapY / 2;
+							}
+							else
+							{
+								t1->position.y += overlapY / 2;
+								t2->position.y -= overlapY / 2;
+							}
+						}
+					}
+				}
 			}
 		}
 	}

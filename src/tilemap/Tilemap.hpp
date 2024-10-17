@@ -4,7 +4,8 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
-#include <stdio.h>
+#include <nlohmann/json.hpp>
+#include <iostream>
 
 #include "..\texture\TextureManager.hpp"
 #include "..\main\Game.hpp"
@@ -23,6 +24,7 @@ public:
 	void DrawMap(size_t scale=1);
 
 private:
+	// Tileset data
 	SDL_Texture* tileset;
 	std::vector<SDL_Texture*> tiles;
 	size_t tilesize;

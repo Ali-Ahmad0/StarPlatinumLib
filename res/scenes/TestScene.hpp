@@ -13,6 +13,7 @@ public:
 
 private:
 	EntityID player;
+	EntityID player2;
 
 	SDL_Texture* playerTexture;
 	SDL_Texture* playerPreview;

@@ -51,7 +51,9 @@ struct AABB
     Vector2 min;
     Vector2 max;
 
-    AABB(const Vector2& dimensions) : dimensions(dimensions) 
+    bool isSolid;
+
+    AABB(const Vector2& dimensions, bool isSolid=false) : dimensions(dimensions), isSolid(isSolid)
     {
         min = Vector2(-dimensions.x / 2, -dimensions.y / 2);
         max = Vector2(dimensions.x / 2, dimensions.y / 2);
@@ -62,6 +64,7 @@ struct AABB
     {
         // Set isColliding to true if there is overlap on both the X and Y axes
         isColliding = !(max.x < other.min.x || min.x > other.max.x || max.y < other.min.y || min.y > other.max.y);
+        other.isColliding = isColliding;
     }
 
     // Return whether a collision has occurred

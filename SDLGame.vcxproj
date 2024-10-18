@@ -82,14 +82,16 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin\intermediates\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>D:\Programs\Programming\Libraries\C++\SDL2_image-2.0.1\include;D:\Programs\Programming\Libraries\C++\json\single_include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Programs\Programming\Libraries\C++\SDL2_image-2.0.1\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>
+    </IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin\intermediates\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>D:\Programs\Programming\Libraries\C++\SDL2_image-2.0.1\include;D:\Programs\Programming\Libraries\C++\json\single_include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Programs\Programming\Libraries\C++\SDL2_image-2.0.1\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>
+    </IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -131,12 +133,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Programs\Programming\Libraries\C++\json\single_include;D:\Programs\Programming\Libraries\C++\SDL2_image-2.0.1\include;D:\Programs\Programming\Libraries\C++\SDL2-2.30.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libs\json\single_include;$(SolutionDir)libs\sdl2-image\include;$(SolutionDir)\libs\sdl2\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\Programs\Programming\Libraries\C++\SDL2_image-2.0.1\lib\x64;D:\Programs\Programming\Libraries\C++\SDL2-2.30.6\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\libs\sdl2-image\lib\x64;$(SolutionDir)\libs\sdl2\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -148,14 +150,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Programs\Programming\Libraries\C++\json\single_include;D:\Programs\Programming\Libraries\C++\SDL2_image-2.0.1\include;D:\Programs\Programming\Libraries\C++\SDL2-2.30.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libs\json\single_include;$(SolutionDir)libs\sdl2-image\include;$(SolutionDir)\libs\sdl2\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\Programs\Programming\Libraries\C++\SDL2_image-2.0.1\lib\x64;D:\Programs\Programming\Libraries\C++\SDL2-2.30.6\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\libs\sdl2-image\lib\x64;$(SolutionDir)\libs\sdl2\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

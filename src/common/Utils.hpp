@@ -114,6 +114,69 @@ struct Vector2
 
     Vector2(float x=0, float y=0) : x(x), y(y) {}
 
+    // Static vector maths methods
+    // Add two vectors
+    static Vector2 add(const Vector2& a, const Vector2& b)
+    {
+        return { a.x + b.x, a.y + b.y };
+    }
+
+    // Subtract two vectors
+    static Vector2 subtract(const Vector2& a, const Vector2& b)
+    {
+        return { a.x - b.x, a.y - b.y };
+    }
+
+    // Multiply the vector by a number
+    static Vector2 multiply(const Vector2& a, const float value)
+    {
+        return { a.x * value, a.y * value };
+    }
+
+    // Divide the vector by a number
+    static Vector2 divide(const Vector2& a, const float value)
+    {
+        return { a.x / value, a.y / value };
+    }
+
+    // Dot product of two vectors
+    static float dot(const Vector2& a, const Vector2& b)
+    {
+        return a.x * b.x + a.y * b.y;
+    }
+
+    // Get length squared of a vector
+    static float magnitudeSquared(const Vector2& a)
+    {
+        return a.x * a.x + a.y * a.y;
+    }
+
+    // Get length of vector
+    static float magnitude(const Vector2& a)
+    {
+        return std::sqrt(magnitudeSquared(a));
+    }
+
+    // Convert into unit vector
+    static Vector2 normalize(const Vector2& a)
+    {
+        const float length = magnitude(a);
+
+        if (length == 0)
+        {
+            return { 0, 0 };
+        }
+
+        return { a.x / length, a.y / length };
+    }
+
+    // Check if 2 vectors are equal
+    static bool equals(const Vector2& a, const Vector2& b)
+    {
+        return a.x == b.x && a.y == b.y;
+    }
+
+    // Instance vector math methods    
     // Add a vector
     Vector2 add(const Vector2& b)
     {

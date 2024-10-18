@@ -88,7 +88,6 @@ void TestScene::Events(SDL_Event event)
 				// Assign components to the entity
 				Engine::GetECS().AddComponent(entity, Transform(Vector2(randomX, randomY), 3));
 				Engine::GetECS().AddComponent(entity, Sprite(playerPreview));
-
 			}
 		}
 

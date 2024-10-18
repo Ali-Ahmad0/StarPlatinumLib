@@ -52,19 +52,23 @@ struct AABB
     Vector2 max;
 
     bool isSolid;
+    bool isRigid;
 
-    AABB(const Vector2& dimensions, bool isSolid=false) : dimensions(dimensions), isSolid(isSolid)
+    AABB(const Vector2& dimensions, bool isSolid=false, bool isRigid=true) 
+        : dimensions(dimensions), isSolid(isSolid), isRigid(isRigid)
     {
         min = Vector2(-dimensions.x / 2, -dimensions.y / 2);
         max = Vector2(dimensions.x / 2, dimensions.y / 2);
     }
 
     // Check for AABB overlap
-    void check(AABB& other) 
+    bool check(AABB& other) 
     {
         // Set isColliding to true if there is overlap on both the X and Y axes
         isColliding = !(max.x < other.min.x || min.x > other.max.x || max.y < other.min.y || min.y > other.max.y);
         other.isColliding = isColliding;
+
+        return isColliding;
     }
 
     // Return whether a collision has occurred

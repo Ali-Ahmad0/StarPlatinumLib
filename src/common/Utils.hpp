@@ -23,7 +23,7 @@ struct Color
         float r = 0, g = 0, b = 0;
 
         // Determine the hue sector and the fractional part of the hue
-        int i = static_cast<int>(h * 6);
+        int i = (int)(h * 6);
         float f = h * 6 - i;
 
         // Intermediate values used in the conversion
@@ -34,20 +34,47 @@ struct Color
         // Determine the RGB values based on the hue sector
         switch (i % 6)
         {
-            case 0: r = v, g = t, b = p; break; // Hue in the range [0, 60) degrees
-            case 1: r = q, g = v, b = p; break; // Hue in the range [60, 120) degrees
-            case 2: r = p, g = v, b = t; break; // Hue in the range [120, 180) degrees
-            case 3: r = p, g = q, b = v; break; // Hue in the range [180, 240) degrees
-            case 4: r = t, g = p, b = v; break; // Hue in the range [240, 300) degrees
-            case 5: r = v, g = p, b = q; break; // Hue in the range [300, 360) degrees
-            default: ;
+            // Hue in the range [0, 60) degrees
+            case 0: 
+                r = v, g = t, b = p; 
+                break; 
+            
+            // Hue in the range [60, 120) degrees
+            case 1: 
+                r = q, g = v, b = p; 
+                break; 
+            
+            // Hue in the range [120, 180) degrees
+            case 2: 
+                r = p, g = v, b = t; 
+                break; 
+            
+            // Hue in the range [180, 240) degrees
+            case 3: 
+                r = p, g = q, b = v; 
+                break; 
+            
+            // Hue in the range [240, 300) degrees
+            case 4:
+                r = t, g = p, b = v;
+                break; 
+            
+
+            // Hue in the range [300, 360) degrees
+            case 5: 
+                r = v, g = p, b = q; break; 
+            
+            default: 
+                break;
         }
 
         // Convert the normalized RGB values (0.0 to 1.0) to 8-bit values (0 to 255)
-        this->r = clamp(static_cast<int>(r * 255));
-        this->g = clamp(static_cast<int>(g * 255));
-        this->b = clamp(static_cast<int>(b * 255));
-        this->a = clamp(alpha);  // Clamp alpha to the range 0 to 255
+        this->r = clamp((int)(r * 255));
+        this->g = clamp((int)(g * 255));
+        this->b = clamp((int)(b * 255));
+
+        // Clamp alpha to the range 0 to 255
+        this->a = clamp(alpha);  
     }
 
     // Constructor to initialize color values using a hex code

@@ -24,20 +24,13 @@ void TestScene::Ready()
 
 	tilemap.AddTileset("res/assets/untitled.png");
 	tilemap.LoadMap("res/assets/level/untitled.json");
+
+	tilemap.AddCollision(1, { 28, 31, 34, 37, 81, 82, 84, 89, 90 });
 }
 
 void TestScene::Update(double delta)
 {
 	//printf("Update...\n");
-
-	//std::cout 
-	//	<< "X Boundary: (" << Engine::GetECS().GetComponent<AABB>(player)->min.x << ", " << Engine::GetECS().GetComponent<AABB>(player)->max.x << ")\n"
-	//	<< "Y Boundary: (" << Engine::GetECS().GetComponent<AABB>(player)->min.y << ", " << Engine::GetECS().GetComponent<AABB>(player)->max.y << ")\n";
-
-	//std::cout << "Collision: " << (Engine::GetECS().GetComponent<AABB>(player)->colliding() 
-		//&& Engine::GetECS().GetComponent<AABB>(player2)->colliding()) << "\n";
-
-	//std::cout << transform->position.x << " " << transform->position.y << '\n';
 }
 
 void TestScene::Events(SDL_Event event)
@@ -103,5 +96,5 @@ void TestScene::Events(SDL_Event event)
 
 void TestScene::Draw() 
 {
-	tilemap.DrawMap(4);
+	tilemap.DrawMap();
 }

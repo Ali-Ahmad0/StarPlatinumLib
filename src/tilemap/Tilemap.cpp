@@ -1,6 +1,6 @@
 #include "Tilemap.hpp"
 
-Tilemap::Tilemap(size_t tilesize) : tileset(nullptr), tilesize(tilesize) { }
+Tilemap::Tilemap(const size_t tilesize, const size_t scale) : tileset(nullptr), tilesize(tilesize), scale(scale) { }
 
 void Tilemap::AddTileset(const char* path)
 {
@@ -39,7 +39,7 @@ void Tilemap::AddTileset(const char* path)
     }
 }
 
-void Tilemap::SetTilesize(size_t size) 
+void Tilemap::SetTilesize(const size_t size) 
 {
     tilesize = size;
 }
@@ -76,8 +76,10 @@ void Tilemap::LoadMap(const char* path)
     height = rows;
     width = cols;
 
+    initTextureMap(mapfilejson["layers"].size(), height, width);
+
     // Get the layout for the layer
-    for (int i = 0; i < mapfilejson["layers"].size(); i++)
+    for (size_t i = 0; i < mapfilejson["layers"].size(); i++)
     {
         auto layout = mapfilejson["layers"][i]["data"];
 
@@ -107,6 +109,7 @@ void Tilemap::LoadMap(const char* path)
             size_t col = j % cols;
 
             int index = layout[j] - 1;
+            texture[i][row][col] = index;
 
             // Consider these as empty tiles
             if (index < 0 || index >= tiles.size())
@@ -123,7 +126,7 @@ void Tilemap::LoadMap(const char* path)
     }
 }
 
-void Tilemap::DrawMap(size_t scale)
+void Tilemap::DrawMap()
 {
 	for (auto& texture : layers) 
 	{
@@ -134,4 +137,18 @@ void Tilemap::DrawMap(size_t scale)
 			SDL_RenderCopy(Engine::GetRenderer(), texture, NULL, &dst);
 		}
 	}
+}
+
+// Set collision true for a certain number of tiles
+void Tilemap::AddCollision(size_t layer, const std::vector<size_t>& tiles) 
+{
+    initCollisionMap(height, width);
+
+    for (size_t row = 0; row < height; row++) 
+    {
+        for (size_t col = 0; col < width; col++) 
+        {
+            collision[row][col] = std::find(tiles.begin(), tiles.end(), texture[layer][row][col]) != tiles.end();
+        }
+    }
 }

@@ -54,6 +54,13 @@ struct AABB
     bool isSolid;
     bool isRigid;
 
+    AABB(float w, float h, bool isSolid=false, bool isRigid=true)
+        : dimensions(Vector2(w, h)), isSolid(isSolid), isRigid(isRigid)
+    {
+        min = Vector2(-w / 2, -h / 2);
+        max = Vector2(w / 2, h / 2);
+    }
+
     AABB(const Vector2& dimensions, bool isSolid=false, bool isRigid=true) 
         : dimensions(dimensions), isSolid(isSolid), isRigid(isRigid)
     {

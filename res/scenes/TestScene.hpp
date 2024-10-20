@@ -18,5 +18,5 @@ private:
 	SDL_Texture* playerTexture;
 	SDL_Texture* playerPreview;
 
-	Tilemap tilemap;
+	Tilemap tilemap = Tilemap(16, 4);
 };

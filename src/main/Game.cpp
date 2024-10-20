@@ -1,7 +1,13 @@
 #include "Game.hpp"
 
 Engine::Engine(const Properties &properties)
-	: deltaTime(0), properties(properties), isRunning(false), window(nullptr) {}
+	: deltaTime(0), properties(properties), isRunning(false), window(nullptr) 
+{
+	Engine::Init();
+	Engine::GameLoop();
+	Engine::Exit();
+}
+
 Engine::~Engine() = default;
 
 SDL_Renderer* Engine::renderer = nullptr;

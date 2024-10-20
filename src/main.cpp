@@ -7,11 +7,6 @@ int main()
 {
 	game = new Engine(Properties("Game"));
 
-	// Run game
-	game->Init();
-	game->GameLoop();
-	game->Exit();
-
 	// Free memory
 	delete game;
 	game = nullptr;

@@ -548,5 +548,32 @@
   <ItemGroup>
     <None Include="res\assets\level\tilemap.json" />
     <None Include="res\assets\level\untitled.json" />
+    <None Include="libs\SDL2\lib\x64\SDL2.dll" />
+    <None Include="libs\SDL2\lib\x64\SDL2.pdb" />
+    <None Include="libs\SDL2\lib\x86\SDL2.dll" />
+    <None Include="libs\SDL2\lib\x86\SDL2.pdb" />
+    <None Include="libs\SDL2\.git-hash" />
+    <None Include="zlib1.dll" />
+    <None Include="SDL2_image.dll" />
+    <None Include=".gitattributes" />
+    <None Include=".gitignore" />
+    <None Include="libpng16-16.dll" />
+    <None Include="SDL2.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="libs\SDL2\lib\x64\SDL2.lib" />
+    <Library Include="libs\SDL2\lib\x64\SDL2main.lib" />
+    <Library Include="libs\SDL2\lib\x64\SDL2test.lib" />
+    <Library Include="libs\SDL2\lib\x86\SDL2.lib" />
+    <Library Include="libs\SDL2\lib\x86\SDL2main.lib" />
+    <Library Include="libs\SDL2\lib\x86\SDL2test.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="libs\SDL2\BUGS.txt" />
+    <Text Include="libs\SDL2\COPYING.txt" />
+    <Text Include="libs\SDL2\README (2).txt" />
+    <Text Include="libs\SDL2\README.txt" />
+    <Text Include="libs\SDL2\README-SDL.txt" />
+    <Text Include="libs\SDL2\WhatsNew.txt" />
   </ItemGroup>
 </Project>

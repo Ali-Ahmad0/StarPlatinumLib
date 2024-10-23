@@ -548,17 +548,5 @@
   <ItemGroup>
     <None Include="res\assets\level\tilemap.json" />
     <None Include="res\assets\level\untitled.json" />
-    <None Include="libs\SDL2\lib\x64\SDL2.dll" />
-    <None Include="libs\SDL2\lib\x64\SDL2.pdb" />
-    <None Include="libs\SDL2\lib\x86\SDL2.dll" />
-    <None Include="libs\SDL2\lib\x86\SDL2.pdb" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="libs\SDL2\lib\x64\SDL2.lib" />
-    <Library Include="libs\SDL2\lib\x64\SDL2main.lib" />
-    <Library Include="libs\SDL2\lib\x64\SDL2test.lib" />
-    <Library Include="libs\SDL2\lib\x86\SDL2.lib" />
-    <Library Include="libs\SDL2\lib\x86\SDL2main.lib" />
-    <Library Include="libs\SDL2\lib\x86\SDL2test.lib" />
   </ItemGroup>
 </Project>

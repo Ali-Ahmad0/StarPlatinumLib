@@ -342,20 +342,8 @@
     <Image Include="res\assets\untitled.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="libs\SDL2\lib\x64\SDL2.dll" />
-    <None Include="libs\SDL2\lib\x64\SDL2.pdb" />
-    <None Include="libs\SDL2\lib\x86\SDL2.dll" />
-    <None Include="libs\SDL2\lib\x86\SDL2.pdb" />
     <None Include="res\assets\level\tilemap.json" />
     <None Include="res\assets\level\untitled.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="libs\SDL2\lib\x64\SDL2.lib" />
-    <Library Include="libs\SDL2\lib\x64\SDL2main.lib" />
-    <Library Include="libs\SDL2\lib\x64\SDL2test.lib" />
-    <Library Include="libs\SDL2\lib\x86\SDL2.lib" />
-    <Library Include="libs\SDL2\lib\x86\SDL2main.lib" />
-    <Library Include="libs\SDL2\lib\x86\SDL2test.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

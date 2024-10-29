@@ -191,8 +191,6 @@ void Tilemap::generateCollisionTiles()
                 float x = (float)startCol * tilesize * scale;
                 float y = (float)row * tilesize * scale;
 
-                std::cout << "X: " << x << " Y: " << y << " W: " << w << " H: " << h << '\n';
-
                 EntityID tile = Engine::GetECS().CreateEntity();
                 Engine::GetECS().AddComponent(tile, Transform(Vector2(x, y), scale));
                 Engine::GetECS().AddComponent(tile, AABB(Vector2(w / 2, h / 2), Vector2(w, h), true, false));
@@ -216,11 +214,8 @@ void Tilemap::AddCollision(size_t layer, const std::vector<size_t>& tiles)
         for (size_t col = 0; col < width; col++) 
         {
             collision[row][col] = std::find(tiles.begin(), tiles.end(), texture[layer][row][col]) != tiles.end();
-            std::cout << collision[row][col] << ' ';
         }
-        std::cout << '\n';
     }
-    std::cout << '\n';
 
     generateCollisionTiles();
 }

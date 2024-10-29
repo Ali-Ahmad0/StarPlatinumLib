@@ -268,16 +268,17 @@ struct Vector2
 
 struct Rectangle
 {
-    Vector2 position;
-    Vector2 dimensions;
+    // Position
+    float x;
+    float y;
+
+    // Dimensions
+    float w;
+    float h;
 
     Rectangle(float x=0, float y=0, float w=0, float h=0) 
-        : position(Vector2(x, y)), dimensions(Vector2(w, h)) { }
-
-    Rectangle (const Vector2& position=Vector2(0, 0), float w=0, float h=0)
-        : position(position), dimensions(Vector2(w, h)) { }
-
-    Rectangle (const Vector2& position=Vector2(0, 0), const Vector2& dimensions=Vector2(0, 0))
-        : position(position), dimensions(dimensions) { }
-
+        : x(x), y(y), w(w), h(h) {}
+    
+    Rectangle(Vector2 position=Vector2(0, 0), float w=0, float h=0)
+        : x (position.x), y(position.y), w(w), h(h) {}
 };

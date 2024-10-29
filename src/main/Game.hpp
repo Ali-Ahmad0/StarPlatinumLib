@@ -32,7 +32,8 @@ struct Properties
 		: title(title), targetFPS(targetFPS), windowPos(windowPos), windowSize(windowSize), fullscreen(fullscreen) {}
 };
 
-class Engine {
+class Engine 
+{
 public:
 	// Constructor and destructor
 	explicit Engine(const Properties &properties);

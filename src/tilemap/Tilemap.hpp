@@ -8,7 +8,6 @@
 #include <iostream>
 
 #include "..\texture\TextureManager.hpp"
-#include "..\main\Game.hpp"
 
 class Tilemap 
 {
@@ -46,6 +45,7 @@ private:
 
 	// Collision Map: Stores if a tile has collision or not
 	std::vector<std::vector<bool>> collision;
+	std::vector<Rectangle> rectangles;
 
 	// Initialize texture map
 	void initTextureMap(size_t layers, size_t rows, size_t cols)
@@ -62,12 +62,14 @@ private:
 	}
 
 	// Initialize collision map
-	void initCollisionMap(size_t rows, size_t cols) 
+	void initCollisionMap() 
 	{
-		collision.resize(rows);
-		for (size_t row = 0; row < rows; row++) 
+		collision.resize(height);
+		for (size_t row = 0; row < height; row++) 
 		{
-			collision[row].resize(cols, false);
+			collision[row].resize(width, false);
 		}
 	}
+
+	void generateCollisionTiles();
 };

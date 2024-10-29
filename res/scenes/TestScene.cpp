@@ -11,21 +11,21 @@ void TestScene::Ready()
 	player2 = Engine::GetECS().CreateEntity();
 
 	// Add components
-	Engine::GetECS().AddComponent(player, Transform(Vector2(288, 172), 4));
+	Engine::GetECS().AddComponent(player, Transform(Vector2(0, 0), 4));
 	Engine::GetECS().AddComponent(player, Sprite(playerTexture, 3, 4, 6));
 
 	Engine::GetECS().AddComponent(player, Movement());
 
-	Engine::GetECS().AddComponent(player, AABB(Vector2(12, 12), true));
+	Engine::GetECS().AddComponent(player, AABB(Vector2(8, 20), Vector2(12, 12), true));
 
-	Engine::GetECS().AddComponent(player2, Transform(Vector2(288, 100), 4));
+	Engine::GetECS().AddComponent(player2, Transform(Vector2(272, 112), 4));
 	Engine::GetECS().AddComponent(player2, Sprite(playerPreview));
-	Engine::GetECS().AddComponent(player2, AABB(Vector2(12, 12), true));
+	Engine::GetECS().AddComponent(player2, AABB(Vector2(8, 20), Vector2(12, 12), true));
 
 	tilemap.AddTileset("res/assets/untitled.png");
 	tilemap.LoadMap("res/assets/level/untitled.json");
 
-	tilemap.AddCollision(1, { 28, 31, 34, 37, 81, 82, 84, 89, 90 });
+	tilemap.AddCollision(1, { 28, 31, 37, 81, 82, 84, 89, 90 });
 }
 
 void TestScene::Update(double delta)
@@ -83,6 +83,7 @@ void TestScene::Events(SDL_Event event)
 				Engine::GetECS().AddComponent(entity, Sprite(playerPreview));
 			}
 		}
+
 
 		catch (const std::runtime_error& e)
 		{

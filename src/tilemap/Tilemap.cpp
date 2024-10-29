@@ -1,4 +1,5 @@
 #include "Tilemap.hpp"
+#include "../main/Game.hpp"
 
 Tilemap::Tilemap(const size_t tilesize, const size_t scale) : tileset(nullptr), tilesize(tilesize), scale(scale) { }
 
@@ -139,16 +140,87 @@ void Tilemap::DrawMap()
 	}
 }
 
+void Tilemap::generateCollisionTiles()
+{
+    // Loop through each row to identify contiguous blocks of collidable tiles
+    for (size_t row = 0; row < height; row++)
+    {
+        size_t col = 0;
+
+        while (col < width)
+        {
+            // Start of a collidable block
+            if (collision[row][col])
+            {
+                size_t startCol = col;
+
+                // End of the collidable block horizontally
+                while (col < width && collision[row][col])
+                {
+                    col++;
+                }
+
+                size_t endCol = col;
+
+                // Extend the block vertically
+                size_t endRow = row;
+                bool isCollidable = true;
+
+                while (isCollidable && endRow + 1 < height)
+                {
+                    // Check if the next row has a collidable block
+                    for (size_t currentCol = startCol; currentCol < endCol; currentCol++)
+                    {
+                        if (!collision[endRow + 1][currentCol])
+                        {
+                            isCollidable = false;
+                            break;
+                        }
+                    }
+
+                    if (isCollidable)
+                    {
+                        endRow++;
+                    }
+                }
+
+                
+                float w = (float)(endCol - startCol) * tilesize;
+                float h = (float)(endRow - row + 1) * tilesize;
+
+                float x = (float)startCol * tilesize * scale;
+                float y = (float)row * tilesize * scale;
+
+                std::cout << "X: " << x << " Y: " << y << " W: " << w << " H: " << h << '\n';
+
+                EntityID tile = Engine::GetECS().CreateEntity();
+                Engine::GetECS().AddComponent(tile, Transform(Vector2(x, y), scale));
+                Engine::GetECS().AddComponent(tile, AABB(Vector2(w / 2, h / 2), Vector2(w, h), true, false));
+            }
+            else
+            {
+                col++;
+            }
+        }
+    }
+}
+
+
 // Set collision true for a certain number of tiles
 void Tilemap::AddCollision(size_t layer, const std::vector<size_t>& tiles) 
 {
-    initCollisionMap(height, width);
+    initCollisionMap();
 
     for (size_t row = 0; row < height; row++) 
     {
         for (size_t col = 0; col < width; col++) 
         {
             collision[row][col] = std::find(tiles.begin(), tiles.end(), texture[layer][row][col]) != tiles.end();
+            std::cout << collision[row][col] << ' ';
         }
+        std::cout << '\n';
     }
+    std::cout << '\n';
+
+    generateCollisionTiles();
 }

@@ -36,10 +36,10 @@ struct SpriteSystem : BaseSystem
             sprite->src.h = frameHeight;
 
             // Set destination position and size based on transform and frame dimensions
-            sprite->dst.x = static_cast<int>(transform->position.x);
-            sprite->dst.y = static_cast<int>(transform->position.y);
-            sprite->dst.w = frameWidth * transform->scale;
-            sprite->dst.h = frameHeight * transform->scale;
+            sprite->dst.x = (int)(transform->position.x);
+            sprite->dst.y = (int)(transform->position.y);
+            sprite->dst.w = frameWidth * (int)transform->scale;
+            sprite->dst.h = frameHeight * (int)transform->scale;
         }
     }
 

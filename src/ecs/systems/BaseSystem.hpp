@@ -7,5 +7,3 @@ struct BaseSystem
 {
 	std::set<EntityID> entities;
 };
-
-

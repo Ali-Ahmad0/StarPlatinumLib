@@ -17,14 +17,11 @@ struct AABBSystem : public BaseSystem
             center1 = center1.add(t1->position);
 			
 			// Calculate new boundaries for box1
-            float minAx = center1.x - box1->dimensions.x * t1->scale / 2;
-            float minAy = center1.y - box1->dimensions.y * t1->scale / 2;
+            Vector2 minA = Vector2::subtract(center1, box1->dimensions.multiply(t1->scale / 2));
+            Vector2 maxA = Vector2::add(center1, box1->dimensions.multiply(t1->scale / 2));
 
-            float maxAx = center1.x + box1->dimensions.x * t1->scale / 2;
-            float maxAy = center1.y + box1->dimensions.y * t1->scale / 2;
-
-            box1->min = Vector2(minAx, minAy);
-            box1->max = Vector2(maxAx, maxAy);
+            box1->min = minA;
+            box1->max = maxA;
 
             for (auto it2 = std::next(it1); it2 != entities.end(); ++it2)
             {
@@ -36,14 +33,11 @@ struct AABBSystem : public BaseSystem
                 center2 = center2.add(t2->position);
 
                 // Calculate new boundaries for box2
-                float minBx = center2.x - box2->dimensions.x * t2->scale / 2;
-                float minBy = center2.y - box2->dimensions.y * t2->scale / 2;
+                Vector2 minB = Vector2::subtract(center2, box2->dimensions.multiply(t1->scale / 2));
+                Vector2 maxB = Vector2::add(center2, box2->dimensions.multiply(t1->scale / 2));
 
-                float maxBx = center2.x + box2->dimensions.x * t2->scale / 2;
-                float maxBy = center2.y + box2->dimensions.y * t2->scale / 2;
-
-                box2->min = Vector2(minBx, minBy);
-                box2->max = Vector2(maxBx, maxBy);
+                box2->min = minB;
+                box2->max = maxB;
 
                 // Check for collisions between 2 bounding boxes
                 if (box1->intersects(*box2)) 

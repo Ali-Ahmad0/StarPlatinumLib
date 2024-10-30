@@ -8,7 +8,7 @@ struct Transform
     Vector2 position; // Position in a 2D space
     size_t scale; // Scale of entity
 
-    Transform(const Vector2 position=Vector2(0, 0), const size_t scale = 1)
+    Transform(const Vector2& position=Vector2(0, 0), const size_t scale = 1)
         : position(position), scale(scale) { }
 };
 
@@ -39,7 +39,7 @@ struct Movement
     Vector2 direction;
     float scale;
 
-    Movement(Vector2 direction=Vector2(0, 0), float scale = 0) : direction(direction), scale(scale) {}
+    Movement(const Vector2& direction=Vector2(0, 0), float scale = 0) : direction(direction), scale(scale) {}
 };
 
 struct AABB 
@@ -57,14 +57,16 @@ struct AABB
     bool isSolid;
     bool isRigid;
 
-    AABB(float cx, float cy, float w, float h, bool isSolid=false, bool isRigid=true)
+    AABB(float cx, float cy, float w, float h, 
+        bool isSolid=false, bool isRigid=true)
         : center(Vector2(cx, cy)), dimensions(Vector2(w, h)), isSolid(isSolid), isRigid(isRigid)
     {
         min = Vector2(-w / 2, -h / 2);
         max = Vector2(w / 2, h / 2);
     }
 
-    AABB(const Vector2& center, const Vector2& dimensions, bool isSolid=false, bool isRigid=true) 
+    AABB(const Vector2& center=Vector2(0, 0), const Vector2& dimensions= Vector2(0, 0),
+        bool isSolid = false, bool isRigid = true)
         : center(center), dimensions(dimensions), isSolid(isSolid), isRigid(isRigid)
     {
         min = Vector2(-dimensions.x / 2, -dimensions.y / 2);

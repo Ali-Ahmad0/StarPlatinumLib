@@ -78,7 +78,7 @@ struct Color
     }
 
     // Constructor to initialize color values using a hex code
-    explicit Color(const std::string& hexCode)
+    Color(const std::string& hexCode)
     {
         // Remove the hash if it exists
         std::string hex = hexCode;
@@ -141,11 +141,15 @@ struct Vector2
 
     Vector2(float x=0, float y=0) : x(x), y(y) {}
 
-    // Static vector maths methods
     // Add two vectors
     static Vector2 add(const Vector2& a, const Vector2& b)
     {
         return { a.x + b.x, a.y + b.y };
+    }
+
+    Vector2 add(const Vector2& b)
+    {
+        return { x + b.x, y + b.y };
     }
 
     // Subtract two vectors
@@ -154,10 +158,21 @@ struct Vector2
         return { a.x - b.x, a.y - b.y };
     }
 
+    Vector2 subtract(const Vector2& b)
+    {
+        return { x - b.x, y - b.y };
+    }
+
     // Multiply the vector by a number
     static Vector2 multiply(const Vector2& a, const float value)
     {
         return { a.x * value, a.y * value };
+    }
+
+    // Multiply the vector by a number
+    Vector2 multiply(const float value)
+    {
+        return { x * value, y * value };
     }
 
     // Divide the vector by a number
@@ -166,10 +181,20 @@ struct Vector2
         return { a.x / value, a.y / value };
     }
 
+    Vector2 divide(const float value)
+    {
+        return { x / value, y / value };
+    }
+
     // Dot product of two vectors
     static float dot(const Vector2& a, const Vector2& b)
     {
         return a.x * b.x + a.y * b.y;
+    }
+
+    Vector2 dot(const Vector2& b)
+    {
+        return { x * b.x, y * b.y };
     }
 
     // Get length squared of a vector
@@ -178,10 +203,20 @@ struct Vector2
         return a.x * a.x + a.y * a.y;
     }
 
+    float magnitudeSquared()
+    {
+        return x * x + y * y;
+    }
+
     // Get length of vector
     static float magnitude(const Vector2& a)
     {
         return std::sqrt(magnitudeSquared(a));
+    }
+
+    float magnitude()
+    {
+        return std::sqrt(magnitudeSquared());
     }
 
     // Convert into unit vector
@@ -197,55 +232,6 @@ struct Vector2
         return { a.x / length, a.y / length };
     }
 
-    // Check if 2 vectors are equal
-    static bool equals(const Vector2& a, const Vector2& b)
-    {
-        return a.x == b.x && a.y == b.y;
-    }
-
-    // Instance vector math methods    
-    // Add a vector
-    Vector2 add(const Vector2& b)
-    {
-        return {x + b.x, y + b.y};
-    }
-
-    // Subtract a vector
-    Vector2 subtract(const Vector2& b)
-    {
-        return {x - b.x, y - b.y};
-    }
-
-    // Multiply the vector by a number
-    Vector2 multiply(const float value)
-    {
-        return {x * value, y * value};
-    }
-
-    // Divide the vector by a number
-    Vector2 divide(const float value)
-    {
-        return {x / value, y / value};
-    }
-
-    // Dot product of vector
-    Vector2 dot(const Vector2& b)
-    {
-        return {x * b.x, y * b.y};
-    }
-
-    // Get length squared of a vector
-    float magnitudeSquared()
-    {
-        return x * x + y * y;
-    }
-
-    // Get length of vector
-    float magnitude()
-    {
-        return std::sqrt(magnitudeSquared());
-    }
-
     // Convert into unit vector
     Vector2 normalize()
     {
@@ -253,13 +239,18 @@ struct Vector2
 
         if (length == 0)
         {
-            return {0, 0};
+            return { 0, 0 };
         }
 
-        return {x / length, y / length};
+        return { x / length, y / length };
     }
 
     // Check if 2 vectors are equal
+    static bool equals(const Vector2& a, const Vector2& b)
+    {
+        return a.x == b.x && a.y == b.y;
+    }
+
     bool equals(const Vector2& b) const
     {
         return x == b.x && y == b.y;
@@ -279,6 +270,6 @@ struct Rectangle
     Rectangle(float x=0, float y=0, float w=0, float h=0) 
         : x(x), y(y), w(w), h(h) {}
     
-    Rectangle(Vector2 position=Vector2(0, 0), float w=0, float h=0)
+    Rectangle(const Vector2& position=Vector2(0, 0), float w=0, float h=0)
         : x (position.x), y(position.y), w(w), h(h) {}
 };

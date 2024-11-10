@@ -45,7 +45,10 @@
     <ClCompile Include="src\scene\InitialScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="res\scenes\TestScene.cpp">
+    <ClCompile Include="res\test\scenes\TestScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="res\game\scenes\MainScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -69,9 +72,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\scene\InitialScene.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="res\scenes\TestScene.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ecs\systems\AABBSystem.hpp">
@@ -530,23 +530,37 @@
     <ClInclude Include="libs\SDL2_IMG\include\SDL_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="res\test\scenes\TestScene.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="res\game\scenes\MainScene.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\assets\character_preview.png">
+    <Image Include="res\test\assets\character_preview.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="res\assets\character.png">
+    <Image Include="res\test\assets\character.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="res\assets\tileset.png">
+    <Image Include="res\test\assets\tileset.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="res\assets\untitled.png">
+    <Image Include="res\test\assets\untitled.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\game\assets\player\player.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\game\assets\tilemap\tileset.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\assets\level\tilemap.json" />
-    <None Include="res\assets\level\untitled.json" />
+    <None Include="res\test\assets\level\tilemap.json" />
+    <None Include="res\test\assets\level\untitled.json" />
+    <None Include="res\game\assets\tilemap\tileset_tiled.tsx" />
+    <None Include="res\game\assets\level\debug.json" />
   </ItemGroup>
 </Project>

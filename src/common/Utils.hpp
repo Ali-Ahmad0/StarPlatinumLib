@@ -2,8 +2,13 @@
 
 #include <algorithm>
 #include <cmath>
-#include <iomanip>   
+#include <iomanip>
 #include <string>
+
+enum Direction
+{
+    UP, LEFT, DOWN, RIGHT
+};
 
 struct Color
 {

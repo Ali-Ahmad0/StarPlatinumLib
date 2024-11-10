@@ -42,6 +42,14 @@ struct Movement
     Movement(const Vector2& direction=Vector2(0, 0), float scale = 0) : direction(direction), scale(scale) {}
 };
 
+struct Gravity
+{
+    Direction direction;
+    float g;
+
+    Gravity(Direction direction=Direction::DOWN, float g=9.81f) : direction(direction), g(g) {}
+};
+
 struct AABB 
 {
     // Center

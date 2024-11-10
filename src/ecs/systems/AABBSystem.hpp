@@ -17,8 +17,8 @@ struct AABBSystem : public BaseSystem
             center1 = center1.add(t1->position);
 			
 			// Calculate new boundaries for box1
-            Vector2 minA = Vector2::subtract(center1, box1->dimensions.multiply(t1->scale / 2));
-            Vector2 maxA = Vector2::add(center1, box1->dimensions.multiply(t1->scale / 2));
+            Vector2 minA = Vector2::subtract(center1, box1->dimensions.multiply((float)t1->scale / 2));
+            Vector2 maxA = Vector2::add(center1, box1->dimensions.multiply((float)t1->scale / 2));
 
             box1->min = minA;
             box1->max = maxA;
@@ -33,8 +33,8 @@ struct AABBSystem : public BaseSystem
                 center2 = center2.add(t2->position);
 
                 // Calculate new boundaries for box2
-                Vector2 minB = Vector2::subtract(center2, box2->dimensions.multiply(t1->scale / 2));
-                Vector2 maxB = Vector2::add(center2, box2->dimensions.multiply(t1->scale / 2));
+                Vector2 minB = Vector2::subtract(center2, box2->dimensions.multiply((float)t1->scale / 2));
+                Vector2 maxB = Vector2::add(center2, box2->dimensions.multiply((float)t1->scale / 2));
 
                 box2->min = minB;
                 box2->max = maxB;

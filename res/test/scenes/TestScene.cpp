@@ -1,10 +1,10 @@
 #include "TestScene.hpp"
-#include "../../src/main/Game.hpp"
+#include "../../../src/main/Game.hpp"
 
 void TestScene::Ready()
 {
-	playerTexture = TextureManager::LoadTexture("res/assets/character.png");
-	playerPreview = TextureManager::LoadTexture("res/assets/character_preview.png");
+	playerTexture = TextureManager::LoadTexture("res/test/assets/character.png");
+	playerPreview = TextureManager::LoadTexture("res/test/assets/character_preview.png");
 
 	// Create player entity
 	player = Engine::GetECS().CreateEntity();
@@ -22,8 +22,8 @@ void TestScene::Ready()
 	Engine::GetECS().AddComponent(player2, Sprite(playerPreview));
 	Engine::GetECS().AddComponent(player2, AABB(Vector2(8, 20), Vector2(12, 12), true));
 
-	tilemap.AddTileset("res/assets/untitled.png");
-	tilemap.LoadMap("res/assets/level/untitled.json");
+	tilemap.AddTileset("res/test/assets/untitled.png");
+	tilemap.LoadMap("res/test/assets/level/untitled.json");
 
 	tilemap.AddCollision(1, { 28, 31, 37, 81, 82, 84, 89, 90 });
 }
@@ -63,7 +63,7 @@ void TestScene::Events(SDL_Event event)
 		movement->direction = Vector2(1, 0);
 		break;
 
-	// Stress test
+		// Stress test
 	case SDLK_RETURN:
 
 		// Spawn entities in random positions
@@ -95,7 +95,7 @@ void TestScene::Events(SDL_Event event)
 	}
 }
 
-void TestScene::Draw() 
+void TestScene::Draw()
 {
 	tilemap.DrawMap();
 }

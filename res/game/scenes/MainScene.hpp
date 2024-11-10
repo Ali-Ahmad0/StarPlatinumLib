@@ -1,9 +1,10 @@
 #pragma once
-#include "../../src/scene/SceneManager.hpp"
-#include "../../src/texture/TextureManager.hpp"
-#include "../../src/tilemap/Tilemap.hpp"
 
-class TestScene : public IScene
+#include "../../../src/scene/SceneManager.hpp"
+#include "../../../src/texture/TextureManager.hpp"
+#include "../../../src/tilemap/Tilemap.hpp"
+
+class MainScene : public IScene
 {
 public:
 	void Ready() override;
@@ -13,10 +14,7 @@ public:
 
 private:
 	EntityID player;
-	EntityID player2;
-
 	SDL_Texture* playerTexture;
-	SDL_Texture* playerPreview;
 
 	Tilemap tilemap = Tilemap(16, 4);
 };

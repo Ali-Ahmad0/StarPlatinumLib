@@ -38,7 +38,7 @@ void TestScene::Events(SDL_Event event)
 	auto sprite = Engine::GetECS().GetComponent<Sprite>(player);
 	auto movement = Engine::GetECS().GetComponent<Movement>(player);
 
-	movement->scale = 100;
+	movement->speed = 100;
 
 	// Input and animation test
 	switch (event.key.keysym.sym)

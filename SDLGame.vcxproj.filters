@@ -536,6 +536,9 @@
     <ClInclude Include="res\game\scenes\MainScene.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\ecs\systems\GravitySystem.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\test\assets\character_preview.png">

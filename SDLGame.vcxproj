@@ -324,6 +324,7 @@
     <ClInclude Include="src\ecs\managers\EntityManager.hpp" />
     <ClInclude Include="src\ecs\managers\SystemManager.hpp" />
     <ClInclude Include="src\ecs\systems\BaseSystem.hpp" />
+    <ClInclude Include="src\ecs\systems\GravitySystem.hpp" />
     <ClInclude Include="src\ecs\systems\MovementSystem.hpp" />
     <ClInclude Include="src\ecs\systems\SpriteSystem.hpp" />
     <ClInclude Include="src\ecs\systems\System.hpp" />

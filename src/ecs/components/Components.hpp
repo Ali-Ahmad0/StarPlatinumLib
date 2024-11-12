@@ -37,9 +37,9 @@ struct Sprite
 struct Movement 
 {
     Vector2 direction;
-    float scale;
+    float speed;
 
-    Movement(const Vector2& direction=Vector2(0, 0), float scale = 0) : direction(direction), scale(scale) {}
+    Movement(const Vector2& direction=Vector2(0, 0), float speed = 0) : direction(direction), speed(speed) {}
 };
 
 struct Gravity

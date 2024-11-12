@@ -9,41 +9,46 @@ struct AABBSystem : public BaseSystem
 	{
 		for (auto it1 = entities.begin(); it1 != entities.end(); ++it1)
 		{
-			EntityID e1 = *it1;
+			EntityID eA = *it1;
+			auto* boxA = ecs.GetComponent<AABB>(eA); 
+            auto* transformA = ecs.GetComponent<Transform>(eA);
 
-			AABB* box1 = ecs.GetComponent<AABB>(e1); Transform* t1 = ecs.GetComponent<Transform>(e1);
-
-            Vector2 center1 = Vector2::multiply(box1->center, (float)t1->scale);
-            center1 = center1.add(t1->position);
+            Vector2 centerA = boxA->center * (float)transformA->scale;
+            centerA += transformA->position;
 			
-			// Calculate new boundaries for box1
-            Vector2 minA = Vector2::subtract(center1, box1->dimensions.multiply((float)t1->scale / 2));
-            Vector2 maxA = Vector2::add(center1, box1->dimensions.multiply((float)t1->scale / 2));
+            Vector2 dimensionsAHalved = boxA->dimensions * (float)transformA->scale / 2;
 
-            box1->min = minA;
-            box1->max = maxA;
+			// Calculate new boundaries for box1
+            Vector2 minA = centerA - dimensionsAHalved;
+            Vector2 maxA = centerA + dimensionsAHalved;
+
+            boxA->min = minA;
+            boxA->max = maxA;
 
             for (auto it2 = std::next(it1); it2 != entities.end(); ++it2)
             {
-                EntityID e2 = *it2;
+                EntityID eB = *it2;
 
-                AABB* box2 = ecs.GetComponent<AABB>(e2); Transform* t2 = ecs.GetComponent<Transform>(e2);
+                auto* boxB = ecs.GetComponent<AABB>(eB); 
+                auto* transformB = ecs.GetComponent<Transform>(eB);
 
-                Vector2 center2 = Vector2::multiply(box2->center, ((float)t2->scale));
-                center2 = center2.add(t2->position);
+                Vector2 centerB = boxB->center * (float)transformB->scale;
+                centerB += transformB->position;
 
+                Vector2 dimensionsBHalved = boxB->dimensions * (float)transformB->scale / 2;
+                
                 // Calculate new boundaries for box2
-                Vector2 minB = Vector2::subtract(center2, box2->dimensions.multiply((float)t1->scale / 2));
-                Vector2 maxB = Vector2::add(center2, box2->dimensions.multiply((float)t1->scale / 2));
+                Vector2 minB = centerB - dimensionsBHalved;
+                Vector2 maxB = centerB + dimensionsBHalved;
 
-                box2->min = minB;
-                box2->max = maxB;
+                boxB->min = minB;
+                boxB->max = maxB;
 
                 // Check for collisions between 2 bounding boxes
-                if (box1->intersects(*box2)) 
+                if (boxA->intersects(*boxB)) 
                 {
                     // Resolve collisions
-                    resolve(box1, t1, box2, t2);
+                    resolve(boxA, transformA, boxB, transformB);
                 }
             }
 		}

@@ -175,13 +175,13 @@ struct Vector2
     }
 
     // Multiply the vector by a number
-    Vector2 multiply(const float value)
+    Vector2 multiply(float value)
     {
         return { x * value, y * value };
     }
 
     // Divide the vector by a number
-    static Vector2 divide(const Vector2& a, const float value)
+    static Vector2 divide(const Vector2& a, float value)
     {
         return { a.x / value, a.y / value };
     }
@@ -260,6 +260,69 @@ struct Vector2
     {
         return x == b.x && y == b.y;
     }
+
+    // Operator overload
+    // Arithmetic operations
+    Vector2 operator+(const Vector2& b) 
+    {
+        return this->add(b);
+    }
+
+    Vector2& operator+=(const Vector2& b) 
+    {
+        x += b.x;
+        y += b.y;
+
+        return *this;
+    }
+
+    Vector2 operator-(const Vector2& b) 
+    {
+        return this->subtract(b);
+    }
+
+    Vector2& operator-=(const Vector2& b)
+    {
+        x -= b.x;
+        y -= b.y;
+        return *this;
+    }
+
+    Vector2 operator*(float value)
+    {
+        return this->multiply(value);
+    }
+
+    Vector2& operator*=(float value)
+    {
+        x *= value;
+        y *= value;
+        return *this;
+    }
+
+    Vector2 operator/(float value)
+    {
+        return this->divide(value);
+    }
+
+    Vector2& operator/=(float value)
+    {
+        x /= value;
+        y /= value;
+        return *this;
+    }
+
+    // Conditional operators
+    bool operator==(const Vector2& b)
+    {
+        return this->equals(b);
+    }
+
+    bool operator!=(const Vector2& b)
+    {
+        return !this->equals(b);
+    }
+
 };
 
 struct Rectangle

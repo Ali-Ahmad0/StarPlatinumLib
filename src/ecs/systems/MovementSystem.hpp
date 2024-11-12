@@ -14,8 +14,7 @@ struct MovementSystem : public BaseSystem
 			auto* movement = ecs.GetComponent<Movement>(e);
 			
 			// Update transform component based on movemenet component
-			transform->position = 
-				transform->position.add(movement->direction.multiply(movement->scale).multiply((float)delta));
+			transform->position += movement->direction * movement->speed * (float)delta;
 		}
 	}
 };

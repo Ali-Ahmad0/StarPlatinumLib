@@ -312,7 +312,7 @@ struct Vector2
         return *this;
     }
 
-    // Conditional operators
+    // Comparison operators operators
     bool operator==(const Vector2& b)
     {
         return this->equals(b);
@@ -321,6 +321,26 @@ struct Vector2
     bool operator!=(const Vector2& b)
     {
         return !this->equals(b);
+    }
+
+    bool operator>(const Vector2& b) 
+    {
+        return this->magnitudeSquared() > Vector2::magnitudeSquared(b);
+    }
+    
+    bool operator>=(const Vector2& b) 
+    {
+        return this->magnitudeSquared() >= Vector2::magnitudeSquared(b);
+    }
+
+    bool operator<(const Vector2& b) 
+    {
+        return this->magnitudeSquared() < Vector2::magnitudeSquared(b);
+    }
+
+    bool operator<=(const Vector2& b) 
+    {
+        return this->magnitudeSquared() <= Vector2::magnitudeSquared(b);
     }
 
 };

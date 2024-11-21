@@ -262,7 +262,7 @@ struct Vector2
     }
 
     // Operator overload
-    // Arithmetic operations
+    // Arithmetic operators
     Vector2 operator+(const Vector2& b) 
     {
         return this->add(b);
@@ -312,7 +312,7 @@ struct Vector2
         return *this;
     }
 
-    // Comparison operators operators
+    // Comparison operators
     bool operator==(const Vector2& b)
     {
         return this->equals(b);

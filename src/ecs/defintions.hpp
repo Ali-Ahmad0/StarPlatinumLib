@@ -13,7 +13,7 @@
 #include <stdexcept>
 
 using EntityID = std::size_t;
-constexpr EntityID MAX_ENTITIES = 5120;
+constexpr EntityID MAX_ENTITIES = 10240;
 
 using ComponentID = std::size_t;
 constexpr ComponentID MAX_COMPONENTS = 16;

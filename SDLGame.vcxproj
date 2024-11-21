@@ -163,6 +163,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="res\game\scenes\MainScene.cpp" />
+    <ClCompile Include="res\test\scenes\TestPlayer.cpp" />
     <ClCompile Include="res\test\scenes\TestScene.cpp" />
     <ClCompile Include="src\scene\InitialScene.cpp" />
     <ClCompile Include="src\scene\SceneManager.cpp" />
@@ -315,6 +316,7 @@
     <ClInclude Include="libs\SDL2\include\SDL_vulkan.h" />
     <ClInclude Include="libs\SDL2_IMG\include\SDL_image.h" />
     <ClInclude Include="res\game\scenes\MainScene.hpp" />
+    <ClInclude Include="res\test\scenes\TestPlayer.hpp" />
     <ClInclude Include="res\test\scenes\TestScene.hpp" />
     <ClInclude Include="src\ecs\systems\AABBSystem.hpp" />
     <ClInclude Include="src\common\Utils.hpp" />

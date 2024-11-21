@@ -5,18 +5,17 @@ void EntityManager::Init()
     for (EntityID e = 0; e < MAX_ENTITIES; e++)
     {
         availableEntities.push(e);
-        entityStatus[e] = false;
     }
 }
 
-bool EntityManager::IsActive(const EntityID entity) const
+bool EntityManager::IsActive(const EntityID entity)
 {
     return entity < MAX_ENTITIES && entityStatus[entity];
 }
 
 EntityID EntityManager::CreateEntity() 
 {
-    if (count < MAX_ENTITIES) 
+    if (count < MAX_ENTITIES)
     {
         const EntityID entity = availableEntities.front();
         availableEntities.pop();
@@ -30,7 +29,7 @@ EntityID EntityManager::CreateEntity()
     
 }
 
-void EntityManager::DeleteEntity(const EntityID entity)
+void EntityManager::DeleteEntity(EntityID entity)
 {
     if (IsActive(entity))
     {
@@ -45,12 +44,12 @@ void EntityManager::DeleteEntity(const EntityID entity)
     
 }
 
-size_t EntityManager::GetEntityCount() const
+size_t EntityManager::GetEntityCount()
 {
     return count;
 }
 
-void EntityManager::SetSignature(const EntityID entity, const Signature signature)
+void EntityManager::SetSignature(EntityID entity, Signature signature)
 {
     if (IsActive(entity)) 
     {
@@ -62,7 +61,7 @@ void EntityManager::SetSignature(const EntityID entity, const Signature signatur
     }
 }
 
-Signature EntityManager::GetSignature(const EntityID entity) const
+Signature EntityManager::GetSignature(EntityID entity)
 {
     if (IsActive(entity)) 
     {

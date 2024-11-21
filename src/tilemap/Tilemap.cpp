@@ -192,7 +192,7 @@ void Tilemap::generateCollisionTiles()
                 float y = (float)row * tilesize * scale;
 
                 EntityID tile = Engine::GetECS().CreateEntity();
-                Engine::GetECS().AddComponent(tile, Transform(Vector2(x, y), scale));
+                Engine::GetECS().AddComponent(tile, Transform(Vector2(x, y), 0.0, scale));
                 Engine::GetECS().AddComponent(tile, AABB(Vector2(w / 2, h / 2), Vector2(w, h), true, false));
             }
             else

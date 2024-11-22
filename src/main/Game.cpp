@@ -68,55 +68,22 @@ bool showFPS = false;
 
 void Engine::Events()
 {
-
-	
 	SDL_Event event;
-    while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_QUIT) {
-            isRunning = false;
-        }
-        // Other event handling...
-    }
+	SDL_PollEvent(&event);
 
-	case SDL_KEYDOWN:
-		// Test animations
-		switch (event.key.keysym.sym)
-		{
-		//case SDLK_DOWN:
-		//	ecs.GetComponent<Sprite>(player)->v_frame = 0;
-		//	break;
+	// Test animations
+	switch (event.key.keysym.sym)
+	{
 
-		//case SDLK_UP:
-		//	ecs.GetComponent<Sprite>(player)->v_frame = 1;
-		//	break;
+	// Show FPS
+	case SDLK_TAB:
+		showFPS = true;
+		break;
 
-		//case SDLK_LEFT:
-		//	ecs.GetComponent<Sprite>(player)->v_frame = 2;
-		//	break;
+	default:
+		break;
+	}
 
-		//case SDLK_RIGHT:
-		//	ecs.GetComponent<Sprite>(player)->v_frame = 3;
-		//	break;
-
-
-		// Show FPS
-		case SDLK_TAB:
-			showFPS = true;
-			break;
-
-		// Spawn 100 entites
-		case SDLK_RETURN:
-			spawnEntities = true;
-			break;
-
-		default: 
-			break;
-		}
-
-	////	break;
-	////default:
-	////	break;
-	////}
 
 	SceneManager::Events(event);
 }

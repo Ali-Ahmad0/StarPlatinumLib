@@ -5,11 +5,11 @@
 
 struct Transform
 {
-    Vector2 position; // Position in a 2D space
-    size_t scale; // Scale of entity
+    // Transformation in a 2D plane
+    Vector2 position; double rotation; size_t scale;
 
-    Transform(const Vector2& position=Vector2(0, 0), const size_t scale = 1)
-        : position(position), scale(scale) { }
+    Transform(const Vector2& position=Vector2(0, 0), double rotation=0.0,size_t scale = 1)
+        : position(position), rotation(rotation), scale(scale) { }
 };
 
 struct Sprite
@@ -20,26 +20,73 @@ struct Sprite
     SDL_Rect src;
     SDL_Rect dst;
 
-    // In case of animated sprite
-    Uint32 h_frame; // Current horizontal frame
-    Uint32 v_frame; // Current vertical frame
+    size_t frame;
 
-    Uint32 h_frames; // Total frames in one row
-    Uint32 v_frames; // Total frames in one column
+    size_t hframes; // Total frames in one row
+    size_t vframes; // Total frames in one column
 
-    Uint32 speed; // Speed in frames per second
+    size_t speed; // Speed in frames per second
 
-    Sprite(SDL_Texture* texture=nullptr, int h_frames = 1, int v_frames = 1, int speed = 0)
+    // Map of animations
+    std::unordered_map<std::string, std::vector<size_t>> animations{};
+    std::string animation = "none";
+
+    bool fliph = false;
+    bool flipv = false;
+
+    Sprite(SDL_Texture* texture=nullptr, size_t hframes = 1, size_t vframes = 1, size_t speed = 0)
         : texture(texture), src({ 0, 0, 0, 0 }), dst({ 0, 0, 0, 0 }), 
-          h_frame(1), v_frame(0), h_frames(h_frames), v_frames(v_frames), speed(speed) {}
+          frame(0), hframes(hframes), vframes(vframes), speed(speed) 
+    {
+        animations.insert({ "none", {} });
+    }
+
+    void addAnim(const std::string& anim, const std::vector<size_t>& frames) 
+    {
+        if (animations.find(anim) != animations.end()) 
+        {
+            std::cout << "Animation '" << anim << "' already added\n";
+            return;
+        }
+        if (frames.empty()) 
+        {
+            std::cout << "Animation '" << anim << "' cannot have empty frame list\n";
+            return;
+        }
+        // Add animation
+        animations[anim] = frames;
+    }
+
+    void setAnim(const std::string& anim) 
+    {
+        if (animations.find(anim) == animations.end())
+        {
+            std::cout << "Animation '" << anim << "' does not exist\n";
+            return;
+        }
+
+        // Set current animation
+        animation = anim;
+    }
+       
+    void delAnim(const std::string& anim)
+    {
+        if (animations.find(anim) == animations.end()) 
+        {
+            std::cout << "Animation '" << anim << "' does not exist\n";
+            return;
+        }
+        // Remove animation
+        animations.erase(anim);
+    }
 };
 
 struct Movement 
 {
     Vector2 direction;
-    float scale;
+    float speed;
 
-    Movement(const Vector2& direction=Vector2(0, 0), float scale = 0) : direction(direction), scale(scale) {}
+    Movement(const Vector2& direction=Vector2(0, 0), float speed = 0) : direction(direction), speed(speed) {}
 };
 
 struct Gravity

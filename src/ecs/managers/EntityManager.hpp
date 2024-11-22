@@ -9,7 +9,7 @@ public:
 	void Init();
 
 	// Returns whether entity exists or not
-	bool IsActive(EntityID entity) const;
+	bool IsActive(EntityID entity);
 
 	// Return an available entity ID
 	EntityID CreateEntity();
@@ -18,13 +18,13 @@ public:
 	void DeleteEntity(EntityID entity);
 	
 	// Returns number of entities
-	size_t GetEntityCount() const;
+	size_t GetEntityCount();
 
 	// Update the signature of an entity
 	void SetSignature(EntityID entity, Signature signature);
 	
 	// Return the signature of an entity
-	Signature GetSignature(EntityID entity) const;
+	Signature GetSignature(EntityID entity);
 
 private:
 	// Queue of available entity IDs

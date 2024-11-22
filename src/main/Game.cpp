@@ -64,8 +64,6 @@ void Engine::Init()
 	
 }
 
-bool spawnEntities = false;
-bool deleteEntities = false;
 bool showFPS = false;
 
 void Engine::Events()
@@ -80,50 +78,40 @@ void Engine::Events()
         // Other event handling...
     }
 
-    
-    
-    // Add more key state checks as needed
-	// Event handler
-	//switch (event.type)
-	//{
-	//case SDL_QUIT:
-	//	isRunning = false;
-	//	break;
+	case SDL_KEYDOWN:
+		// Test animations
+		switch (event.key.keysym.sym)
+		{
+		//case SDLK_DOWN:
+		//	ecs.GetComponent<Sprite>(player)->v_frame = 0;
+		//	break;
 
-	////case SDL_KEYDOWN:
-	////	// Test animations
-	////	switch (event.key.keysym.sym)
-	////	{
-	////	//case SDLK_DOWN:
-	////	//	ecs.GetComponent<Sprite>(player)->v_frame = 0;
-	////	//	break;
+		//case SDLK_UP:
+		//	ecs.GetComponent<Sprite>(player)->v_frame = 1;
+		//	break;
 
-	////	//case SDLK_UP:
-	////	//	ecs.GetComponent<Sprite>(player)->v_frame = 1;
-	////	//	break;
+		//case SDLK_LEFT:
+		//	ecs.GetComponent<Sprite>(player)->v_frame = 2;
+		//	break;
 
-	////	//case SDLK_LEFT:
-	////	//	ecs.GetComponent<Sprite>(player)->v_frame = 2;
-	////	//	break;
-
-	////	//case SDLK_RIGHT:
-	////	//	ecs.GetComponent<Sprite>(player)->v_frame = 3;
-	////	//	break;
+		//case SDLK_RIGHT:
+		//	ecs.GetComponent<Sprite>(player)->v_frame = 3;
+		//	break;
 
 
-	////	// Show FPS
-	////	case SDLK_TAB:
-	////		showFPS = true;
-	////		break;
+		// Show FPS
+		case SDLK_TAB:
+			showFPS = true;
+			break;
 
-	////	// Spawn 100 entites
-	////	case SDLK_RETURN:
-	////		spawnEntities = true;
-	////		break;
+		// Spawn 100 entites
+		case SDLK_RETURN:
+			spawnEntities = true;
+			break;
 
-	////	default: 
-	////		break;
-	////	}
+		default: 
+			break;
+		}
 
 	////	break;
 	////default:
@@ -135,7 +123,6 @@ void Engine::Events()
 
 void Engine::Update()
 {
-	ecs.GetSystem<SpriteSystem>()->update(ecs);
 	ecs.GetSystem<MovementSystem>()->update(ecs, (double)deltaTime / 1000);
 	ecs.GetSystem<AABBSystem>()->update(ecs);
 
@@ -147,7 +134,7 @@ void Engine::Render()
 	SDL_RenderClear(renderer);
 
 	SceneManager::Draw();
-	ecs.GetSystem<SpriteSystem>()->render(ecs, renderer);
+	ecs.GetSystem<SpriteSystem>()->update(ecs, renderer);
 
 	SDL_RenderPresent(renderer);
 }

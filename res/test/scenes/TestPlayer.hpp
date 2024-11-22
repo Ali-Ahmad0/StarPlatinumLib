@@ -3,19 +3,16 @@
 #include "../../../src/texture/TextureManager.hpp"
 #include "../../../src/tilemap/Tilemap.hpp"
 
-#include "TestPlayer.hpp"
-
-class TestScene : public IScene
+class TestPlayer : public IScene 
 {
 public:
 	void Ready() override;
-	void Update(double delta) override;
 	void Events(SDL_Event event) override;
-	void Draw() override;
-
+	
 private:
-	TestPlayer player;
+	EntityID player;
+	SDL_Texture* texture;
 
-	SDL_Texture* playerPreview;
-	Tilemap tilemap = Tilemap(16, 4);
+	Movement* movement;
+	Sprite* sprite;
 };

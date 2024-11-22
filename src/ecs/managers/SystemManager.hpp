@@ -60,7 +60,7 @@ public:
 	}
 
 	// Notify all systems that an entity has been destroyed
-	void OnEntityDestroyed(EntityID entity) const;
+	void OnEntityDestroyed(EntityID entity);
 
 	// Notify all systems that entity signature has changed
 	void OnEntitySignatureChanged(EntityID entity, Signature entitySignature);

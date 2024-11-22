@@ -21,12 +21,11 @@ void TestPlayer::Ready()
 	sprite->addAnim("walk_down", { 0, 1, 2 });
  
 	movement = Engine::GetECS().GetComponent<Movement>(player);
+	movement->speed = 100;
 }
 
 void TestPlayer::Events(SDL_Event event) 
 {
-	movement->speed = 100;
-
 	// Input and animation test
 	switch (event.key.keysym.sym)
 	{

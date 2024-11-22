@@ -72,12 +72,24 @@ void Engine::Events()
 	SDL_PollEvent(&event);
 
 	// Test animations
-	switch (event.key.keysym.sym)
+	switch (event.type)
 	{
 
-	// Show FPS
-	case SDLK_TAB:
-		showFPS = true;
+	case SDL_QUIT:
+		isRunning = false;
+		break;
+	
+	case SDL_KEYDOWN:
+		switch (event.key.keysym.sym)
+		{
+		// Show FPS
+		case SDLK_TAB:
+			showFPS = true;
+			break;
+
+		default:
+			break;
+		}
 		break;
 
 	default:

@@ -1,5 +1,6 @@
 #include "Game.hpp"
 
+
 Engine::Engine(const Properties &properties)
 	: deltaTime(0), properties(properties), isRunning(false), window(nullptr) 
 {
@@ -59,6 +60,8 @@ void Engine::Init()
 
 	SceneManager::AddScene<InitialScene>("initial_scene");
 	SceneManager::ChangeScene("initial_scene");
+
+	
 }
 
 bool spawnEntities = false;
@@ -67,55 +70,65 @@ bool showFPS = false;
 
 void Engine::Events()
 {
+
+	
 	SDL_Event event;
-	SDL_PollEvent(&event);
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
+            isRunning = false;
+        }
+        // Other event handling...
+    }
 
+    
+    
+    // Add more key state checks as needed
 	// Event handler
-	switch (event.type)
-	{
-	case SDL_QUIT:
-		isRunning = false;
-		break;
+	//switch (event.type)
+	//{
+	//case SDL_QUIT:
+	//	isRunning = false;
+	//	break;
 
-	case SDL_KEYDOWN:
-		// Test animations
-		switch (event.key.keysym.sym)
-		{
-		//case SDLK_DOWN:
-		//	ecs.GetComponent<Sprite>(player)->v_frame = 0;
-		//	break;
+	////case SDL_KEYDOWN:
+	////	// Test animations
+	////	switch (event.key.keysym.sym)
+	////	{
+	////	//case SDLK_DOWN:
+	////	//	ecs.GetComponent<Sprite>(player)->v_frame = 0;
+	////	//	break;
 
-		//case SDLK_UP:
-		//	ecs.GetComponent<Sprite>(player)->v_frame = 1;
-		//	break;
+	////	//case SDLK_UP:
+	////	//	ecs.GetComponent<Sprite>(player)->v_frame = 1;
+	////	//	break;
 
-		//case SDLK_LEFT:
-		//	ecs.GetComponent<Sprite>(player)->v_frame = 2;
-		//	break;
+	////	//case SDLK_LEFT:
+	////	//	ecs.GetComponent<Sprite>(player)->v_frame = 2;
+	////	//	break;
 
-		//case SDLK_RIGHT:
-		//	ecs.GetComponent<Sprite>(player)->v_frame = 3;
-		//	break;
+	////	//case SDLK_RIGHT:
+	////	//	ecs.GetComponent<Sprite>(player)->v_frame = 3;
+	////	//	break;
 
 
-		// Show FPS
-		case SDLK_TAB:
-			showFPS = true;
-			break;
+	////	// Show FPS
+	////	case SDLK_TAB:
+	////		showFPS = true;
+	////		break;
 
-		// Spawn 100 entites
-		case SDLK_RETURN:
-			spawnEntities = true;
-			break;
+	////	// Spawn 100 entites
+	////	case SDLK_RETURN:
+	////		spawnEntities = true;
+	////		break;
 
-		default: 
-			break;
-		}
+	////	default: 
+	////		break;
+	////	}
 
-		break;
-	default:
-		break;
-	}
+	////	break;
+	////default:
+	////	break;
+	////}
 
 	SceneManager::Events(event);
 }

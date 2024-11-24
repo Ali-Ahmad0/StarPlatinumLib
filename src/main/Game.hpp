@@ -65,6 +65,7 @@ private:
 	
 	static ECS ecs;
 	Properties properties;
+
 };
 
 

@@ -133,7 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\libs\JSON\single_include;$(SolutionDir)libs\SDL2_IMG\include;$(SolutionDir)\libs\SDL2\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Hp\source\repos\UntitledGameEngineinput\src\Inputmap;$(SolutionDir)\libs\JSON\single_include;$(SolutionDir)libs\SDL2_IMG\include;$(SolutionDir)\libs\SDL2\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -165,6 +165,7 @@
     <ClCompile Include="res\game\scenes\MainScene.cpp" />
     <ClCompile Include="res\test\scenes\TestPlayer.cpp" />
     <ClCompile Include="res\test\scenes\TestScene.cpp" />
+    <ClCompile Include="src\input\InputMap.cpp" />
     <ClCompile Include="src\scene\InitialScene.cpp" />
     <ClCompile Include="src\scene\SceneManager.cpp" />
     <ClCompile Include="src\ecs\managers\EntityManager.cpp" />
@@ -330,6 +331,7 @@
     <ClInclude Include="src\ecs\systems\MovementSystem.hpp" />
     <ClInclude Include="src\ecs\systems\SpriteSystem.hpp" />
     <ClInclude Include="src\ecs\systems\System.hpp" />
+    <ClInclude Include="src\input\InputMap.hpp" />
     <ClInclude Include="src\main\init\Init.hpp" />
     <ClInclude Include="src\tilemap\Tilemap.hpp" />
     <ClInclude Include="src\scene\InitialScene.hpp" />

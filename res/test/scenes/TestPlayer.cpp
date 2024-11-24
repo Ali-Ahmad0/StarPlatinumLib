@@ -11,6 +11,7 @@ void TestPlayer::Ready()
 	// Add components
 	Engine::GetECS().AddComponent(player, Transform(Vector2(0, 0), 0.0, 4));
 	Engine::GetECS().AddComponent(player, Sprite(texture, 3, 4, 6));
+	Engine::GetECS().AddComponent(player, AABB(Vector2(8, 16), Vector2(12, 12), true));
 	Engine::GetECS().AddComponent(player, Movement());
 
 	// Configure sprite animations

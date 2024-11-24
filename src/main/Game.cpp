@@ -1,5 +1,6 @@
 #include "Game.hpp"
 
+
 Engine::Engine(const Properties &properties)
 	: deltaTime(0), properties(properties), isRunning(false), window(nullptr) 
 {
@@ -59,6 +60,8 @@ void Engine::Init()
 
 	SceneManager::AddScene<InitialScene>("initial_scene");
 	SceneManager::ChangeScene("initial_scene");
+
+	
 }
 
 bool showFPS = false;
@@ -68,31 +71,31 @@ void Engine::Events()
 	SDL_Event event;
 	SDL_PollEvent(&event);
 
-	// Event handler
+	// Test animations
 	switch (event.type)
 	{
+
 	case SDL_QUIT:
 		isRunning = false;
 		break;
-
+	
 	case SDL_KEYDOWN:
-		// Test animations
 		switch (event.key.keysym.sym)
 		{
-
 		// Show FPS
 		case SDLK_TAB:
 			showFPS = true;
 			break;
 
-		default: 
+		default:
 			break;
 		}
-
 		break;
+
 	default:
 		break;
 	}
+
 
 	SceneManager::Events(event);
 }

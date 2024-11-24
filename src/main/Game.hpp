@@ -52,7 +52,6 @@ public:
 	bool Running() const { return isRunning; }
 
 	static SDL_Renderer* GetRenderer() { return renderer; }
-	static ECS& GetECS() { return ecs; }
 
 private:
 	bool isRunning;
@@ -62,8 +61,7 @@ private:
 
 	SDL_Window* window;
 	static SDL_Renderer* renderer;
-	
-	static ECS ecs;
+
 	Properties properties;
 
 };

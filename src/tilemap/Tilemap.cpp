@@ -1,7 +1,7 @@
 #include "Tilemap.hpp"
 #include "../main/Game.hpp"
 
-Tilemap::Tilemap(const size_t tilesize, const size_t scale) : tileset(nullptr), tilesize(tilesize), scale(scale) { }
+Tilemap::Tilemap(size_t tilesize, size_t scale) : tileset(nullptr), tilesize(tilesize), scale(scale) { }
 
 void Tilemap::AddTileset(const char* path)
 {
@@ -191,9 +191,9 @@ void Tilemap::generateCollisionTiles()
                 float x = (float)startCol * tilesize * scale;
                 float y = (float)row * tilesize * scale;
 
-                EntityID tile = Engine::GetECS().CreateEntity();
-                Engine::GetECS().AddComponent(tile, Transform(Vector2(x, y), 0.0, scale));
-                Engine::GetECS().AddComponent(tile, AABB(Vector2(w / 2, h / 2), Vector2(w, h), true, false));
+                EntityID tile = ECS::CreateEntity();
+                ECS::AddComponent(tile, Transform(Vector2(x, y), 0.0, scale));
+                ECS::AddComponent(tile, AABB(Vector2(w / 2, h / 2), Vector2(w, h), true, false));
             }
             else
             {

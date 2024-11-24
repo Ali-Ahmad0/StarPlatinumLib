@@ -29,7 +29,7 @@ struct Sprite
 
     // Map of animations
     std::unordered_map<std::string, std::vector<size_t>> animations{};
-    std::string animation = "none";
+    const char* animation = "none";
 
     bool fliph = false;
     bool flipv = false;
@@ -41,7 +41,7 @@ struct Sprite
         animations.insert({ "none", {} });
     }
 
-    void addAnim(const std::string& anim, const std::vector<size_t>& frames) 
+    void addAnim(const char* anim, const std::vector<size_t>& frames) 
     {
         if (animations.find(anim) != animations.end()) 
         {
@@ -57,7 +57,7 @@ struct Sprite
         animations[anim] = frames;
     }
 
-    void setAnim(const std::string& anim) 
+    void setAnim(const char* anim) 
     {
         if (animations.find(anim) == animations.end())
         {
@@ -69,7 +69,7 @@ struct Sprite
         animation = anim;
     }
        
-    void delAnim(const std::string& anim)
+    void delAnim(const char* anim)
     {
         if (animations.find(anim) == animations.end()) 
         {

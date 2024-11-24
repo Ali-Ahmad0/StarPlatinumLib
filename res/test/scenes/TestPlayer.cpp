@@ -3,25 +3,25 @@
 void TestPlayer::Ready() 
 {
 	// Create player entity
-	player = Engine::GetECS().CreateEntity();
+	player = ECS::CreateEntity();
 
 	// Load player texture
 	texture = TextureManager::LoadTexture("res/test/assets/character.png");
 
 	// Add components
-	Engine::GetECS().AddComponent(player, Transform(Vector2(0, 0), 0.0, 4));
-	Engine::GetECS().AddComponent(player, Sprite(texture, 3, 4, 6));
-	Engine::GetECS().AddComponent(player, AABB(Vector2(8, 16), Vector2(12, 12), true));
-	Engine::GetECS().AddComponent(player, Movement());
+	ECS::AddComponent(player, Transform(Vector2(0, 0), 0.0, 4));
+	ECS::AddComponent(player, Sprite(texture, 3, 4, 6));
+	ECS::AddComponent(player, AABB(Vector2(8, 16), Vector2(12, 12), true));
+	ECS::AddComponent(player, Movement());
 
 	// Configure sprite animations
-	sprite = Engine::GetECS().GetComponent<Sprite>(player);
+	sprite = ECS::GetComponent<Sprite>(player);
 	sprite->addAnim("walk_right", { 9, 10, 11 });
 	sprite->addAnim("walk_left", { 6, 7, 8 });
 	sprite->addAnim("walk_up", { 3, 4, 5 });
 	sprite->addAnim("walk_down", { 0, 1, 2 });
  
-	movement = Engine::GetECS().GetComponent<Movement>(player);
+	movement = ECS::GetComponent<Movement>(player);
 	movement->speed = 100;
 }
 

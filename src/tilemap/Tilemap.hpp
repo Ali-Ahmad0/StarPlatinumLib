@@ -50,6 +50,7 @@ private:
 	// Initialize texture map
 	void initTextureMap(size_t layers, size_t rows, size_t cols)
 	{
+		printf("[INFO]: Initializing texture map...\n");
 		texture.resize(layers);
 		for (size_t layer = 0; layer < layers; layer++) 
 		{
@@ -64,6 +65,7 @@ private:
 	// Initialize collision map
 	void initCollisionMap() 
 	{
+		printf("[INFO]: Initializing collision map\n");
 		collision.resize(height);
 		for (size_t row = 0; row < height; row++) 
 		{

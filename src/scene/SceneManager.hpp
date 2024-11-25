@@ -16,7 +16,7 @@ public:
 
 	// Add a new scene to the scene manager
 	template <typename T>
-	static void AddScene(const std::string& name) 
+	static void AddScene(const char* name) 
 	{
 		if (!isAdded(name)) 
 		{
@@ -25,22 +25,22 @@ public:
 			return;
 		}
 
-		fprintf(stderr, "Scene has already been added");
+		fprintf(stderr, "[ERROR]: Scene has already been added\n");
 	}
 
 	// Delete an existing scene
-	static void DeleteScene(const std::string& name);
+	static void DeleteScene(const char* name);
 
 	// Change the current scene
-	static void ChangeScene(const std::string& name);
+	static void ChangeScene(const char* name);
 
 private:
 	// Map from scene type to scene itself
-	static std::unordered_map<std::string, std::shared_ptr<IScene>> scenes;
+	static std::unordered_map<const char*, std::shared_ptr<IScene>> scenes;
 	static IScene* currentScene;
 
 	// Returns if scene has been added or not
-	static bool isAdded(std::string name)
+	static bool isAdded(const char* name)
 	{
 		return scenes.find(name) != scenes.end();
 	}

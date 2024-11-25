@@ -40,19 +40,20 @@ void Tilemap::AddTileset(const char* path)
     }
 }
 
-void Tilemap::SetTilesize(const size_t size) 
+void Tilemap::SetTilesize(size_t size) 
 {
     tilesize = size;
 }
 
 void Tilemap::LoadMap(const char* path)
 {
+    printf("[INFO]: Loading tilemap file: %s\n", path);
     // Open file
     std::ifstream mapfile(path);
 
     if (!mapfile.is_open())
     {
-        fprintf(stderr, "Failed to open map\n");
+        fprintf(stderr, "[ERROR]: Failed to open tilemap\n");
         return;
     }
 
@@ -66,7 +67,7 @@ void Tilemap::LoadMap(const char* path)
 
     catch (const nlohmann::json::parse_error& e)
     {
-        fprintf(stderr, "Unable to load tilemap: %s", e.what());
+        fprintf(stderr, "[ERROR]: Unable to load tilemap - %s\n", e.what());
         return;
     }
 
@@ -79,6 +80,7 @@ void Tilemap::LoadMap(const char* path)
 
     initTextureMap(mapfilejson["layers"].size(), height, width);
 
+    printf("[INFO]: Generating tilemap texture\n");
     // Get the layout for the layer
     for (size_t i = 0; i < mapfilejson["layers"].size(); i++)
     {
@@ -125,6 +127,7 @@ void Tilemap::LoadMap(const char* path)
         // Reset the render target to the default renderer target
         SDL_SetRenderTarget(Engine::GetRenderer(), NULL);
     }
+    printf("[INFO]: Tilemap loaded successfully\n");
 }
 
 void Tilemap::DrawMap()
@@ -142,6 +145,7 @@ void Tilemap::DrawMap()
 
 void Tilemap::generateCollisionTiles()
 {
+    printf("[INFO]: Generating collision tiles\n");
     // Loop through each row to identify contiguous blocks of collidable tiles
     for (size_t row = 0; row < height; row++)
     {
@@ -203,12 +207,12 @@ void Tilemap::generateCollisionTiles()
     }
 }
 
-
 // Set collision true for a certain number of tiles
 void Tilemap::AddCollision(size_t layer, const std::vector<size_t>& tiles) 
 {
     initCollisionMap();
 
+    printf("[INFO]: Generating collision map\n");
     for (size_t row = 0; row < height; row++) 
     {
         for (size_t col = 0; col < width; col++) 
@@ -218,4 +222,5 @@ void Tilemap::AddCollision(size_t layer, const std::vector<size_t>& tiles)
     }
 
     generateCollisionTiles();
+    printf("[INFO]: Collision map generated succesfully\n");
 }

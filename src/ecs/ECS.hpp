@@ -34,6 +34,8 @@ public:
         // Assign component ID
         componentRegistry[typeIndex] = nextComponent;
         nextComponent++;
+
+        printf("[INFO]: Registered component: %s\n", typeIndex.name());
     }
 
     template <typename T>
@@ -41,7 +43,7 @@ public:
     {
         if (!entityManager->IsActive(entity)) 
         {
-            fprintf(stderr, "Cannot add component on non existing entity");
+            fprintf(stderr, "[ERROR]: Cannot add component on non existing entity");
             return;
         }
 
@@ -54,7 +56,7 @@ public:
     {
         if (!entityManager->IsActive(entity))
         {
-            fprintf(stderr, "Cannot remove component on non existing entity");
+            fprintf(stderr, "[ERROR]: Cannot remove component on non existing entity\n");
             return;
         }
 
@@ -85,7 +87,7 @@ public:
             // Return ID
             return componentRegistry[typeIndex];
         }
-        throw std::runtime_error("Cannot get ID on unregistered component");
+        throw std::runtime_error("[RUNTIME ERROR]: Cannot get ID on unregistered component\n");
     }
 
     // System related methods
@@ -134,7 +136,7 @@ private:
         {
             return static_cast<ComponentSparseSet<T>*>(it->second.get());
         }
-        throw std::runtime_error("Component map for type not registered.");
+        throw std::runtime_error("[RUNTIME ERROR]: Component map for type not registered\n");
     }
 
     // Update the signature of an entity and notify system manager

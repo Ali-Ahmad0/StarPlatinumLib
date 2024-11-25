@@ -36,7 +36,7 @@ class Engine
 {
 public:
 	// Constructor and destructor
-	explicit Engine(const Properties &properties);
+	Engine(const Properties& properties);
 	~Engine();
 
 	void Init();
@@ -49,9 +49,16 @@ public:
 
 	void Exit();
 
-	bool Running() const { return isRunning; }
-
-	static SDL_Renderer* GetRenderer() { return renderer; }
+	// Engine property getters
+	bool Running() 
+	{ 
+		return isRunning; 
+	}
+	
+	static SDL_Renderer* GetRenderer() 
+	{ 
+		return renderer; 
+	}
 
 private:
 	bool isRunning;

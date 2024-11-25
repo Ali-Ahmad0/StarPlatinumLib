@@ -18,7 +18,7 @@ public:
 			printf("[INFO]: Registered system: %s\n", typeIndex.name());
 			return system;
 		}
-		throw std::runtime_error("[RUNTIME ERROR]: System is already registered\n");
+		throw std::runtime_error("[RUNTIME ERROR]: System is already registered");
 	}
 
 	// Return pointer to a system
@@ -30,7 +30,7 @@ public:
 		{
 			return std::static_pointer_cast<T>(systems[typeIndex]);
 		}
-		throw std::runtime_error("[RUNTIME ERROR]: Cannot get unregistered system\n");
+		throw std::runtime_error("[RUNTIME ERROR]: Cannot get unregistered system");
 	}
 
 	template <typename T>
@@ -42,7 +42,7 @@ public:
 			return signatures[typeIndex];
 		}
 
-		throw std::runtime_error("[RUNTIME ERROR]: Cannot get signature on unregistered system\n");
+		throw std::runtime_error("[RUNTIME ERROR]: Cannot get signature on unregistered system");
 	}
 	
 	template <typename T>

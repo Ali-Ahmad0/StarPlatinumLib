@@ -87,7 +87,7 @@ public:
             // Return ID
             return componentRegistry[typeIndex];
         }
-        throw std::runtime_error("[RUNTIME ERROR]: Cannot get ID on unregistered component\n");
+        throw std::runtime_error("[RUNTIME ERROR]: Cannot get ID on unregistered component");
     }
 
     // System related methods
@@ -136,7 +136,7 @@ private:
         {
             return static_cast<ComponentSparseSet<T>*>(it->second.get());
         }
-        throw std::runtime_error("[RUNTIME ERROR]: Component map for type not registered\n");
+        throw std::runtime_error("[RUNTIME ERROR]: Component map for type not registered");
     }
 
     // Update the signature of an entity and notify system manager

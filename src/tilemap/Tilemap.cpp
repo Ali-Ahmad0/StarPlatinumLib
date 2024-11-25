@@ -45,6 +45,20 @@ void Tilemap::SetTilesize(size_t size)
     tilesize = size;
 }
 
+void Tilemap::initTextureMap(size_t layers, size_t rows, size_t cols) 
+{
+    printf("[INFO]: Initializing texture map...\n");
+    texture.resize(layers);
+    for (size_t layer = 0; layer < layers; layer++)
+    {
+        texture[layer].resize(rows);
+        for (size_t row = 0; row < rows; row++)
+        {
+            texture[layer][row].resize(cols, -1);
+        }
+    }
+}
+
 void Tilemap::LoadMap(const char* path)
 {
     printf("[INFO]: Loading tilemap file: %s\n", path);
@@ -141,6 +155,16 @@ void Tilemap::DrawMap()
 			SDL_RenderCopy(Engine::GetRenderer(), texture, NULL, &dst);
 		}
 	}
+}
+
+void Tilemap::initCollisionMap() 
+{
+    printf("[INFO]: Initializing collision map\n");
+    collision.resize(height);
+    for (size_t row = 0; row < height; row++)
+    {
+        collision[row].resize(width, false);
+    }
 }
 
 void Tilemap::generateCollisionTiles()

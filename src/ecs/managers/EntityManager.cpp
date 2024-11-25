@@ -25,7 +25,7 @@ EntityID EntityManager::CreateEntity()
         return entity;
     }
 
-    throw std::runtime_error("Max entity limit reached");
+    throw std::runtime_error("[RUNTIME ERROR]: Max entity limit reached");
     
 }
 
@@ -39,7 +39,7 @@ void EntityManager::DeleteEntity(EntityID entity)
     }
     else 
     {
-        fprintf(stderr, "Cannot delete non existent entity");
+        fprintf(stderr, "[ERROR]: Cannot delete non existent entity\n");
     }
     
 }
@@ -57,7 +57,7 @@ void EntityManager::SetSignature(EntityID entity, Signature signature)
     }
     else 
     {
-        fprintf(stderr, "Cannot set signature on non existent entity");
+        fprintf(stderr, "[ERROR]: Cannot set signature on non existent entity\n");
     }
 }
 
@@ -68,5 +68,5 @@ Signature EntityManager::GetSignature(EntityID entity)
         return signatures[entity];
     }
 
-    throw std::runtime_error("Cannot get signature on non existent entity");
+    throw std::runtime_error("[RUNTIME ERROR]: Cannot get signature on non existent entity");
 }

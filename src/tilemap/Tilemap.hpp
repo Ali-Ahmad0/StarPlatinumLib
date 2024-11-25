@@ -48,30 +48,11 @@ private:
 	std::vector<Rectangle> rectangles;
 
 	// Initialize texture map
-	void initTextureMap(size_t layers, size_t rows, size_t cols)
-	{
-		printf("[INFO]: Initializing texture map...\n");
-		texture.resize(layers);
-		for (size_t layer = 0; layer < layers; layer++) 
-		{
-			texture[layer].resize(rows);
-			for (size_t row = 0; row < rows; row++)
-			{
-				texture[layer][row].resize(cols, -1);
-			}
-		}
-	}
+	void initTextureMap(size_t layers, size_t rows, size_t cols);
 
 	// Initialize collision map
-	void initCollisionMap() 
-	{
-		printf("[INFO]: Initializing collision map\n");
-		collision.resize(height);
-		for (size_t row = 0; row < height; row++) 
-		{
-			collision[row].resize(width, false);
-		}
-	}
+	void initCollisionMap();
 
+	// Generate collision entities
 	void generateCollisionTiles();
 };

@@ -27,7 +27,7 @@ struct Properties
 
 	bool fullscreen;
 
-	explicit Properties(const char* title, int targetFPS = 60, Vector2 windowPos = Vector2(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED),
+	Properties(const char* title, int targetFPS = 60, Vector2 windowPos = Vector2(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED),
 		Vector2 windowSize = Vector2(640, 480), bool fullscreen = false) 
 		: title(title), targetFPS(targetFPS), windowPos(windowPos), windowSize(windowSize), fullscreen(fullscreen) {}
 };

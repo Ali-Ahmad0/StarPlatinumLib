@@ -9,7 +9,7 @@ struct Transform
     Vector2 position; double rotation; size_t scale;
 
     Transform(const Vector2& position=Vector2(0, 0), double rotation=0.0,size_t scale = 1)
-        : position(position), rotation(rotation), scale(scale) { }
+        : position(position), rotation(rotation), scale(scale) {}
 };
 
 struct Sprite
@@ -94,7 +94,7 @@ struct Gravity
     Direction direction;
     float g;
 
-    Gravity(Direction direction=Direction::DOWN, float g=9.81f) : direction(direction), g(g) {}
+    Gravity(float g=9.81f, Direction direction=Direction::DOWN) : g(g), direction(direction) {}
 };
 
 struct AABB 

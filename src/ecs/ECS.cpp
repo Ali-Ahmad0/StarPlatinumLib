@@ -3,8 +3,8 @@
 std::unique_ptr<EntityManager> ECS::entityManager = nullptr;
 std::unique_ptr<SystemManager> ECS::systemManager = nullptr;
 
-std::unordered_map<std::type_index, ComponentID> ECS::componentRegistry = {};
-std::unordered_map<std::type_index, std::unique_ptr<IComponentSparseSet>> ECS::sparseSets = {};
+std::unordered_map<std::type_index, ComponentID> ECS::componentRegistry{};
+std::unordered_map<std::type_index, std::unique_ptr<IComponentSparseSet>> ECS::sparseSets{};
 
 ComponentID ECS::nextComponent = 0;
 

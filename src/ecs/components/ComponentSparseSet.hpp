@@ -31,7 +31,7 @@ public:
         }
 
         // Add component to the dense array
-        SetDenseIndex(e, dense.size());
+        setDenseIndex(e, dense.size());
         dense.push_back(std::move(component));
         denseToEntity.push_back(e);
         
@@ -40,13 +40,13 @@ public:
     // Check if entity e has a component of type T
     bool HasData(EntityID e)
     {
-        return GetDenseIndex(e) != NULL_INDEX;
+        return getDenseIndex(e) != NULL_INDEX;
     }
 
     // Get a pointer to the component of Type T for entity e
     T* GetData(EntityID e)
     {
-        size_t index = GetDenseIndex(e);
+        size_t index = getDenseIndex(e);
         if (index == NULL_INDEX)
         {
             fprintf(stderr, "Entity %u does not have component of type: %s\n", e, typeid(T).name());
@@ -59,7 +59,7 @@ public:
     // Remove a component of Type T for entity e
     void RemoveData(EntityID e)
     {
-        size_t index = GetDenseIndex(e);
+        size_t index = getDenseIndex(e);
         if (index == NULL_INDEX)
         {
             fprintf(stderr, "Entity %u does not have component of type: %s\n", e, typeid(T).name());
@@ -74,8 +74,8 @@ public:
         std::swap(denseToEntity[index], denseToEntity.back());
 
         // Update the index for entities
-        SetDenseIndex(lastEntity, index);
-        SetDenseIndex(e, NULL_INDEX);
+        setDenseIndex(lastEntity, index);
+        setDenseIndex(e, NULL_INDEX);
 
         // Remove the last component and its corresponding entity ID
         dense.pop_back();
@@ -98,7 +98,7 @@ private:
     static constexpr size_t MAX_PAGE_SIZE = 512;
 
     // Map an index of a component to an entity 
-    void SetDenseIndex(EntityID e, size_t index)
+    void setDenseIndex(EntityID e, size_t index)
     {
         size_t page = e / MAX_PAGE_SIZE;
         size_t pageIndex = e % MAX_PAGE_SIZE;
@@ -116,7 +116,7 @@ private:
     }
 
     // Get the dense index for an entity
-    size_t GetDenseIndex(EntityID e)
+    size_t getDenseIndex(EntityID e)
     {
         size_t page = e / MAX_PAGE_SIZE;
         size_t pageIndex = e % MAX_PAGE_SIZE;

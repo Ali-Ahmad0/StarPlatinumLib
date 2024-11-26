@@ -113,15 +113,15 @@ struct AABB
     bool isRigid;
 
     AABB(float cx, float cy, float w, float h, 
-        bool isSolid=false, bool isRigid=true)
+        bool isSolid=true, bool isRigid=true)
         : center(Vector2(cx, cy)), dimensions(Vector2(w, h)), isSolid(isSolid), isRigid(isRigid)
     {
         min = Vector2(-w / 2, -h / 2);
         max = Vector2(w / 2, h / 2);
     }
 
-    AABB(const Vector2& center=Vector2(0, 0), const Vector2& dimensions= Vector2(0, 0),
-        bool isSolid = false, bool isRigid = true)
+    AABB(const Vector2& center=Vector2(0, 0), const Vector2& dimensions=Vector2(0, 0),
+        bool isSolid=true, bool isRigid=true)
         : center(center), dimensions(dimensions), isSolid(isSolid), isRigid(isRigid)
     {
         min = Vector2(-dimensions.x / 2, -dimensions.y / 2);

@@ -9,7 +9,7 @@ struct Transform
     Vector2 position; double rotation; size_t scale;
 
     Transform(const Vector2& position=Vector2(0, 0), double rotation=0.0,size_t scale = 1)
-        : position(position), rotation(rotation), scale(scale) { }
+        : position(position), rotation(rotation), scale(scale) {}
 };
 
 struct Sprite
@@ -29,7 +29,7 @@ struct Sprite
 
     // Map of animations
     std::unordered_map<std::string, std::vector<size_t>> animations{};
-    std::string animation = "none";
+    const char* animation = "none";
 
     bool fliph = false;
     bool flipv = false;
@@ -41,7 +41,7 @@ struct Sprite
         animations.insert({ "none", {} });
     }
 
-    void addAnim(const std::string& anim, const std::vector<size_t>& frames) 
+    void addAnim(const char* anim, const std::vector<size_t>& frames) 
     {
         if (animations.find(anim) != animations.end()) 
         {
@@ -57,7 +57,7 @@ struct Sprite
         animations[anim] = frames;
     }
 
-    void setAnim(const std::string& anim) 
+    void setAnim(const char* anim) 
     {
         if (animations.find(anim) == animations.end())
         {
@@ -69,7 +69,7 @@ struct Sprite
         animation = anim;
     }
        
-    void delAnim(const std::string& anim)
+    void delAnim(const char* anim)
     {
         if (animations.find(anim) == animations.end()) 
         {
@@ -94,7 +94,7 @@ struct Gravity
     Direction direction;
     float g;
 
-    Gravity(Direction direction=Direction::DOWN, float g=9.81f) : direction(direction), g(g) {}
+    Gravity(float g=9.81f, Direction direction=Direction::DOWN) : g(g), direction(direction) {}
 };
 
 struct AABB 
@@ -113,15 +113,15 @@ struct AABB
     bool isRigid;
 
     AABB(float cx, float cy, float w, float h, 
-        bool isSolid=false, bool isRigid=true)
+        bool isSolid=true, bool isRigid=true)
         : center(Vector2(cx, cy)), dimensions(Vector2(w, h)), isSolid(isSolid), isRigid(isRigid)
     {
         min = Vector2(-w / 2, -h / 2);
         max = Vector2(w / 2, h / 2);
     }
 
-    AABB(const Vector2& center=Vector2(0, 0), const Vector2& dimensions= Vector2(0, 0),
-        bool isSolid = false, bool isRigid = true)
+    AABB(const Vector2& center=Vector2(0, 0), const Vector2& dimensions=Vector2(0, 0),
+        bool isSolid=true, bool isRigid=true)
         : center(center), dimensions(dimensions), isSolid(isSolid), isRigid(isRigid)
     {
         min = Vector2(-dimensions.x / 2, -dimensions.y / 2);

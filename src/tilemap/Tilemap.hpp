@@ -12,10 +12,10 @@
 class Tilemap 
 {
 public:
-	Tilemap(const size_t tilesize=16, const size_t scale=1);
+	Tilemap(size_t tilesize=16, size_t scale=1);
 	~Tilemap() = default;
 
-	void SetTilesize(const size_t size);
+	void SetTilesize(size_t size);
 
 	void AddTileset(const char* path);
 
@@ -48,28 +48,11 @@ private:
 	std::vector<Rectangle> rectangles;
 
 	// Initialize texture map
-	void initTextureMap(size_t layers, size_t rows, size_t cols)
-	{
-		texture.resize(layers);
-		for (size_t layer = 0; layer < layers; layer++) 
-		{
-			texture[layer].resize(rows);
-			for (size_t row = 0; row < rows; row++)
-			{
-				texture[layer][row].resize(cols, -1);
-			}
-		}
-	}
+	void initTextureMap(size_t layers, size_t rows, size_t cols);
 
 	// Initialize collision map
-	void initCollisionMap() 
-	{
-		collision.resize(height);
-		for (size_t row = 0; row < height; row++) 
-		{
-			collision[row].resize(width, false);
-		}
-	}
+	void initCollisionMap();
 
+	// Generate collision entities
 	void generateCollisionTiles();
 };

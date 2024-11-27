@@ -12,7 +12,6 @@ Engine::Engine(const Properties &properties)
 Engine::~Engine() = default;
 
 SDL_Renderer* Engine::renderer = nullptr;
-ECS Engine::ecs;
 
 void Engine::Init() 
 {
@@ -21,7 +20,7 @@ void Engine::Init()
 	// Initialize SDL
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0) 
 	{
-		printf("Initialized subsystems.\n");
+		printf("[INFO]: Initialized subsystems\n");
 		
 		// Create window
 		window = SDL_CreateWindow(
@@ -31,7 +30,7 @@ void Engine::Init()
 
 		if (window)
 		{
-			printf("Window created.\n");
+			printf("[INFO]: Window created\n");
 		}
 
 		// Create renderer
@@ -41,27 +40,30 @@ void Engine::Init()
 			Color color("#000000");
 
 			SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
-			printf("Renderer created.\n");
+			printf("[INFO]: Renderer created\n");
 		}
 		isRunning = true;
 	}
 
 	else 
 	{
-		printf("Failed to initialize SDL");
+		fprintf(stderr, "[ERROR] Failed to initialize SDL, exiting...\n");
 		isRunning = false;
 	}
 	
-	ecs.Init();
 
-	// Register components
+	// Initialize ECS related stuff
+	ECS::Init();
+	printf("[INFO]: ECS initialized\n");
+
 	Init::InitComponents();
+	printf("[INFO]: Engine components initialized\n");
+
 	Init::InitSystems();
+	printf("[INFO]: Engine systems initialized\n");
 
 	SceneManager::AddScene<InitialScene>("initial_scene");
 	SceneManager::ChangeScene("initial_scene");
-
-	
 }
 
 bool showFPS = false;
@@ -102,8 +104,8 @@ void Engine::Events()
 
 void Engine::Update()
 {
-	ecs.GetSystem<MovementSystem>()->update(ecs, (double)deltaTime / 1000);
-	ecs.GetSystem<AABBSystem>()->update(ecs);
+	ECS::GetSystem<MovementSystem>()->update((double)deltaTime / 1000);
+	ECS::GetSystem<AABBSystem>()->update();
 
 	SceneManager::Update(deltaTime);
 }
@@ -113,7 +115,7 @@ void Engine::Render()
 	SDL_RenderClear(renderer);
 
 	SceneManager::Draw();
-	ecs.GetSystem<SpriteSystem>()->update(ecs, renderer);
+	ECS::GetSystem<SpriteSystem>()->update();
 
 	SDL_RenderPresent(renderer);
 }
@@ -125,6 +127,8 @@ void Engine::GameLoop()
 
 	Uint32 frameStartTime;
 	int frameDrawTime;
+
+	printf("[INFO]: Starting update loop...\n");
 
 	while (Running())
 	{
@@ -151,7 +155,7 @@ void Engine::GameLoop()
 
 		if (showFPS)
 		{
-			printf("FPS: %f | Entities: %zu\n", ((float)targetDeltaTime / (float)deltaTime) * properties.targetFPS, ecs.GetEntityCount());
+			printf("FPS: %f | Entities: %zu\n", ((float)targetDeltaTime / (float)deltaTime) * properties.targetFPS, ECS::GetEntityCount());
 			showFPS = false;
 		}		
 	}
@@ -159,9 +163,12 @@ void Engine::GameLoop()
 
 void Engine::Exit()
 {
+	printf("[INFO]: Exiting...\n");
+
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
 
-	printf("Game exited\n");
+	printf("[INFO]: Game exited\n");
 }
+

@@ -27,7 +27,7 @@ struct Properties
 
 	bool fullscreen;
 
-	explicit Properties(const char* title, int targetFPS = 60, Vector2 windowPos = Vector2(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED),
+	Properties(const char* title, int targetFPS = 60, Vector2 windowPos = Vector2(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED),
 		Vector2 windowSize = Vector2(640, 480), bool fullscreen = false) 
 		: title(title), targetFPS(targetFPS), windowPos(windowPos), windowSize(windowSize), fullscreen(fullscreen) {}
 };
@@ -36,7 +36,7 @@ class Engine
 {
 public:
 	// Constructor and destructor
-	explicit Engine(const Properties &properties);
+	Engine(const Properties& properties);
 	~Engine();
 
 	void Init();
@@ -49,10 +49,16 @@ public:
 
 	void Exit();
 
-	bool Running() const { return isRunning; }
-
-	static SDL_Renderer* GetRenderer() { return renderer; }
-	static ECS& GetECS() { return ecs; }
+	// Engine property getters
+	bool Running() 
+	{ 
+		return isRunning; 
+	}
+	
+	static SDL_Renderer* GetRenderer() 
+	{ 
+		return renderer; 
+	}
 
 private:
 	bool isRunning;
@@ -62,8 +68,7 @@ private:
 
 	SDL_Window* window;
 	static SDL_Renderer* renderer;
-	
-	static ECS ecs;
+
 	Properties properties;
 
 };

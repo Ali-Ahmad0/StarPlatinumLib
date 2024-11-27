@@ -13,41 +13,16 @@ class ECS
 
 public:
     // Initialize ECS
-    void Init() 
-    {
-        entityManager = std::make_unique<EntityManager>();
-        systemManager = std::make_unique<SystemManager>();
-        
-        entityManager->Init();
-    }
+    static void Init();
 
     // Entity related methods
-    EntityID CreateEntity() const
-    {
-        return entityManager->CreateEntity();
-    }
-
-    void DeleteEntity(const EntityID entity) const
-    {
-        entityManager->DeleteEntity(entity);
-
-        // Remove components associated with the entity
-        for (auto& pair : sparseSets)
-        {
-            pair.second->OnEntityDestroyed(entity);
-        }
-
-        systemManager->OnEntityDestroyed(entity);
-    }
-
-    size_t GetEntityCount() const
-    {
-        return entityManager->GetEntityCount();
-    }
+    static EntityID CreateEntity();
+    static void DeleteEntity(EntityID entity);
+    static size_t GetEntityCount();
 
     // Component related methods
     template <typename T>
-    void RegisterComponent()
+    static void RegisterComponent()
     {
         const std::type_index typeIndex(typeid(T));
         
@@ -59,14 +34,16 @@ public:
         // Assign component ID
         componentRegistry[typeIndex] = nextComponent;
         nextComponent++;
+
+        printf("[INFO]: Registered component: %s\n", typeIndex.name());
     }
 
     template <typename T>
-    void AddComponent(EntityID entity, T component)
+    static void AddComponent(EntityID entity, T component)
     {
         if (!entityManager->IsActive(entity)) 
         {
-            fprintf(stderr, "Cannot add component on non existing entity");
+            fprintf(stderr, "[ERROR]: Cannot add component on non existing entity");
             return;
         }
 
@@ -75,11 +52,11 @@ public:
     }
 
     template <typename T>
-    void RemoveComponent(EntityID entity)
+    static void RemoveComponent(EntityID entity)
     {
         if (!entityManager->IsActive(entity))
         {
-            fprintf(stderr, "Cannot remove component on non existing entity");
+            fprintf(stderr, "[ERROR]: Cannot remove component on non existing entity\n");
             return;
         }
 
@@ -88,19 +65,19 @@ public:
     }
 
     template <typename T>
-    bool HasComponent(EntityID entity) const
+    static bool HasComponent(EntityID entity) 
     {
         return getComponentSparseSet<T>()->HasData(entity);
     }
 
     template <typename T>
-    T* GetComponent(EntityID entity)
+    static T* GetComponent(EntityID entity)
     {
         return getComponentSparseSet<T>()->GetData(entity);
     }
 
     template <typename T>
-    ComponentID GetComponentID()
+    static ComponentID GetComponentID()
     {
         std::type_index typeIndex = typeid(T);
         
@@ -110,24 +87,24 @@ public:
             // Return ID
             return componentRegistry[typeIndex];
         }
-        throw std::runtime_error("Cannot get ID on unregistered component");
+        throw std::runtime_error("[RUNTIME ERROR]: Cannot get ID on unregistered component");
     }
 
     // System related methods
     template <typename T>
-    std::shared_ptr<T> RegisterSystem() 
+    static std::shared_ptr<T> RegisterSystem() 
     {
         return systemManager->RegisterSystem<T>();
     }
 
     template <typename T>
-    std::shared_ptr<T> GetSystem()
+    static std::shared_ptr<T> GetSystem()
     {
         return std::static_pointer_cast<T>(systemManager->GetSystem<T>());
     }
 
     template <typename T, typename U>
-    void AddComponentToSystem() 
+    static void AddComponentToSystem() 
     {
         Signature signature = systemManager->GetSignature<U>();
         signature.set(GetComponentID<T>(), true);
@@ -137,21 +114,21 @@ public:
    
 private:
     // Managers
-    std::unique_ptr<EntityManager> entityManager;
-    std::unique_ptr<SystemManager> systemManager;
+    static std::unique_ptr<EntityManager> entityManager;
+    static std::unique_ptr<SystemManager> systemManager;
 
     // Map that assigns an ID to each component type
-    std::unordered_map<std::type_index, ComponentID> componentRegistry{};
+    static std::unordered_map<std::type_index, ComponentID> componentRegistry;
 
     // Map that stores all registered component pools
-    std::unordered_map<std::type_index, std::unique_ptr<IComponentSparseSet>> sparseSets{};
+    static std::unordered_map<std::type_index, std::unique_ptr<IComponentSparseSet>> sparseSets;
 
     // Next component ID
-    ComponentID nextComponent = 0;
+    static ComponentID nextComponent;
 
     // Get the component pool for a specific type
     template <typename T>
-    ComponentSparseSet<T>* getComponentSparseSet() const
+    static ComponentSparseSet<T>* getComponentSparseSet() 
     {
         const std::type_index typeIndex(typeid(T));
         const auto it = sparseSets.find(typeIndex);
@@ -159,12 +136,12 @@ private:
         {
             return static_cast<ComponentSparseSet<T>*>(it->second.get());
         }
-        throw std::runtime_error("Component map for type not registered.");
+        throw std::runtime_error("[RUNTIME ERROR]: Component map for type not registered");
     }
 
     // Update the signature of an entity and notify system manager
     template <typename T>
-    void updateEntitySignature(EntityID entity, bool value) 
+    static void updateEntitySignature(EntityID entity, bool value) 
     {
         Signature signature = entityManager->GetSignature(entity);
         signature.set(GetComponentID<T>(), value);

@@ -1,7 +1,7 @@
 #include "Tilemap.hpp"
 #include "../main/Game.hpp"
 
-Tilemap::Tilemap(const size_t tilesize, const size_t scale) : tileset(nullptr), tilesize(tilesize), scale(scale) { }
+Tilemap::Tilemap(size_t tilesize, size_t scale) : tileset(nullptr), tilesize(tilesize), scale(scale) { }
 
 void Tilemap::AddTileset(const char* path)
 {
@@ -40,19 +40,34 @@ void Tilemap::AddTileset(const char* path)
     }
 }
 
-void Tilemap::SetTilesize(const size_t size) 
+void Tilemap::SetTilesize(size_t size) 
 {
     tilesize = size;
 }
 
+void Tilemap::initTextureMap(size_t layers, size_t rows, size_t cols) 
+{
+    printf("[INFO]: Initializing texture map...\n");
+    texture.resize(layers);
+    for (size_t layer = 0; layer < layers; layer++)
+    {
+        texture[layer].resize(rows);
+        for (size_t row = 0; row < rows; row++)
+        {
+            texture[layer][row].resize(cols, -1);
+        }
+    }
+}
+
 void Tilemap::LoadMap(const char* path)
 {
+    printf("[INFO]: Loading tilemap file: %s\n", path);
     // Open file
     std::ifstream mapfile(path);
 
     if (!mapfile.is_open())
     {
-        fprintf(stderr, "Failed to open map\n");
+        fprintf(stderr, "[ERROR]: Failed to open tilemap\n");
         return;
     }
 
@@ -66,7 +81,7 @@ void Tilemap::LoadMap(const char* path)
 
     catch (const nlohmann::json::parse_error& e)
     {
-        fprintf(stderr, "Unable to load tilemap: %s", e.what());
+        fprintf(stderr, "[ERROR]: Unable to load tilemap - %s\n", e.what());
         return;
     }
 
@@ -79,6 +94,7 @@ void Tilemap::LoadMap(const char* path)
 
     initTextureMap(mapfilejson["layers"].size(), height, width);
 
+    printf("[INFO]: Generating tilemap texture\n");
     // Get the layout for the layer
     for (size_t i = 0; i < mapfilejson["layers"].size(); i++)
     {
@@ -125,6 +141,7 @@ void Tilemap::LoadMap(const char* path)
         // Reset the render target to the default renderer target
         SDL_SetRenderTarget(Engine::GetRenderer(), NULL);
     }
+    printf("[INFO]: Tilemap loaded successfully\n");
 }
 
 void Tilemap::DrawMap()
@@ -140,8 +157,19 @@ void Tilemap::DrawMap()
 	}
 }
 
+void Tilemap::initCollisionMap() 
+{
+    printf("[INFO]: Initializing collision map\n");
+    collision.resize(height);
+    for (size_t row = 0; row < height; row++)
+    {
+        collision[row].resize(width, false);
+    }
+}
+
 void Tilemap::generateCollisionTiles()
 {
+    printf("[INFO]: Generating collision tiles\n");
     // Loop through each row to identify contiguous blocks of collidable tiles
     for (size_t row = 0; row < height; row++)
     {
@@ -191,9 +219,9 @@ void Tilemap::generateCollisionTiles()
                 float x = (float)startCol * tilesize * scale;
                 float y = (float)row * tilesize * scale;
 
-                EntityID tile = Engine::GetECS().CreateEntity();
-                Engine::GetECS().AddComponent(tile, Transform(Vector2(x, y), 0.0, scale));
-                Engine::GetECS().AddComponent(tile, AABB(Vector2(w / 2, h / 2), Vector2(w, h), true, false));
+                EntityID tile = ECS::CreateEntity();
+                ECS::AddComponent(tile, Transform(Vector2(x, y), 0.0, scale));
+                ECS::AddComponent(tile, AABB(Vector2(w / 2, h / 2), Vector2(w, h), true, false));
             }
             else
             {
@@ -203,12 +231,12 @@ void Tilemap::generateCollisionTiles()
     }
 }
 
-
 // Set collision true for a certain number of tiles
 void Tilemap::AddCollision(size_t layer, const std::vector<size_t>& tiles) 
 {
     initCollisionMap();
 
+    printf("[INFO]: Generating collision map\n");
     for (size_t row = 0; row < height; row++) 
     {
         for (size_t col = 0; col < width; col++) 
@@ -218,4 +246,5 @@ void Tilemap::AddCollision(size_t layer, const std::vector<size_t>& tiles)
     }
 
     generateCollisionTiles();
+    printf("[INFO]: Collision map generated succesfully\n");
 }

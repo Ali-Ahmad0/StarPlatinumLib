@@ -12,7 +12,6 @@ void SetupKeyBindings() {
 
 void TestScene::Ready()
 {
-
 	player.Ready();
 
 	tilemap.AddTileset("res/test/assets/untitled.png");

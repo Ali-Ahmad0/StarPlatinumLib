@@ -1,6 +1,6 @@
 #include "SceneManager.hpp"
 
-std::unordered_map<std::string, std::shared_ptr<IScene>> SceneManager::scenes{};
+std::unordered_map<const char*, std::shared_ptr<IScene>> SceneManager::scenes{};
 IScene* SceneManager::currentScene = nullptr;
 
 void SceneManager::Update(double delta) 
@@ -27,7 +27,7 @@ void SceneManager::Draw()
 	}
 }
 
-void SceneManager::DeleteScene(const std::string& name) 
+void SceneManager::DeleteScene(const char* name) 
 {
 	if (isAdded(name)) 
 	{
@@ -36,14 +36,15 @@ void SceneManager::DeleteScene(const std::string& name)
 			currentScene = nullptr;
 		}
 		scenes.erase(name);
+		printf("[INFO]: Successfully deleted scene: %s\n", name);
 	}
 	else 
 	{
-		fprintf(stderr, "Cannot delete a scene that does not exist");
+		fprintf(stderr, "[ERROR]: Cannot delete a scene that does not exist\n");
 	}
 }
 
-void SceneManager::ChangeScene(const std::string& name) 
+void SceneManager::ChangeScene(const char* name) 
 {
 	if (isAdded(name)) 
 	{
@@ -52,11 +53,12 @@ void SceneManager::ChangeScene(const std::string& name)
 		{
 			currentScene = newScene;
 			currentScene->Ready();
+			printf("[INFO]: Successfully changed scene to: %s\n", name);
 		}
 	}
 
 	else 
 	{
-		fprintf(stderr, "Cannot change scene as scene does not exist");
+		fprintf(stderr, "[ERROR]: Cannot change to non existent scene\n");
 	}
 }

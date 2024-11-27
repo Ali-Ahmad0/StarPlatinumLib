@@ -2,29 +2,29 @@
 
 void Init::InitComponents() 
 {
-	Engine::GetECS().RegisterComponent<Transform>();
-	Engine::GetECS().RegisterComponent<Sprite>();
-	Engine::GetECS().RegisterComponent<Movement>();
-	Engine::GetECS().RegisterComponent<AABB>();
+	ECS::RegisterComponent<Transform>();
+	ECS::RegisterComponent<Sprite>();
+	ECS::RegisterComponent<Movement>();
+	ECS::RegisterComponent<AABB>();
 }
 
 void Init::InitSystems() 
 {
 	// Sprite System
-	auto spriteSystem = Engine::GetECS().RegisterSystem<SpriteSystem>();
+	auto spriteSystem = ECS::RegisterSystem<SpriteSystem>();
 
-	Engine::GetECS().AddComponentToSystem<Transform, SpriteSystem>();
-	Engine::GetECS().AddComponentToSystem<Sprite, SpriteSystem>();
+	ECS::AddComponentToSystem<Transform, SpriteSystem>();
+	ECS::AddComponentToSystem<Sprite, SpriteSystem>();
 
 	// Movemenet system
-	auto movemenetSystem = Engine::GetECS().RegisterSystem<MovementSystem>();
+	auto movemenetSystem = ECS::RegisterSystem<MovementSystem>();
 
-	Engine::GetECS().AddComponentToSystem<Transform, MovementSystem>();
-	Engine::GetECS().AddComponentToSystem<Movement, MovementSystem>();
+	ECS::AddComponentToSystem<Transform, MovementSystem>();
+	ECS::AddComponentToSystem<Movement, MovementSystem>();
 
 	// AABB system
-	auto aabbSystem = Engine::GetECS().RegisterSystem<AABBSystem>();
+	auto aabbSystem = ECS::RegisterSystem<AABBSystem>();
 
-	Engine::GetECS().AddComponentToSystem<Transform, AABBSystem>();
-	Engine::GetECS().AddComponentToSystem<AABB, AABBSystem>();
+	ECS::AddComponentToSystem<Transform, AABBSystem>();
+	ECS::AddComponentToSystem<AABB, AABBSystem>();
 }

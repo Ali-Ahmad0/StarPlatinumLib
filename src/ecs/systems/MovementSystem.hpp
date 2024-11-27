@@ -6,15 +6,5 @@
 
 struct MovementSystem : public BaseSystem
 {
-	void update(ECS& ecs, double delta) 
-	{
-		for (EntityID e : entities) 
-		{
-			auto* transform = ecs.GetComponent<Transform>(e);
-			auto* movement = ecs.GetComponent<Movement>(e);
-			
-			// Update transform component based on movemenet component
-			transform->position += movement->direction * movement->speed * (float)delta;
-		}
-	}
+	void update(double delta);
 };

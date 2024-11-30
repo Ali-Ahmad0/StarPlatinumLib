@@ -3,11 +3,12 @@
 
 void MainScene::Ready() 
 {
-	//playerTexture = TextureManager::LoadTexture("res/game/assets/player/player.png");
-	//player = Engine::GetECS().CreateEntity();
-
 	tilemap.AddTileset("res/game/assets/tilemap/tileset.png");
 	tilemap.LoadMap("res/game/assets/level/debug.json");
+
+	tilemap.AddCollision(0, { 110, 111, 112, 130, 131, 132, 175, 176, 177, 270, 271, 272, 290, 291, 292 });
+
+	player.Ready();
 }
 
 void MainScene::Update(double delta) 
@@ -17,7 +18,7 @@ void MainScene::Update(double delta)
 
 void MainScene::Events(SDL_Event event) 
 {
-
+	player.Events(event);
 }
 
 void MainScene::Draw() 

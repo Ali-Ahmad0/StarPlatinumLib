@@ -4,6 +4,8 @@
 #include "../../../src/texture/TextureManager.hpp"
 #include "../../../src/tilemap/Tilemap.hpp"
 
+#include "Player.hpp"
+
 class MainScene : public IScene
 {
 public:
@@ -13,8 +15,6 @@ public:
 	void Draw() override;
 
 private:
-	EntityID player;
-	SDL_Texture* playerTexture;
-
+	Player player;
 	Tilemap tilemap = Tilemap(16, 4);
 };

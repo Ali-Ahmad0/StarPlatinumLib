@@ -16,40 +16,77 @@ void TestPlayer::Ready()
 
 	// Configure sprite animations
 	sprite = ECS::GetComponent<Sprite>(player);
+
+	sprite->addAnim("idle_right", { 10 });
+	sprite->addAnim("idle_left", { 7 });
+	sprite->addAnim("idle_up", { 4 });
+	sprite->addAnim("idle_down", { 1 });
+
 	sprite->addAnim("walk_right", { 9, 10, 11 });
 	sprite->addAnim("walk_left", { 6, 7, 8 });
 	sprite->addAnim("walk_up", { 3, 4, 5 });
 	sprite->addAnim("walk_down", { 0, 1, 2 });
  
 	movement = ECS::GetComponent<Movement>(player);
-	movement->speed = 100;
+}
+
+void TestPlayer::Update(double delta) 
+{
+	// Basic input
+	const Uint8* state = SDL_GetKeyboardState(NULL);
+
+	if (state[SDL_SCANCODE_LEFT])
+	{
+		direction = Vector2(-1, 0);
+		sprite->setAnim("walk_left");
+	}
+	else if (state[SDL_SCANCODE_RIGHT])
+	{
+		direction = Vector2(1, 0);
+		sprite->setAnim("walk_right");
+	}
+	else if (state[SDL_SCANCODE_UP])
+	{
+		direction = Vector2(0, -1);
+		direction.y = -1;
+		sprite->setAnim("walk_up");
+	}
+	else if (state[SDL_SCANCODE_DOWN])
+	{
+		direction = Vector2(0, 1);
+		sprite->setAnim("walk_down");
+	}
+	else
+	{
+		// Set idle animation based on the last direction
+		if (direction.x == -1)
+		{
+			sprite->setAnim("idle_left");
+		}
+		else if (direction.x == 1)
+		{
+			sprite->setAnim("idle_right");
+		}
+		else if (direction.y == -1)
+		{
+			sprite->setAnim("idle_up");
+		}
+		else if (direction.y == 1)
+		{
+			sprite->setAnim("idle_down");
+		}
+	}
+
+	movement->direction = direction;
+	movement->speed = 100.0f * (state[SDL_SCANCODE_LEFT] || state[SDL_SCANCODE_RIGHT]
+								|| state[SDL_SCANCODE_UP] || state[SDL_SCANCODE_DOWN]);
 }
 
 void TestPlayer::Events(SDL_Event event) 
 {
-	// Input and animation test
+	// Stress test example
 	switch (event.key.keysym.sym)
 	{
-	case SDLK_UP:
-		movement->direction = Vector2(0, -1);
-		sprite->setAnim("walk_up");
-		break;
-
-	case SDLK_DOWN:
-		movement->direction = Vector2(0, 1);
-		sprite->setAnim("walk_down");
-		break;
-
-	case SDLK_LEFT:
-		movement->direction = Vector2(-1, 0);
-		sprite->setAnim("walk_left");
-		break;
-
-	case SDLK_RIGHT:
-		movement->direction = Vector2(1, 0);
-		sprite->setAnim("walk_right");
-		break;
-
 	//// Stress test
 	//case SDLK_RETURN:
 

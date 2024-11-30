@@ -45,6 +45,8 @@ void AABBSystem::update()
                 // Resolve collisions
                 resolve(boxA, transformA, boxB, transformB);
             }
+
+            
         }
     }
 }
@@ -58,6 +60,9 @@ void AABBSystem::resolve(AABB* box1, Transform* t1, AABB* box2, Transform* t2)
         float overlapX = std::min(box1->max.x - box2->min.x, box2->max.x - box1->min.x);
         float overlapY = std::min(box1->max.y - box2->min.y, box2->max.y - box1->min.y);
 
+        int divideFactor1 = box1->isRigid ? 2 : 1;
+        int divideFactor2 = box2->isRigid ? 2 : 1;
+
         // Find the axis with the least overlap and move the entities along that axis
         if (overlapX < overlapY)
         {
@@ -66,22 +71,22 @@ void AABBSystem::resolve(AABB* box1, Transform* t1, AABB* box2, Transform* t2)
             {
                 if (box1->isRigid)
                 {
-                    t1->position.x -= overlapX / 2;
+                    t1->position.x -= overlapX / divideFactor2;
                 }
                 if (box2->isRigid)
                 {
-                    t2->position.x += overlapX / 2;
+                    t2->position.x += overlapX / divideFactor1;
                 }
             }
             else
             {
                 if (box1->isRigid)
                 {
-                    t1->position.x += overlapX / 2;
+                    t1->position.x += overlapX / divideFactor2;
                 }
                 if (box2->isRigid)
                 {
-                    t2->position.x -= overlapX / 2;
+                    t2->position.x -= overlapX / divideFactor1;
                 }
             }
         }
@@ -92,22 +97,22 @@ void AABBSystem::resolve(AABB* box1, Transform* t1, AABB* box2, Transform* t2)
             {
                 if (box1->isRigid)
                 {
-                    t1->position.y -= overlapY / 2;
+                    t1->position.y -= overlapY / divideFactor2;
                 }
                 if (box2->isRigid)
                 {
-                    t2->position.y += overlapY / 2;
+                    t2->position.y += overlapY / divideFactor1;
                 }
             }
             else
             {
                 if (box1->isRigid)
                 {
-                    t1->position.y += overlapY / 2;
+                    t1->position.y += overlapY / divideFactor2;
                 }
                 if (box2->isRigid)
                 {
-                    t2->position.y -= overlapY / 2;
+                    t2->position.y -= overlapY / divideFactor1;
                 }
             }
         }

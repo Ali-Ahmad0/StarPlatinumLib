@@ -12,12 +12,12 @@ void TestScene::Ready()
 
 void TestScene::Update(double delta)
 {
-	//printf("Update...\n");
+	player.Update(delta);
 }
 
 void TestScene::Events(SDL_Event event)
 {
-	player.Events(event);
+	//player.Events(event);
 }
 
 void TestScene::Draw()

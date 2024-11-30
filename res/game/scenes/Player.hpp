@@ -1,21 +1,21 @@
 #pragma once
+
 #include "../../../src/scene/SceneManager.hpp"
 #include "../../../src/texture/TextureManager.hpp"
-#include "../../../src/tilemap/Tilemap.hpp"
 
-class TestPlayer : public IScene 
+class Player : public IScene 
 {
 public:
 	void Ready() override;
 	void Update(double delta) override;
 	void Events(SDL_Event event) override;
-	
+	void Draw() override;
+
 private:
 	EntityID player;
-	SDL_Texture* texture;
+	SDL_Texture* playerTexture;
 
-	Vector2 direction;
-
+	// Components to modify
 	Movement* movement;
 	Sprite* sprite;
 };

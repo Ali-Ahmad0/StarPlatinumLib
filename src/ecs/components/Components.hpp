@@ -89,14 +89,6 @@ struct Movement
     Movement(const Vector2& direction=Vector2(0, 0), float speed = 0) : direction(direction), speed(speed) {}
 };
 
-struct Gravity
-{
-    Direction direction;
-    float g;
-
-    Gravity(float g=9.81f, Direction direction=Direction::DOWN) : g(g), direction(direction) {}
-};
-
 struct AABB 
 {
     // Center
@@ -138,13 +130,12 @@ struct AABB
         return isColliding;
     }
 
-    // Return whether a collision has occurred
-    bool colliding() 
-    {
-        return isColliding;
-    }
-
 private:
     bool isColliding = false;
+
+    bool isOnFloor = false;
+    bool isOnCeiling = false;
+    bool isOnWallR = false;
+    bool isOnWallL = false;
 };
 

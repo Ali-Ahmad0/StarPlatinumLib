@@ -10,5 +10,5 @@ void InitialScene::Ready()
 	SceneManager::AddScene<TestScene>("test_scene");
 	SceneManager::AddScene<MainScene>("main_scene");
 
-	SceneManager::ChangeScene("test_scene");
+	SceneManager::ChangeScene("main_scene");
 }

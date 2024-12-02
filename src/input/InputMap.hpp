@@ -13,9 +13,6 @@ public:
     static bool IsKeyReleased(const std::string& key);
     static bool IsKeyPressed(const std::string& key);
 
-
-
-
 private:
     static std::unordered_map<std::string, SDL_Scancode> bindings;
 };

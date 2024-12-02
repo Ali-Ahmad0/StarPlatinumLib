@@ -107,7 +107,7 @@ void Engine::Update()
 	ECS::GetSystem<MovementSystem>()->update((double)deltaTime / 1000);
 	ECS::GetSystem<AABBSystem>()->update();
 
-	SceneManager::Update(deltaTime);
+	SceneManager::Update((double)deltaTime / 1000);
 }
 
 void Engine::Render()

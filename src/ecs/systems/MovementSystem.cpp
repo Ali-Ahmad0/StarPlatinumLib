@@ -9,6 +9,7 @@ void MovementSystem::update(double delta)
 		auto* movement = ECS::GetComponent<Movement>(e);
 
 		// Update transform component based on movemenet component
-		transform->position += movement->direction * movement->speed * (float)delta;
+		transform->position.x += movement->direction.x * movement->speed.x * (float)delta;
+		transform->position.y += movement->direction.y * movement->speed.y * (float)delta;
 	}
 }

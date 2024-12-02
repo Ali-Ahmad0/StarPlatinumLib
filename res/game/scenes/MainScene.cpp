@@ -13,12 +13,7 @@ void MainScene::Ready()
 
 void MainScene::Update(double delta) 
 {
-	
-}
-
-void MainScene::Events(SDL_Event event) 
-{
-	player.Events(event);
+	player.Update(delta);
 }
 
 void MainScene::Draw() 

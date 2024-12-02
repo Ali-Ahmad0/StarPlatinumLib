@@ -85,8 +85,8 @@ void TestPlayer::Update(double delta)
 void TestPlayer::Events(SDL_Event event) 
 {
 	// Stress test example
-	switch (event.key.keysym.sym)
-	{
+	//switch (event.key.keysym.sym)
+	//{
 	//// Stress test
 	//case SDLK_RETURN:
 
@@ -114,7 +114,7 @@ void TestPlayer::Events(SDL_Event event)
 	//		printf("%s\n", e.what());
 	//	}
 
-	default:
-		break;
-	}
+	//default:
+	//	break;
+	//}
 }

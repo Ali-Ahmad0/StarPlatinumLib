@@ -84,9 +84,9 @@ struct Sprite
 struct Movement 
 {
     Vector2 direction;
-    float speed;
+    Vector2 speed;
 
-    Movement(const Vector2& direction=Vector2(0, 0), float speed = 0) : direction(direction), speed(speed) {}
+    Movement(const Vector2& direction=Vector2(0, 0), const Vector2& speed=Vector2(0, 0)) : direction(direction), speed(speed) {}
 };
 
 struct AABB 
@@ -130,12 +130,12 @@ struct AABB
         return isColliding;
     }
 
+    bool colliding() 
+    {
+        return isColliding;
+    }
+
 private:
     bool isColliding = false;
-
-    bool isOnFloor = false;
-    bool isOnCeiling = false;
-    bool isOnWallR = false;
-    bool isOnWallL = false;
 };
 

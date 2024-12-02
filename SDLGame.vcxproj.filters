@@ -51,6 +51,27 @@
     <ClCompile Include="res\game\scenes\MainScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="res\test\scenes\TestPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\ECS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\systems\AABBSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\systems\MovementSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\systems\SpriteSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\input\InputMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="res\game\scenes\Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\main\Game.hpp">
@@ -534,6 +555,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="res\game\scenes\MainScene.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="res\test\scenes\TestPlayer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\input\InputMap.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="res\game\scenes\Player.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

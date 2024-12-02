@@ -163,11 +163,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="res\game\scenes\MainScene.cpp" />
+    <ClCompile Include="res\game\scenes\Player.cpp" />
     <ClCompile Include="res\test\scenes\TestPlayer.cpp" />
     <ClCompile Include="res\test\scenes\TestScene.cpp" />
     <ClCompile Include="src\ecs\ECS.cpp" />
     <ClCompile Include="src\ecs\systems\AABBSystem.cpp" />
-    <ClCompile Include="src\ecs\systems\GravitySystem.cpp" />
     <ClCompile Include="src\ecs\systems\MovementSystem.cpp" />
     <ClCompile Include="src\ecs\systems\SpriteSystem.cpp" />
     <ClCompile Include="src\input\InputMap.cpp" />
@@ -322,6 +322,7 @@
     <ClInclude Include="libs\SDL2\include\SDL_vulkan.h" />
     <ClInclude Include="libs\SDL2_IMG\include\SDL_image.h" />
     <ClInclude Include="res\game\scenes\MainScene.hpp" />
+    <ClInclude Include="res\game\scenes\Player.hpp" />
     <ClInclude Include="res\test\scenes\TestPlayer.hpp" />
     <ClInclude Include="res\test\scenes\TestScene.hpp" />
     <ClInclude Include="src\ecs\systems\AABBSystem.hpp" />
@@ -332,7 +333,6 @@
     <ClInclude Include="src\ecs\managers\EntityManager.hpp" />
     <ClInclude Include="src\ecs\managers\SystemManager.hpp" />
     <ClInclude Include="src\ecs\systems\BaseSystem.hpp" />
-    <ClInclude Include="src\ecs\systems\GravitySystem.hpp" />
     <ClInclude Include="src\ecs\systems\MovementSystem.hpp" />
     <ClInclude Include="src\ecs\systems\SpriteSystem.hpp" />
     <ClInclude Include="src\ecs\systems\System.hpp" />

@@ -20,16 +20,17 @@ struct Properties
 {
 	const char* title;
 
+	bool fullscreen;
+
 	int targetFPS;
 
 	Vector2 windowPos;
 	Vector2 windowSize;
 
-	bool fullscreen;
 
-	Properties(const char* title, int targetFPS = 60, Vector2 windowPos = Vector2(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED),
-		Vector2 windowSize = Vector2(640, 480), bool fullscreen = false) 
-		: title(title), targetFPS(targetFPS), windowPos(windowPos), windowSize(windowSize), fullscreen(fullscreen) {}
+	Properties(const char* title, int targetFPS = 60, Vector2 windowSize = Vector2(640, 480), bool fullscreen = false, 
+		Vector2 windowPos = Vector2(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED)) 
+		: title(title), targetFPS(targetFPS), windowSize(windowSize), fullscreen(fullscreen), windowPos(windowPos) {}
 };
 
 class Engine 

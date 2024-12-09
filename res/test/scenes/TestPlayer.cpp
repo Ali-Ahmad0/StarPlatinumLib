@@ -9,9 +9,9 @@ void TestPlayer::Ready()
 	texture = TextureManager::LoadTexture("res/test/assets/character.png");
 
 	// Add components
-	ECS::AddComponent(player, Transform(Vector2(0, 0), 0.0, 4));
+	ECS::AddComponent(player, Transform(Vector2(0, 0), 0.0, 8));
 	ECS::AddComponent(player, Sprite(texture, 3, 4, 6));
-	ECS::AddComponent(player, AABB(Vector2(8, 16), Vector2(12, 12), true));
+	ECS::AddComponent(player, AABB(Vector2(8, 20), Vector2(12, 12)));
 	ECS::AddComponent(player, Movement());
 
 	// Configure sprite animations
@@ -48,7 +48,6 @@ void TestPlayer::Update(double delta)
 	else if (state[SDL_SCANCODE_UP])
 	{
 		direction = Vector2(0, -1);
-		direction.y = -1;
 		sprite->setAnim("walk_up");
 	}
 	else if (state[SDL_SCANCODE_DOWN])
@@ -78,8 +77,10 @@ void TestPlayer::Update(double delta)
 	}
 
 	movement->direction = direction;
-	movement->speed = 100.0f * (state[SDL_SCANCODE_LEFT] || state[SDL_SCANCODE_RIGHT]
+	movement->speed.x = 200.0f * (state[SDL_SCANCODE_LEFT] || state[SDL_SCANCODE_RIGHT]
 								|| state[SDL_SCANCODE_UP] || state[SDL_SCANCODE_DOWN]);
+
+	movement->speed.y = movement->speed.x;
 }
 
 void TestPlayer::Events(SDL_Event event) 

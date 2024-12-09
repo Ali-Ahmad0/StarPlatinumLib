@@ -23,8 +23,8 @@ void Init::InitSystems()
 	ECS::AddComponentToSystem<Movement, MovementSystem>();
 
 	// AABB system
-	auto aabbSystem = ECS::RegisterSystem<AABBSystem>();
+	auto aabbSystem = ECS::RegisterSystem<CollisionSystem>();
 
-	ECS::AddComponentToSystem<Transform, AABBSystem>();
-	ECS::AddComponentToSystem<AABB, AABBSystem>();
+	ECS::AddComponentToSystem<Transform, CollisionSystem>();
+	ECS::AddComponentToSystem<AABB, CollisionSystem>();
 }

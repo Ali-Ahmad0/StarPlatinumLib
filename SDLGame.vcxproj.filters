@@ -48,16 +48,13 @@
     <ClCompile Include="res\test\scenes\TestScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="res\game\scenes\MainScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="res\test\scenes\TestPlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ecs\ECS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ecs\systems\AABBSystem.cpp">
+    <ClCompile Include="src\ecs\systems\CollisionSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ecs\systems\MovementSystem.cpp">
@@ -67,9 +64,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\input\InputMap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="res\game\scenes\Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -95,7 +89,7 @@
     <ClInclude Include="src\scene\InitialScene.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ecs\systems\AABBSystem.hpp">
+    <ClInclude Include="src\ecs\systems\CollisionSystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\common\Utils.hpp">
@@ -554,16 +548,10 @@
     <ClInclude Include="res\test\scenes\TestScene.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="res\game\scenes\MainScene.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="res\test\scenes\TestPlayer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\input\InputMap.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="res\game\scenes\Player.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -580,17 +568,9 @@
     <Image Include="res\test\assets\untitled.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="res\game\assets\player\player.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\game\assets\tilemap\tileset.png">
-      <Filter>Resource Files</Filter>
-    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\test\assets\level\tilemap.json" />
     <None Include="res\test\assets\level\untitled.json" />
-    <None Include="res\game\assets\tilemap\tileset_tiled.tsx" />
-    <None Include="res\game\assets\level\debug.json" />
   </ItemGroup>
 </Project>

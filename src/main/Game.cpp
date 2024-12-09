@@ -1,5 +1,6 @@
 #include "Game.hpp"
 
+SDL_Renderer* Engine::renderer = nullptr;
 
 Engine::Engine(const Properties &properties)
 	: deltaTime(0), properties(properties), isRunning(false), window(nullptr) 
@@ -10,8 +11,6 @@ Engine::Engine(const Properties &properties)
 }
 
 Engine::~Engine() = default;
-
-SDL_Renderer* Engine::renderer = nullptr;
 
 void Engine::Init() 
 {
@@ -105,7 +104,7 @@ void Engine::Events()
 void Engine::Update()
 {
 	ECS::GetSystem<MovementSystem>()->update((double)deltaTime / 1000);
-	ECS::GetSystem<AABBSystem>()->update();
+	ECS::GetSystem<CollisionSystem>()->update();
 
 	SceneManager::Update((double)deltaTime / 1000);
 }

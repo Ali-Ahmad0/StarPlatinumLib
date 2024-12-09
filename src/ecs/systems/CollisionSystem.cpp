@@ -1,6 +1,6 @@
-#include "AABBSystem.hpp"
+#include "CollisionSystem.hpp"
 
-void AABBSystem::update()
+void CollisionSystem::update()
 {
     for (auto it1 = entities.begin(); it1 != entities.end(); ++it1)
     {
@@ -51,7 +51,7 @@ void AABBSystem::update()
     }
 }
 
-void AABBSystem::resolve(AABB* box1, Transform* t1, AABB* box2, Transform* t2)
+void CollisionSystem::resolve(AABB* box1, Transform* t1, AABB* box2, Transform* t2)
 {
     // Seperate colliding boxes
     if (box1->isSolid && box2->isSolid)

@@ -40,11 +40,6 @@ void Tilemap::AddTileset(const char* path)
     }
 }
 
-void Tilemap::SetTilesize(size_t size) 
-{
-    tilesize = size;
-}
-
 void Tilemap::initTextureMap(size_t layers, size_t rows, size_t cols) 
 {
     printf("[INFO]: Initializing texture map...\n");

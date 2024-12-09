@@ -6,6 +6,8 @@ void TestScene::Ready()
 {
     player.Ready();
 
+    tilemap = Tilemap(16, 4);
+
     tilemap.AddTileset("res/test/assets/untitled.png");
     tilemap.LoadMap("res/test/assets/level/untitled.json");
 

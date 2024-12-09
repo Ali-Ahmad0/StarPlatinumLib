@@ -5,7 +5,7 @@ Engine* game = nullptr;
 
 int main() 
 {
-	game = new Engine(Properties("Game", 60, Vector2(1280, 960)));
+	game = new Engine(Properties("Game", 60, Vector2(640, 480)));
 
 	// Free memory
 	delete game;

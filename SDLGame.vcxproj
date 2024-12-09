@@ -164,7 +164,7 @@
   <ItemGroup>
     <ClCompile Include="res\test\scenes\TestPlayer.cpp" />
     <ClCompile Include="res\test\scenes\TestScene.cpp" />
-    <ClCompile Include="src\Camera\Camera.cpp" />
+    <ClCompile Include="src\camera\Camera.cpp" />
     <ClCompile Include="src\ecs\ECS.cpp" />
     <ClCompile Include="src\ecs\systems\CollisionSystem.cpp" />
     <ClCompile Include="src\ecs\systems\MovementSystem.cpp" />
@@ -322,6 +322,7 @@
     <ClInclude Include="libs\SDL2_IMG\include\SDL_image.h" />
     <ClInclude Include="res\test\scenes\TestPlayer.hpp" />
     <ClInclude Include="res\test\scenes\TestScene.hpp" />
+    <ClInclude Include="src\camera\Camera.hpp" />
     <ClInclude Include="src\ecs\systems\CollisionSystem.hpp" />
     <ClInclude Include="src\common\Utils.hpp" />
     <ClInclude Include="src\ecs\components\ComponentSparseSet.hpp" />

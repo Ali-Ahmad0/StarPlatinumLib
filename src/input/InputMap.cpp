@@ -34,8 +34,8 @@ int InputMap::GetDirection(const std::string& negativeKey, const std::string& po
 Vector2& InputMap::GetVector(const std::string& leftKey, const std::string& rightKey, const std::string& upKey, const std::string& downKey)
 {
     static Vector2 vector;
-    vector.x = GetDirection(leftKey, rightKey);
-    vector.y = GetDirection(upKey, downKey);
+    vector.x = (float)GetDirection(leftKey, rightKey);
+    vector.y = (float)GetDirection(upKey, downKey);
     return vector;
 }
 

@@ -554,6 +554,9 @@
     <ClInclude Include="src\input\InputMap.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="res\game\scenes\Player.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\test\assets\character_preview.png">

@@ -1,16 +1,19 @@
-// Camera.hpp
 #pragma once
+
 #include <array>
+#include <algorithm>
 #include "../common/Utils.hpp"
 
 
-class Camera {
+class Camera 
+{
 public:
-    Camera(const Vector2& offset, const std::array<float, 4>& boundaries) : offset(offset), boundaries(boundaries) {}
+    static void SetOffset(const Vector2& offset);
+    static Vector2& GetOffset();
 
-    void Move(const Vector2& delta);
-    Vector2 offset;
+    // left, right, up, down
+    static std::array<float, 4> boundaries;
 
-    // -ve x, +ve x, -ve y, +ve y
-    std::array<float, 4> boundaries;
+private:
+    static Vector2 offset;
 };

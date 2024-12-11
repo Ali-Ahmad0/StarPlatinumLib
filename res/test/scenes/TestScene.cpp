@@ -6,13 +6,10 @@ void TestScene::Ready()
 {
     player.Ready();
 
-    tilemap = Tilemap(16, 4);
-
     tilemap.AddTileset("res/test/assets/untitled.png");
     tilemap.LoadMap("res/test/assets/level/untitled.json");
 
     tilemap.AddCollision(1, { 28, 31, 37, 81, 82, 84, 89, 90 });
-
 }
 
 void TestScene::Update(double delta)

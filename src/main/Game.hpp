@@ -16,6 +16,8 @@
 #include "../texture/TextureManager.hpp"
 #include "../common/Utils.hpp"
 
+#include "../camera/Camera.hpp"
+
 struct Properties
 {
 	const char* title;

@@ -13,6 +13,8 @@ void TestPlayer::Ready()
 	ECS::AddComponent(player, Sprite(texture, 3, 4, 6));
 	ECS::AddComponent(player, AABB(Vector2(8, 20), Vector2(12, 12)));
 	ECS::AddComponent(player, Movement());
+	
+	transform = ECS::GetComponent<Transform>(player);
 
 	// Configure sprite animations
 	sprite = ECS::GetComponent<Sprite>(player);
@@ -32,6 +34,9 @@ void TestPlayer::Ready()
 
 void TestPlayer::Update(double delta) 
 {
+	// Update camera
+	//Camera::SetOffset(transform->position - Vector2(320, 240));
+
 	// Basic input
 	const Uint8* state = SDL_GetKeyboardState(NULL);
 

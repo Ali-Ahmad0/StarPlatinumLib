@@ -146,7 +146,8 @@ void Tilemap::DrawMap()
 		// Draw the preloaded map texture
 		if (texture)
 		{
-			SDL_Rect dst = { 0, 0, (int)(width * tilesize * scale), (int)(height * tilesize * scale) };
+			SDL_Rect dst = { (int)(-Camera::GetOffset().x), (int)(-Camera::GetOffset().y), 
+                (int)(width * tilesize * scale), (int)(height * tilesize * scale) };
 			SDL_RenderCopy(Engine::GetRenderer(), texture, NULL, &dst);
 		}
 	}

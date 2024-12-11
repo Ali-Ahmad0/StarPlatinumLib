@@ -51,8 +51,8 @@ void SpriteSystem::update()
         sprite->src.h = (int)frameHeight;
 
         // Set destination position and size based on transform and frame dimensions
-        sprite->dst.x = (int)(transform->position.x);
-        sprite->dst.y = (int)(transform->position.y);
+        sprite->dst.x = (int)(transform->position.x - Camera::GetOffset().x);
+        sprite->dst.y = (int)(transform->position.y - Camera::GetOffset().y);
         sprite->dst.w = (int)(frameWidth * transform->scale);
         sprite->dst.h = (int)(frameHeight * transform->scale);
 

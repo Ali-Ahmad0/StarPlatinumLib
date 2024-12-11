@@ -16,6 +16,7 @@ private:
 
 	Vector2 direction;
 
-	Movement* movement;
+	Transform* transform;
 	Sprite* sprite;
+	Movement* movement;
 };

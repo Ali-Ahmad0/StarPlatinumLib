@@ -10,7 +10,7 @@ public:
 };
 
 template <typename T>
-class ComponentSparseSet final : public IComponentSparseSet
+class ComponentSparseSet : public IComponentSparseSet
 {
 public:
     // Reserve memory at initialization to reduce allocations

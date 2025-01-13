@@ -49,7 +49,7 @@ size_t EntityManager::GetEntityCount()
     return count;
 }
 
-void EntityManager::SetSignature(EntityID entity, Signature signature)
+void EntityManager::SetSignature(EntityID entity, ComponentSignature signature)
 {
     if (IsActive(entity)) 
     {
@@ -61,7 +61,7 @@ void EntityManager::SetSignature(EntityID entity, Signature signature)
     }
 }
 
-Signature EntityManager::GetSignature(EntityID entity)
+ComponentSignature EntityManager::GetSignature(EntityID entity)
 {
     if (IsActive(entity)) 
     {

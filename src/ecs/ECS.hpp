@@ -26,7 +26,7 @@ public:
     {
         const std::type_index typeIndex(typeid(T));
         
-        auto sparseSet = std::make_unique<ComponentSparseSet<T>>();        
+        auto sparseSet = std::make_unique<SparseSet<T>>();        
         sparseSet->Init();
 
         sparseSets[typeIndex] = std::move(sparseSet);
@@ -106,7 +106,7 @@ public:
     template <typename T, typename U>
     static void AddComponentToSystem() 
     {
-        Signature signature = systemManager->GetSignature<U>();
+        ComponentSignature signature = systemManager->GetSignature<U>();
         signature.set(GetComponentID<T>(), true);
         systemManager->SetSignature<U>(signature);
         
@@ -121,20 +121,20 @@ private:
     static std::unordered_map<std::type_index, ComponentID> componentRegistry;
 
     // Map that stores all registered component pools
-    static std::unordered_map<std::type_index, std::unique_ptr<IComponentSparseSet>> sparseSets;
+    static std::unordered_map<std::type_index, std::unique_ptr<ISparseSet>> sparseSets;
 
     // Next component ID
     static ComponentID nextComponent;
 
     // Get the component pool for a specific type
     template <typename T>
-    static ComponentSparseSet<T>* getComponentSparseSet() 
+    static SparseSet<T>* getComponentSparseSet() 
     {
         const std::type_index typeIndex(typeid(T));
         const auto it = sparseSets.find(typeIndex);
         if (it != sparseSets.end())
         {
-            return static_cast<ComponentSparseSet<T>*>(it->second.get());
+            return static_cast<SparseSet<T>*>(it->second.get());
         }
         throw std::runtime_error("[RUNTIME ERROR]: Component map for type not registered");
     }
@@ -143,7 +143,7 @@ private:
     template <typename T>
     static void updateEntitySignature(EntityID entity, bool value) 
     {
-        Signature signature = entityManager->GetSignature(entity);
+        ComponentSignature signature = entityManager->GetSignature(entity);
         signature.set(GetComponentID<T>(), value);
         entityManager->SetSignature(entity, signature);
 

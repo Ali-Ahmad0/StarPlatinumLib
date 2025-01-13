@@ -1,12 +1,35 @@
 #include "CollisionSystem.hpp"
 
+void CollisionSystem::sortAABB() 
+{
+    // Insertion sort entities from left to right
+    for (size_t i = 1; i < entities.size(); i++)
+    {
+        EntityID key = entities[i];
+        auto* boxA = ECS::GetComponent<AABB>(key);
+
+        int j = (int)i - 1;
+        auto* boxB = ECS::GetComponent<AABB>(entities[j]);
+
+        while (j >= 0 && boxB->min.x > boxA->min.x)
+        {
+            entities[j + 1] = entities[j];
+            j--;
+        }
+        entities[j + 1] = key;
+    }
+}
+
 void CollisionSystem::update()
 {
-    for (auto it1 = entities.begin(); it1 != entities.end(); ++it1)
+    // Sort entities from left to right
+    sortAABB();
+
+    for (size_t i = 0; i < entities.size(); i++)
     {
-        EntityID eA = *it1;
-        auto* boxA = ECS::GetComponent<AABB>(eA);
-        auto* transformA = ECS::GetComponent<Transform>(eA);
+        EntityID entityA = entities[i];
+        auto* boxA = ECS::GetComponent<AABB>(entityA);
+        auto* transformA = ECS::GetComponent<Transform>(entityA);
 
         Vector2 centerA = boxA->center * (float)transformA->scale;
         centerA += transformA->position;
@@ -20,12 +43,12 @@ void CollisionSystem::update()
         boxA->min = minA;
         boxA->max = maxA;
 
-        for (auto it2 = std::next(it1); it2 != entities.end(); ++it2)
+        for (size_t j = i + 1; j < entities.size(); j++)
         {
-            EntityID eB = *it2;
+            EntityID entityB = entities[j];
 
-            auto* boxB = ECS::GetComponent<AABB>(eB);
-            auto* transformB = ECS::GetComponent<Transform>(eB);
+            auto* boxB = ECS::GetComponent<AABB>(entityB);
+            auto* transformB = ECS::GetComponent<Transform>(entityB);
 
             Vector2 centerB = boxB->center * (float)transformB->scale;
             centerB += transformB->position;
@@ -38,6 +61,12 @@ void CollisionSystem::update()
             
             boxB->min = minB;
             boxB->max = maxB;
+
+            // No chance of further collisions
+            if (boxB->min.x > boxA->max.x) 
+            {
+                break;
+            }
 
             // Check for collisions between 2 bounding boxes
             if (boxA->intersects(*boxB))

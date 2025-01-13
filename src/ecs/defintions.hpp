@@ -13,9 +13,9 @@
 #include <stdexcept>
 
 using EntityID = std::uint16_t;
-constexpr EntityID MAX_ENTITIES = 10240;
+constexpr std::uint16_t MAX_ENTITIES = 10240;
 
 using ComponentID = std::uint8_t;
-constexpr ComponentID MAX_COMPONENTS = 16;
+constexpr std::uint8_t MAX_COMPONENTS = 16;
 
-using Signature = std::bitset<MAX_COMPONENTS>;
+using ComponentSignature = std::bitset<MAX_COMPONENTS>;

@@ -21,10 +21,10 @@ public:
 	size_t GetEntityCount();
 
 	// Update the signature of an entity
-	void SetSignature(EntityID entity, Signature signature);
+	void SetSignature(EntityID entity, ComponentSignature signature);
 	
 	// Return the signature of an entity
-	Signature GetSignature(EntityID entity);
+	ComponentSignature GetSignature(EntityID entity);
 
 private:
 	// Queue of available entity IDs
@@ -35,7 +35,7 @@ private:
 
 	// Array of signatures for each entity
 	// Array index represents entity ID
-	std::array<Signature, MAX_ENTITIES> signatures{};
+	std::array<ComponentSignature, MAX_ENTITIES> signatures{};
 
 	// Total entities
 	size_t count = 0;

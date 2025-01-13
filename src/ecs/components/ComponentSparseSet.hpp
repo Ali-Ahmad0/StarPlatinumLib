@@ -2,15 +2,15 @@
 #include "../defintions.hpp"
 
 // Interface for a component map
-class IComponentSparseSet
+class ISparseSet
 {
 public:
-    virtual ~IComponentSparseSet() = default;
+    virtual ~ISparseSet() = default;
     virtual void OnEntityDestroyed(EntityID e) = 0;
 };
 
 template <typename T>
-class ComponentSparseSet : public IComponentSparseSet
+class SparseSet : public ISparseSet
 {
 public:
     // Reserve memory at initialization to reduce allocations

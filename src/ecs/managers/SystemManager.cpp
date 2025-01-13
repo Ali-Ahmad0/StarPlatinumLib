@@ -6,11 +6,13 @@ void SystemManager::OnEntityDestroyed(EntityID entity)
 	{
 		// Remove deleted entity from all systems
 		auto const& system = pair.second;
-		system->entities.erase(entity);
+		auto position = std::find(system->entities.begin(), system->entities.end(), entity);
+		system->entities.erase(position);
+		system->entityRecord[entity] = false;
 	}
 }
 
-void SystemManager::OnEntitySignatureChanged(EntityID entity, Signature entitySignature)
+void SystemManager::OnEntitySignatureChanged(EntityID entity, ComponentSignature entitySignature)
 {
 	{
 		for (auto const& pair : systems)
@@ -25,14 +27,23 @@ void SystemManager::OnEntitySignatureChanged(EntityID entity, Signature entitySi
 			if ((entitySignature & systemSignature) == systemSignature)
 			{
 				// Add entity to the system
-				system->entities.insert(entity);
+				if (!system->entityRecord[entity]) 
+				{
+					system->entities.push_back(entity);
+					system->entityRecord[entity] = true;
+				}
 			}
 
 			// Otherwise
 			else
 			{
 				// Remove entity from the system
-				system->entities.erase(entity);
+				if (system->entityRecord[entity]) 
+				{
+					auto position = std::find(system->entities.begin(), system->entities.end(), entity);
+					system->entities.erase(position);
+					system->entityRecord[entity] = false;
+				}
 			}
 		}
 	}

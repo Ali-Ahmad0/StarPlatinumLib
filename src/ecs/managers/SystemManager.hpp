@@ -34,7 +34,7 @@ public:
 	}
 
 	template <typename T>
-	Signature GetSignature()
+	ComponentSignature GetSignature()
 	{
 		const std::type_index typeIndex = typeid(T);
 		if (isRegistered(typeIndex))
@@ -46,7 +46,7 @@ public:
 	}
 	
 	template <typename T>
-	void SetSignature(Signature signature)
+	void SetSignature(ComponentSignature signature)
 	{
 		const std::type_index typeIndex = typeid(T);
 		if (isRegistered(typeIndex)) 
@@ -64,11 +64,11 @@ public:
 	void OnEntityDestroyed(EntityID entity);
 
 	// Notify all systems that entity signature has changed
-	void OnEntitySignatureChanged(EntityID entity, Signature entitySignature);
+	void OnEntitySignatureChanged(EntityID entity, ComponentSignature entitySignature);
 
 private:
 	// Map from type of system to signature
-	std::unordered_map<std::type_index, Signature> signatures{};
+	std::unordered_map<std::type_index, ComponentSignature> signatures{};
 
 	// Map from type of system to the system
 	std::unordered_map<std::type_index, std::shared_ptr<BaseSystem>> systems{};

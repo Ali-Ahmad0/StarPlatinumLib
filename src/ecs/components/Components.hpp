@@ -6,9 +6,9 @@
 struct Transform
 {
     // Transformation in a 2D plane
-    Vector2 position; double rotation; size_t scale;
+    Vector2 position; float rotation; size_t scale;
 
-    Transform(const Vector2& position=Vector2(0, 0), double rotation=0.0,size_t scale = 1)
+    Transform(const Vector2& position=Vector2(0, 0), float rotation=0.0,size_t scale = 1)
         : position(position), rotation(rotation), scale(scale) {}
 };
 
@@ -26,6 +26,8 @@ struct Sprite
     size_t vframes; // Total frames in one column
 
     size_t speed; // Speed in frames per second
+
+    int8_t z_index; // Sprite layer
 
     // Map of animations
     std::unordered_map<std::string, std::vector<size_t>> animations{};

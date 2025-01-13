@@ -2,7 +2,7 @@
 
 #include "defintions.hpp"
 #include "components/Components.hpp"
-#include "components/ComponentSparseSet.hpp"
+#include "components/SparseSet.hpp"
 
 #include "managers/EntityManager.hpp"
 #include "managers/SystemManager.hpp"

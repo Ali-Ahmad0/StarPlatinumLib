@@ -98,7 +98,7 @@
     <ClInclude Include="src\common\Utils.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ecs\components\ComponentSparseSet.hpp">
+    <ClInclude Include="src\ecs\components\SparseSet.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ecs\components\Components.hpp">

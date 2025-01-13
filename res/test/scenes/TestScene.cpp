@@ -16,15 +16,3 @@ void TestScene::Update(double delta)
 {
     player.Update(delta);
 }
-
-void TestScene::Events(SDL_Event event)
-{
-    // Call player events
-    player.Events(event);
-
-}
-
-void TestScene::Draw()
-{
-    tilemap.DrawMap();
-}

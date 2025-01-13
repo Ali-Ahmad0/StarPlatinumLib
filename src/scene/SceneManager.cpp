@@ -19,14 +19,6 @@ void SceneManager::Events(SDL_Event event)
 	}
 }
 
-void SceneManager::Draw() 
-{
-	if (currentScene) 
-	{
-		currentScene->Draw();
-	}
-}
-
 void SceneManager::DeleteScene(const char* name) 
 {
 	if (isAdded(name)) 

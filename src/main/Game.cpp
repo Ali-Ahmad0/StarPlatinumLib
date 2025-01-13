@@ -112,10 +112,7 @@ void Engine::Update()
 void Engine::Render()
 {
 	SDL_RenderClear(renderer);
-
-	SceneManager::Draw();
 	ECS::GetSystem<SpriteSystem>()->update();
-
 	SDL_RenderPresent(renderer);
 }
 

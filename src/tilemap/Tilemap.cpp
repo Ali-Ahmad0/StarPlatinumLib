@@ -150,11 +150,6 @@ void Tilemap::LoadMap(const char* path)
     }
 }
 
-void Tilemap::DrawMap()
-{
-
-}
-
 void Tilemap::initCollisionMap() 
 {
     printf("[INFO]: Initializing collision map\n");

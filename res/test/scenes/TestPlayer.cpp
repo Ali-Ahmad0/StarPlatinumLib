@@ -88,39 +88,39 @@ void TestPlayer::Update(double delta)
 	movement->speed.y = movement->speed.x;
 }
 
-void TestPlayer::Events(SDL_Event event) 
-{
-	// Stress test example
-	//switch (event.key.keysym.sym)
-	//{
-	//// Stress test
-	//case SDLK_RETURN:
-
-	//	// Spawn entities in random positions
-	//	srand((unsigned int)(time(nullptr)));
-	//	try
-	//	{
-	//		for (int i = 0; i < 100; i++)
-	//		{
-	//			EntityID entity = Engine::GetECS().CreateEntity();
-
-	//			// Set random positions within the screen bounds (640 x 480)
-	//			float randomX = (float)(rand() % 640);
-	//			float randomY = (float)(rand() % 480) - 32;
-
-	//			// Assign components to the entity
-	//			Engine::GetECS().AddComponent(entity, Transform(Vector2(randomX, randomY), 3));
-	//			Engine::GetECS().AddComponent(entity, Sprite(playerPreview));
-	//		}
-	//	}
-
-
-	//	catch (const std::runtime_error& e)
-	//	{
-	//		printf("%s\n", e.what());
-	//	}
-
-	//default:
-	//	break;
-	//}
-}
+//void TestPlayer::Events(SDL_Event event) 
+//{
+//
+//	switch (event.key.keysym.sym)
+//	{
+//	// Stress test
+//	case SDLK_RETURN:
+//
+//		// Spawn entities in random positions
+//		srand((unsigned int)(time(nullptr)));
+//		try
+//		{
+//			for (int i = 0; i < 100; i++)
+//			{
+//				EntityID entity = Engine::GetECS().CreateEntity();
+//
+//				// Set random positions within the screen bounds (640 x 480)
+//				float randomX = (float)(rand() % 640);
+//				float randomY = (float)(rand() % 480) - 32;
+//
+//				// Assign components to the entity
+//				Engine::GetECS().AddComponent(entity, Transform(Vector2(randomX, randomY), 3));
+//				Engine::GetECS().AddComponent(entity, Sprite(playerPreview));
+//			}
+//		}
+//
+//
+//		catch (const std::runtime_error& e)
+//		{
+//			printf("%s\n", e.what());
+//		}
+//
+//	default:
+//		break;
+//	}
+//}

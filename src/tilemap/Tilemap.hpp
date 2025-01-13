@@ -19,7 +19,6 @@ public:
 	void AddTileset(const char* path);
 
 	void LoadMap(const char* path);
-	void DrawMap();
 
 	void AddCollision(size_t layer, const std::vector<size_t>& tiles);
 

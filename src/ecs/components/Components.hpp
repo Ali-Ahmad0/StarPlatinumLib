@@ -36,9 +36,9 @@ struct Sprite
     bool fliph = false;
     bool flipv = false;
 
-    Sprite(SDL_Texture* texture=nullptr, size_t hframes = 1, size_t vframes = 1, size_t speed = 0)
-        : texture(texture), src({ 0, 0, 0, 0 }), dst({ 0, 0, 0, 0 }), 
-          frame(0), hframes(hframes), vframes(vframes), speed(speed) 
+    Sprite(SDL_Texture* texture = nullptr, size_t hframes = 1, size_t vframes = 1, size_t speed = 0, int8_t z_index = 0)
+        : texture(texture), src({ 0, 0, 0, 0 }), dst({ 0, 0, 0, 0 }),
+        frame(0), hframes(hframes), vframes(vframes), speed(speed), z_index(z_index)
     {
         animations.insert({ "none", {} });
     }

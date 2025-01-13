@@ -137,20 +137,30 @@ void Tilemap::LoadMap(const char* path)
         SDL_SetRenderTarget(Engine::GetRenderer(), NULL);
     }
     printf("[INFO]: Tilemap loaded successfully\n");
+
+    for (auto& texture : layers) 
+    {
+        if (texture) 
+        {
+            EntityID layer = ECS::CreateEntity();
+            ECS::AddComponent<Transform>(layer, Transform(Vector2(0, 0), 0.0f, scale));
+            ECS::AddComponent<Sprite>(layer, Sprite(texture));
+        }
+    }
 }
 
 void Tilemap::DrawMap()
 {
-	for (auto& texture : layers) 
-	{
-		// Draw the preloaded map texture
-		if (texture)
-		{
-			SDL_Rect dst = { (int)(-Camera::GetOffset().x), (int)(-Camera::GetOffset().y), 
-                (int)(width * tilesize * scale), (int)(height * tilesize * scale) };
-			SDL_RenderCopy(Engine::GetRenderer(), texture, NULL, &dst);
-		}
-	}
+	//for (auto& texture : layers) 
+	//{
+	//	// Draw the preloaded map texture
+	//	if (texture)
+	//	{
+	//		SDL_Rect dst = { (int)(-Camera::GetOffset().x), (int)(-Camera::GetOffset().y), 
+ //               (int)(width * tilesize * scale), (int)(height * tilesize * scale) };
+	//		SDL_RenderCopy(Engine::GetRenderer(), texture, NULL, &dst);
+	//	}
+	//}
 }
 
 void Tilemap::initCollisionMap() 

@@ -1,8 +1,30 @@
 #include "SpriteSystem.hpp"
 #include "../../main/Game.hpp"
 
+void SpriteSystem::sortZ() 
+{
+    // Insertion sort entities based on the layers
+    for (size_t i = 1; i < entities.size(); i++)
+    {
+        EntityID key = entities[i];
+        auto* spriteA = ECS::GetComponent<Sprite>(key);
+
+        int j = (int)i - 1;
+        auto* spriteB = ECS::GetComponent<Sprite>(entities[j]);
+
+        while (j >= 0 && spriteB->z_index > spriteA->z_index)
+        {
+            entities[j + 1] = entities[j];
+            j--;
+        }
+        entities[j + 1] = key;
+    }
+}
+
 void SpriteSystem::update() 
 {
+    sortZ();
+
     // Update and animate all sprites
     for (const EntityID e : entities)
     {

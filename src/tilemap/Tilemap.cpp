@@ -1,7 +1,8 @@
 #include "Tilemap.hpp"
 #include "../main/Game.hpp"
 
-Tilemap::Tilemap(size_t tilesize, size_t scale) : tileset(nullptr), tilesize(tilesize), scale(scale) { }
+Tilemap::Tilemap(Vector2 position, size_t tilesize, size_t scale, int8_t z_index) 
+    : tileset(nullptr), position(position), tilesize(tilesize), scale(scale), z_index(z_index) { }
 
 void Tilemap::AddTileset(const char* path)
 {
@@ -143,24 +144,15 @@ void Tilemap::LoadMap(const char* path)
         if (texture) 
         {
             EntityID layer = ECS::CreateEntity();
-            ECS::AddComponent<Transform>(layer, Transform(Vector2(0, 0), 0.0f, scale));
-            ECS::AddComponent<Sprite>(layer, Sprite(texture));
+            ECS::AddComponent<Transform>(layer, Transform(position, 0.0f, scale));
+            ECS::AddComponent<Sprite>(layer, Sprite(texture, 1, 1, 0, z_index));
         }
     }
 }
 
 void Tilemap::DrawMap()
 {
-	//for (auto& texture : layers) 
-	//{
-	//	// Draw the preloaded map texture
-	//	if (texture)
-	//	{
-	//		SDL_Rect dst = { (int)(-Camera::GetOffset().x), (int)(-Camera::GetOffset().y), 
- //               (int)(width * tilesize * scale), (int)(height * tilesize * scale) };
-	//		SDL_RenderCopy(Engine::GetRenderer(), texture, NULL, &dst);
-	//	}
-	//}
+
 }
 
 void Tilemap::initCollisionMap() 

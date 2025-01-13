@@ -13,7 +13,7 @@ class Tilemap
 {
 public:
 	Tilemap() = default;
-	Tilemap(size_t tilesize=16, size_t scale=1);
+	Tilemap(Vector2 position=Vector2(0, 0), size_t tilesize=16, size_t scale=1, int8_t z_index=0);
 	~Tilemap() = default;
 
 	void AddTileset(const char* path);
@@ -24,6 +24,8 @@ public:
 	void AddCollision(size_t layer, const std::vector<size_t>& tiles);
 
 private:
+	Vector2 position;
+	
 	// Tileset data
 	SDL_Texture* tileset;
 	std::vector<SDL_Texture*> tiles;
@@ -35,6 +37,7 @@ private:
 	size_t height = 0;
 
 	size_t scale;
+	int8_t z_index;
 	
 	// Tilemap layers
 	std::vector<SDL_Texture*> layers;

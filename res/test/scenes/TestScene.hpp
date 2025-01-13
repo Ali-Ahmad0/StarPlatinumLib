@@ -18,5 +18,5 @@ private:
 	TestPlayer player;
 
 	SDL_Texture* playerPreview;
-	Tilemap tilemap = Tilemap(16, 4);
+	Tilemap tilemap = Tilemap(Vector2(0, 0), 16, 4);
 };

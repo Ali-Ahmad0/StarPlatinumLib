@@ -148,3 +148,16 @@ void CollisionSystem::resolve(AABB* box1, Transform* t1, AABB* box2, Transform* 
     }
 
 }
+
+void CollisionSystem::onEntityAdded(EntityID e)
+{
+    // Add the entity
+    entities.push_back(e);
+}
+
+void CollisionSystem::onEntityRemoved(EntityID e)
+{
+    // Find and delete entity
+    auto position = std::find(entities.begin(), entities.end(), e);
+    entities.erase(position);
+}

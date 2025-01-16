@@ -94,3 +94,16 @@ void SpriteSystem::update()
         SDL_RenderCopyEx(Engine::GetRenderer(), sprite->texture, &sprite->src, &sprite->dst, transform->rotation, NULL, flip);
     }
 }
+
+void SpriteSystem::onEntityAdded(EntityID e) 
+{
+    // Add the entity
+    entities.push_back(e);
+}
+
+void SpriteSystem::onEntityRemoved(EntityID e) 
+{
+    // Find and delete entity
+    auto position = std::find(entities.begin(), entities.end(), e);
+    entities.erase(position);
+}

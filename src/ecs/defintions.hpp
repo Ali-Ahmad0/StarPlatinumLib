@@ -18,4 +18,4 @@ constexpr std::uint16_t MAX_ENTITIES = 10240;
 using ComponentID = std::uint8_t;
 constexpr std::uint8_t MAX_COMPONENTS = 16;
 
-using ComponentSignature = std::bitset<MAX_COMPONENTS>;
+using Signature = std::bitset<MAX_COMPONENTS>;

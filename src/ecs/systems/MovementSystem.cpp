@@ -13,3 +13,16 @@ void MovementSystem::update(double delta)
 		transform->position.y += movement->direction.y * movement->speed.y * (float)delta;
 	}
 }
+
+void MovementSystem::onEntityAdded(EntityID e)
+{
+	// Add the entity
+	entities.push_back(e);
+}
+
+void MovementSystem::onEntityRemoved(EntityID e)
+{
+	// Find and delete entity
+	auto position = std::find(entities.begin(), entities.end(), e);
+	entities.erase(position);
+}

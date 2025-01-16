@@ -63,6 +63,8 @@ public:
 	}
 
 private:
+	Properties properties;
+
 	bool isRunning;
 
 	// Delta time in milliseconds
@@ -70,9 +72,6 @@ private:
 
 	SDL_Window* window;
 	static SDL_Renderer* renderer;
-
-	Properties properties;
-
 };
 
 

@@ -106,7 +106,7 @@ public:
     template <typename T, typename U>
     static void AddComponentToSystem() 
     {
-        ComponentSignature signature = systemManager->GetSignature<U>();
+        Signature signature = systemManager->GetSignature<U>();
         signature.set(GetComponentID<T>(), true);
         systemManager->SetSignature<U>(signature);
         
@@ -143,7 +143,7 @@ private:
     template <typename T>
     static void updateEntitySignature(EntityID entity, bool value) 
     {
-        ComponentSignature signature = entityManager->GetSignature(entity);
+        Signature signature = entityManager->GetSignature(entity);
         signature.set(GetComponentID<T>(), value);
         entityManager->SetSignature(entity, signature);
 

@@ -1,7 +1,7 @@
 #include "Camera.hpp"
 
 std::array<float, 4> Camera::boundaries = { -(float)_HUGE_ENUF, (float)(_HUGE_ENUF), -(float)_HUGE_ENUF, (float)_HUGE_ENUF };
-Vector2 Camera::offset = Vector2(0, 0);
+Vector2 Camera::offset = { 0, 0 };
 
 // Set offset if within boundaries
 void Camera::SetOffset(const Vector2& newOffset) 

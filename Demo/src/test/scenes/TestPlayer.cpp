@@ -6,8 +6,8 @@ void TestPlayer::Ready()
 	player = ECS::CreateEntity();
 
 	// Load player texture
-	texture = TextureManager::LoadTexture("res/test/assets/character.png");
-	preview = TextureManager::LoadTexture("res/test/assets/preview.png");
+	texture = TextureManager::LoadTexture("src/test/assets/character.png");
+	preview = TextureManager::LoadTexture("src/test/assets/preview.png");
 
 	// Add components
 	ECS::AddComponent(player, Transform(Vector2(0, 0), 0.0, 4));
@@ -35,9 +35,6 @@ void TestPlayer::Ready()
 
 void TestPlayer::Update(double delta) 
 {
-	// Update camera
-	//Camera::SetOffset(transform->position - Vector2(320, 240));
-
 	// Basic input
 	const Uint8* state = SDL_GetKeyboardState(NULL);
 

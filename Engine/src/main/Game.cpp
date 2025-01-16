@@ -4,12 +4,7 @@
 SDL_Renderer* Engine::renderer = nullptr;
 
 Engine::Engine(const Properties &properties)
-	: delta(0), properties(properties), isRunning(false), window(nullptr) 
-{
-	Engine::Init();
-	Engine::GameLoop();
-	Engine::Exit();
-}
+	: delta(0), properties(properties), isRunning(false), window(nullptr) {}
 
 Engine::~Engine() = default;
 
@@ -62,8 +57,8 @@ void Engine::Init()
 	Init::InitSystems();
 	printf("[INFO]: Engine systems initialized\n");
 
-	SceneManager::AddScene<InitialScene>("initial_scene");
-	SceneManager::ChangeScene("initial_scene");
+	//SceneManager::AddScene<InitialScene>("initial_scene");
+	//SceneManager::ChangeScene("initial_scene");
 }
 
 bool showFPS = false;

@@ -4,7 +4,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
-#include <nlohmann/json.hpp>
+#include <json.hpp>
 #include <iostream>
 
 #include "..\texture\TextureManager.hpp"

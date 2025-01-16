@@ -8,7 +8,7 @@ struct Transform
     // Transformation in a 2D plane
     Vector2 position; float rotation; size_t scale;
 
-    Transform(const Vector2& position=Vector2(0, 0), float rotation=0.0,size_t scale = 1)
+    Transform(const Vector2& position = { 0, 0 }, float rotation = 0.0, size_t scale = 1)
         : position(position), rotation(rotation), scale(scale) {}
 };
 
@@ -88,7 +88,7 @@ struct Movement
     Vector2 direction;
     Vector2 speed;
 
-    Movement(const Vector2& direction=Vector2(0, 0), const Vector2& speed=Vector2(0, 0)) : direction(direction), speed(speed) {}
+    Movement(const Vector2& direction = { 0, 0 }, const Vector2& speed = { 0, 0 }) : direction(direction), speed(speed) {}
 };
 
 struct AABB 
@@ -108,18 +108,18 @@ struct AABB
 
     AABB(float cx, float cy, float w, float h, 
         bool isSolid=true, bool isRigid=true)
-        : center(Vector2(cx, cy)), dimensions(Vector2(w, h)), isSolid(isSolid), isRigid(isRigid)
+        : center({ cx, cy }), dimensions({ w, h }), isSolid(isSolid), isRigid(isRigid)
     {
-        min = Vector2(-w / 2, -h / 2);
-        max = Vector2(w / 2, h / 2);
+        min = { -w / 2, -h / 2 };
+        max = {  w / 2,  h / 2 };
     }
 
-    AABB(const Vector2& center=Vector2(0, 0), const Vector2& dimensions=Vector2(0, 0),
+    AABB(const Vector2& center = { 0, 0 }, const Vector2& dimensions = { 0, 0 },
         bool isSolid=true, bool isRigid=true)
         : center(center), dimensions(dimensions), isSolid(isSolid), isRigid(isRigid)
     {
-        min = Vector2(-dimensions.x / 2, -dimensions.y / 2);
-        max = Vector2(dimensions.x / 2, dimensions.y / 2);
+        min = { -dimensions.x / 2, -dimensions.y / 2 };
+        max = {  dimensions.x / 2,  dimensions.y / 2 };
     }
 
     // Check for AABB overlap

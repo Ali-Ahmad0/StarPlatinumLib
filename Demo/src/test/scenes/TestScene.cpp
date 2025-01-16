@@ -4,8 +4,8 @@
 
 void TestScene::Ready()
 {
-    tilemap.AddTileset("res/test/assets/untitled.png");
-    tilemap.LoadMap("res/test/assets/level/untitled.json");
+    tilemap.AddTileset("src/test/assets/untitled.png");
+    tilemap.LoadMap("src/test/assets/level/untitled.json");
 
     tilemap.AddCollision(1, { 28, 31, 37, 81, 82, 84, 89, 90 });
 

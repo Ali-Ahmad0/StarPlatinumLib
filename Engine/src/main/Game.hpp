@@ -29,17 +29,16 @@ struct Properties
 	Vector2 windowPos;
 	Vector2 windowSize;
 
-
-	Properties(const char* title, int targetFPS = 60, Vector2 windowSize = Vector2(640, 480), bool fullscreen = false, 
-		Vector2 windowPos = Vector2(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED)) 
-		: title(title), targetFPS(targetFPS), windowSize(windowSize), fullscreen(fullscreen), windowPos(windowPos) {}
+	Properties(const char* title, int w = 640, int h = 480, int targetFPS = 60, bool fullscreen = false,
+		Vector2 windowPos = { SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED })
+		: title(title), windowSize({ (float)w, (float)h }), targetFPS(targetFPS), fullscreen(fullscreen), windowPos(windowPos) {}
 };
 
 class Engine 
 {
 public:
 	// Constructor and destructor
-	Engine(const Properties& properties);
+	Engine(const Properties& properties = Properties("Game"));
 	~Engine();
 
 	void Init();
@@ -73,5 +72,3 @@ private:
 	SDL_Window* window;
 	static SDL_Renderer* renderer;
 };
-
-

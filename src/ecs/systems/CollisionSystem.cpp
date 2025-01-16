@@ -1,33 +1,34 @@
 #include "CollisionSystem.hpp"
 
-void CollisionSystem::sortAABB() 
+void CollisionSystem::sortEdges()
 {
-    // Insertion sort entities from left to right
-    for (size_t i = 1; i < entities.size(); i++)
+    // Insertion sort on the edges
+    for (size_t i = 1; i < edges.size(); i++)
     {
-        EntityID key = entities[i];
-        auto* boxA = ECS::GetComponent<AABB>(key);
-
+        Edge k = edges[i];
         int j = (int)i - 1;
-        auto* boxB = ECS::GetComponent<AABB>(entities[j]);
 
-        while (j >= 0 && boxB->min.x > boxA->min.x)
+        // Compare current edge with the previous
+        while (j >= 0 && edges[j].x > k.x)
         {
-            entities[j + 1] = entities[j];
+            edges[j + 1] = edges[j]; 
             j--;
         }
-        entities[j + 1] = key;
+
+        // Place the current in the correct position
+        edges[j + 1] = k;
     }
 }
 
 void CollisionSystem::update()
 {
-    // Sort entities from left to right
-    sortAABB();
+    // Sort edges from left to right
+    sortEdges();
 
-    for (size_t i = 0; i < entities.size(); i++)
+    for (auto& edge : edges)
     {
-        EntityID entityA = entities[i];
+        // Get the entity and components
+        EntityID entityA = edge.entity;
         auto* boxA = ECS::GetComponent<AABB>(entityA);
         auto* transformA = ECS::GetComponent<Transform>(entityA);
 
@@ -36,112 +37,116 @@ void CollisionSystem::update()
 
         Vector2 dimensionsAHalved = boxA->dimensions * (float)transformA->scale / 2;
 
-        // Calculate new boundaries for box1
+        // Calculate new boundaries for boxA
         Vector2 minA = centerA - dimensionsAHalved;
         Vector2 maxA = centerA + dimensionsAHalved;
 
         boxA->min = minA;
         boxA->max = maxA;
 
-        for (size_t j = i + 1; j < entities.size(); j++)
+        edge.x = edge.isLeft ? boxA->min.x : boxA->max.x;
+
+        if (edge.isLeft)
         {
-            EntityID entityB = entities[j];
-
-            auto* boxB = ECS::GetComponent<AABB>(entityB);
-            auto* transformB = ECS::GetComponent<Transform>(entityB);
-
-            Vector2 centerB = boxB->center * (float)transformB->scale;
-            centerB += transformB->position;
-
-            Vector2 dimensionsBHalved = boxB->dimensions * (float)transformB->scale / 2;
-
-            // Calculate new boundaries for box2
-            Vector2 minB = centerB - dimensionsBHalved;
-            Vector2 maxB = centerB + dimensionsBHalved;
-            
-            boxB->min = minB;
-            boxB->max = maxB;
-
-            // No chance of further collisions
-            if (boxB->min.x > boxA->max.x) 
+            // Handle for all touching entities
+            for (EntityID entityB : touching) 
             {
-                break;
+                // Get components for other entity
+                auto* transformB = ECS::GetComponent<Transform>(entityB);
+                auto* boxB = ECS::GetComponent<AABB>(entityB);
+                
+                Vector2 centerB = boxB->center * (float)transformB->scale;
+                centerB += transformB->position;
+
+                Vector2 dimensionsBHalved = boxB->dimensions * (float)transformB->scale / 2;
+
+                // Calculate new boundaries for box2
+                Vector2 minB = centerB - dimensionsBHalved;
+                Vector2 maxB = centerB + dimensionsBHalved;
+                    
+                boxB->min = minB;
+                boxB->max = maxB;
+
+                // Check for possible intersection
+                if (boxA->intersects(*boxB))
+                {
+                    // Resolve collisions
+                    resolve(boxA, transformA, boxB, transformB);
+                }
             }
 
-            // Check for collisions between 2 bounding boxes
-            if (boxA->intersects(*boxB))
-            {
-                // Resolve collisions
-                resolve(boxA, transformA, boxB, transformB);
-            }
+            touching.insert(edge.entity);
+        }
 
-            
+        else 
+        {
+            touching.erase(edge.entity);
         }
     }
 }
 
-void CollisionSystem::resolve(AABB* box1, Transform* t1, AABB* box2, Transform* t2)
+void CollisionSystem::resolve(AABB* boxA, Transform* transformA, AABB* boxB, Transform* transformB)
 {
     // Seperate colliding boxes
-    if (box1->isSolid && box2->isSolid)
+    if (boxA->isSolid && boxB->isSolid)
     {
         // Calculate overlap on the x and y axes
-        float overlapX = std::min(box1->max.x - box2->min.x, box2->max.x - box1->min.x);
-        float overlapY = std::min(box1->max.y - box2->min.y, box2->max.y - box1->min.y);
+        float overlapX = std::min(boxA->max.x - boxB->min.x, boxB->max.x - boxA->min.x);
+        float overlapY = std::min(boxA->max.y - boxB->min.y, boxB->max.y - boxA->min.y);
 
-        int divideFactor1 = box1->isRigid ? 2 : 1;
-        int divideFactor2 = box2->isRigid ? 2 : 1;
+        int divideFactor1 = boxA->isRigid ? 2 : 1;
+        int divideFactor2 = boxB->isRigid ? 2 : 1;
 
         // Find the axis with the least overlap and move the entities along that axis
         if (overlapX < overlapY)
         {
             // Move the entities apart along the x-axis
-            if (t1->position.x < t2->position.x)
+            if (transformA->position.x < transformB->position.x)
             {
-                if (box1->isRigid)
+                if (boxA->isRigid)
                 {
-                    t1->position.x -= overlapX / divideFactor2;
+                    transformA->position.x -= overlapX / divideFactor2;
                 }
-                if (box2->isRigid)
+                if (boxB->isRigid)
                 {
-                    t2->position.x += overlapX / divideFactor1;
+                    transformB->position.x += overlapX / divideFactor1;
                 }
             }
             else
             {
-                if (box1->isRigid)
+                if (boxA->isRigid)
                 {
-                    t1->position.x += overlapX / divideFactor2;
+                    transformA->position.x += overlapX / divideFactor2;
                 }
-                if (box2->isRigid)
+                if (boxB->isRigid)
                 {
-                    t2->position.x -= overlapX / divideFactor1;
+                    transformB->position.x -= overlapX / divideFactor1;
                 }
             }
         }
         else
         {
             // Move the entities apart along the y-axis
-            if (t1->position.y < t2->position.y)
+            if (transformA->position.y < transformB->position.y)
             {
-                if (box1->isRigid)
+                if (boxA->isRigid)
                 {
-                    t1->position.y -= overlapY / divideFactor2;
+                    transformA->position.y -= overlapY / divideFactor2;
                 }
-                if (box2->isRigid)
+                if (boxB->isRigid)
                 {
-                    t2->position.y += overlapY / divideFactor1;
+                    transformB->position.y += overlapY / divideFactor1;
                 }
             }
             else
             {
-                if (box1->isRigid)
+                if (boxA->isRigid)
                 {
-                    t1->position.y += overlapY / divideFactor2;
+                    transformA->position.y += overlapY / divideFactor2;
                 }
-                if (box2->isRigid)
+                if (boxB->isRigid)
                 {
-                    t2->position.y -= overlapY / divideFactor1;
+                    transformB->position.y -= overlapY / divideFactor1;
                 }
             }
         }
@@ -151,13 +156,19 @@ void CollisionSystem::resolve(AABB* box1, Transform* t1, AABB* box2, Transform* 
 
 void CollisionSystem::onEntityAdded(EntityID e)
 {
-    // Add the entity
-    entities.push_back(e);
+    // Add the edges for AABB
+    auto* aabb = ECS::GetComponent<AABB>(e);
+
+    Edge edge1 = { e, aabb->min.x, true  };
+    Edge edge2 = { e, aabb->max.x, false };
+
+    edges.push_back(edge1);
+    edges.push_back(edge2);
 }
 
 void CollisionSystem::onEntityRemoved(EntityID e)
 {
-    // Find and delete entity
-    auto position = std::find(entities.begin(), entities.end(), e);
-    entities.erase(position);
+    // Find and delete edges for entity
+    edges.erase(std::remove_if(edges.begin(), edges.end(),
+        [e](const Edge& edge) { return edge.entity == e; }), edges.end());
 }

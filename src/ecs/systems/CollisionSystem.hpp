@@ -5,11 +5,27 @@
 
 struct CollisionSystem : public BaseSystem
 {
-    std::vector<EntityID> entities;
+    struct Edge 
+    {
+        EntityID entity;
+        float x;
+        bool isLeft;
 
-    void sortAABB();
+        Edge(EntityID entity, float x, bool isLeft) 
+            : entity(entity), x(x), isLeft(isLeft) {}
+    };
+
+    // X axis edges for AABB
+    std::vector<Edge> edges;
+
+    // Keep track of touching edges
+    std::set<EntityID> touching;
+
+    void sortEdges();
     void update();
-    void resolve(AABB* box1, Transform* t1, AABB* box2, Transform* t2);
+    void resolve(
+        AABB* boxA, Transform* transformA, 
+        AABB* boxB, Transform* transformB);
 
     void onEntityAdded(EntityID e) override;
     void onEntityRemoved(EntityID e) override;

@@ -11,6 +11,7 @@ int main()
 
 	game->Init();
 
+	// Change to initial scene
 	SceneManager::AddScene<TestScene>("test_scene");
 	SceneManager::ChangeScene("test_scene");
 

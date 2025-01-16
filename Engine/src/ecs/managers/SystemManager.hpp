@@ -56,7 +56,7 @@ public:
 
 		else 
 		{
-			fprintf(stderr, "[ERROR]: Cannot set signature on unregistered system");
+			fprintf(stderr, "[ERROR]: Cannot set signature on unregistered system\n");
 		}
 	}
 

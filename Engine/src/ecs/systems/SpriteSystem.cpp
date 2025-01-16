@@ -59,7 +59,7 @@ void SpriteSystem::update()
 
             if (frame >= sprite->hframes * sprite->vframes)
             {
-                std::cout << "Invalid frame in animation '" << sprite->animation << "'\n";
+                fprintf(stderr, "[ERROR] Invalid frame %zu in animation '%s'\n", sprite->frame, sprite->animation);
                 continue;
             }
 

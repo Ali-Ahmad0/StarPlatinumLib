@@ -114,7 +114,7 @@ void TestPlayer::Events(SDL_Event event)
 
 	//	catch (const std::runtime_error& e)
 	//	{
-	//		printf("%s\n", e.what());
+	//		fprintf(stderr, "[ERROR]: %s\n", e.what());
 	//	}
 
 	//default:

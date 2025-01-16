@@ -43,7 +43,7 @@ public:
     {
         if (!entityManager->IsActive(entity)) 
         {
-            fprintf(stderr, "[ERROR]: Cannot add component on non existing entity");
+            fprintf(stderr, "[ERROR]: Cannot add component on non existing entity\n");
             return;
         }
 

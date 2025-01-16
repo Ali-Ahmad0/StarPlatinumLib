@@ -47,14 +47,18 @@ struct Sprite
     {
         if (animations.find(anim) != animations.end()) 
         {
-            std::cout << "Animation '" << anim << "' already added\n";
+            printf("[INFO]: Animation '%s' already added, overriding\n", anim);
+
+            // Override animation
+            animations[anim] = frames;
             return;
         }
         if (frames.empty()) 
         {
-            std::cout << "Animation '" << anim << "' cannot have empty frame list\n";
+            fprintf(stderr, "[ERROR]: Animation '%s' cannot have empty frame list\n", anim);
             return;
         }
+
         // Add animation
         animations[anim] = frames;
     }
@@ -63,11 +67,11 @@ struct Sprite
     {
         if (animations.find(anim) == animations.end())
         {
-            std::cout << "Animation '" << anim << "' does not exist\n";
+            fprintf(stderr, "[ERROR]: Animation '%s' does not exist\n", anim);
             return;
         }
 
-        // Set current animation
+        // Set animation
         animation = anim;
     }
        
@@ -75,15 +79,16 @@ struct Sprite
     {
         if (animations.find(anim) == animations.end()) 
         {
-            std::cout << "Animation '" << anim << "' does not exist\n";
+            fprintf(stderr, "[ERROR]: Animation '%s' does not exist\n", anim);
             return;
         }
+
         // Remove animation
         animations.erase(anim);
     }
 };
 
-struct Movement 
+struct Movement
 {
     Vector2 direction;
     Vector2 speed;

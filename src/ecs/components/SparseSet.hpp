@@ -49,7 +49,7 @@ public:
         size_t index = getDenseIndex(e);
         if (index == NULL_INDEX)
         {
-            fprintf(stderr, "Entity %u does not have component of type: %s\n", e, typeid(T).name());
+            fprintf(stderr, "[ERROR]: Entity %u does not have component of type: %s\n", e, typeid(T).name());
             return nullptr;
         }
         
@@ -62,7 +62,7 @@ public:
         size_t index = getDenseIndex(e);
         if (index == NULL_INDEX)
         {
-            fprintf(stderr, "Entity %u does not have component of type: %s\n", e, typeid(T).name());
+            fprintf(stderr, "[ERROR]: Entity %u does not have component of type: %s\n", e, typeid(T).name());
             return;
         }
 

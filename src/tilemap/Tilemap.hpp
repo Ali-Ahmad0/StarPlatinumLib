@@ -41,12 +41,11 @@ private:
 	// Tilemap layers
 	std::vector<SDL_Texture*> layers;
 
-	// Texture Map: Stores index of textures in tilemap
+	// Texture map, stores index of textures in tilemap
 	std::vector<std::vector<std::vector<int>>> texture;
 
-	// Collision Map: Stores if a tile has collision or not
+	// Collision map, stores if a tile has collision or not
 	std::vector<std::vector<bool>> collision;
-	std::vector<Rectangle> rectangles;
 
 	// Initialize texture map
 	void initTextureMap(size_t layers, size_t rows, size_t cols);

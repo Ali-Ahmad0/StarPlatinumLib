@@ -10,10 +10,9 @@ class TestScene : public IScene
 public:
 	void Ready() override;
 	void Update(double delta) override;
+	void Events(SDL_Event event) override;
 
 private:
 	TestPlayer player;
-
-	SDL_Texture* playerPreview;
 	Tilemap tilemap = Tilemap(Vector2(0, 0), 16, 4);
 };

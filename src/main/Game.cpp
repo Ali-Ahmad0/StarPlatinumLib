@@ -1,9 +1,10 @@
 #include "Game.hpp"
+#include <thread>
 
 SDL_Renderer* Engine::renderer = nullptr;
 
 Engine::Engine(const Properties &properties)
-	: deltaTime(0), properties(properties), isRunning(false), window(nullptr) 
+	: delta(0), properties(properties), isRunning(false), window(nullptr) 
 {
 	Engine::Init();
 	Engine::GameLoop();
@@ -103,26 +104,20 @@ void Engine::Events()
 
 void Engine::Update()
 {
-	ECS::GetSystem<MovementSystem>()->update((double)deltaTime / 1000);
-	ECS::GetSystem<CollisionSystem>()->update();
-
-	SceneManager::Update((double)deltaTime / 1000);
-}
-
-void Engine::Render()
-{
-	SDL_RenderClear(renderer);
+	SceneManager::Update(delta);
+	
 	ECS::GetSystem<SpriteSystem>()->update();
-	SDL_RenderPresent(renderer);
+	ECS::GetSystem<MovementSystem>()->update(delta);
+	ECS::GetSystem<CollisionSystem>()->update();
 }
 
 void Engine::GameLoop() 
 {
 	// Times in milliseconds
-	int targetDeltaTime = 1000 / properties.targetFPS;
+	uint32_t targetDeltaTime = 1000 / properties.targetFPS;
 
-	Uint32 frameStartTime;
-	int frameDrawTime;
+	uint32_t frameStartTime;
+	uint32_t frameDrawTime;
 
 	printf("[INFO]: Starting update loop...\n");
 
@@ -130,9 +125,10 @@ void Engine::GameLoop()
 	{
 		frameStartTime = SDL_GetTicks();
 
+		SDL_RenderClear(renderer);
 		Events();
 		Update();
-		Render();
+		SDL_RenderPresent(renderer);
 
 		frameDrawTime = SDL_GetTicks() - frameStartTime;
 
@@ -140,18 +136,18 @@ void Engine::GameLoop()
 		if (targetDeltaTime > frameDrawTime) 
 		{
 			SDL_Delay(targetDeltaTime - frameDrawTime);
-			deltaTime = targetDeltaTime;
+			delta = (double)targetDeltaTime / 1000;
 		}
 
 		// FPS is less than target FPS
 		else 
 		{
-			deltaTime = frameDrawTime;
+			delta = (double)frameDrawTime / 1000;
 		}
 
 		if (showFPS)
 		{
-			printf("FPS: %f | Entities: %zu\n", ((float)targetDeltaTime / (float)deltaTime) * properties.targetFPS, ECS::GetEntityCount());
+			printf("FPS: %f | Entities: %zu\n", ((float)targetDeltaTime / (float)delta) * properties.targetFPS, ECS::GetEntityCount());
 			showFPS = false;
 		}		
 	}

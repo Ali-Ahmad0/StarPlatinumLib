@@ -145,7 +145,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\test\assets\character_preview.png">
+    <Image Include="res\test\assets\preview.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\test\assets\character.png">

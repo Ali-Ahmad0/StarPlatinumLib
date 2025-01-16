@@ -46,7 +46,6 @@ public:
 
 	void Events();
 	void Update();
-	void Render();
 
 	void GameLoop();
 
@@ -67,7 +66,7 @@ private:
 	bool isRunning;
 
 	// Delta time in milliseconds
-	int deltaTime;
+	double delta;
 
 	SDL_Window* window;
 	static SDL_Renderer* renderer;

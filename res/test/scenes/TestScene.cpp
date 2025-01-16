@@ -16,3 +16,8 @@ void TestScene::Update(double delta)
 {
     player.Update(delta);
 }
+
+void TestScene::Events(SDL_Event event) 
+{
+    player.Events(event);
+}

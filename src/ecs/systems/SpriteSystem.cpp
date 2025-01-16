@@ -3,7 +3,7 @@
 
 void SpriteSystem::sortZ() 
 {
-    // Insertion sort entities based on the layers
+    // Insertion sort entities based on z indices
     for (size_t i = 1; i < entities.size(); i++)
     {
         EntityID key = entities[i];
@@ -23,7 +23,14 @@ void SpriteSystem::sortZ()
 
 void SpriteSystem::update() 
 {
-    sortZ();
+    static size_t prevEntityCount = 0;
+
+    // The total entity count changes
+    if (entities.size() != prevEntityCount) 
+    {
+        sortZ();
+        prevEntityCount = entities.size();
+    }
 
     // Update and animate all sprites
     for (const EntityID e : entities)

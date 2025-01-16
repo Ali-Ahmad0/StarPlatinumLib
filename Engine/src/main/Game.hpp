@@ -45,6 +45,7 @@ public:
 
 	void Events();
 	void Update();
+	void Render();
 
 	void GameLoop();
 

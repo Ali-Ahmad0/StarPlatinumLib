@@ -56,9 +56,6 @@ void Engine::Init()
 
 	Init::InitSystems();
 	printf("[INFO]: Engine systems initialized\n");
-
-	//SceneManager::AddScene<InitialScene>("initial_scene");
-	//SceneManager::ChangeScene("initial_scene");
 }
 
 bool showFPS = false;
@@ -99,11 +96,15 @@ void Engine::Events()
 
 void Engine::Update()
 {
-	SceneManager::Update(delta);
-	
-	ECS::GetSystem<SpriteSystem>()->update();
 	ECS::GetSystem<MovementSystem>()->update(delta);
 	ECS::GetSystem<CollisionSystem>()->update();
+
+	SceneManager::Update(delta);
+}
+
+void Engine::Render() 
+{
+	ECS::GetSystem<SpriteSystem>()->update();
 }
 
 void Engine::GameLoop() 
@@ -121,8 +122,15 @@ void Engine::GameLoop()
 		frameStartTime = SDL_GetTicks();
 
 		SDL_RenderClear(renderer);
+		
 		Events();
-		Update();
+
+		std::thread updateThread(&Engine::Update, this);
+		std::thread renderThread(&Engine::Render, this);
+		
+		updateThread.join();
+		renderThread.join();
+
 		SDL_RenderPresent(renderer);
 
 		frameDrawTime = SDL_GetTicks() - frameStartTime;

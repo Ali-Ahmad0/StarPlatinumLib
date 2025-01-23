@@ -3,7 +3,7 @@
 
 void TestScene::Ready()
 {
-    Tilemap tilemap = Tilemap(Vector2(0, 0), 16, 4);
+    Tilemap tilemap = Tilemap(Vector2::ZERO, 16, 4);
 
     tilemap.AddTileset("src/test/assets/untitled.png");
     tilemap.LoadMap("src/test/assets/level/untitled.json");

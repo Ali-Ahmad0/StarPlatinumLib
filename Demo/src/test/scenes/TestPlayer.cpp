@@ -10,7 +10,7 @@ void TestPlayer::Ready()
 	preview = TextureManager::LoadTexture("src/test/assets/preview.png");
 
 	// Add components
-	ECS::AddComponent(player, Transform(Vector2(0, 0), 0.0, 4));
+	ECS::AddComponent(player, Transform(Vector2::ZERO, 0.0, 4));
 	ECS::AddComponent(player, Sprite(texture, 3, 4, 6, 0));
 	ECS::AddComponent(player, AABB(Vector2(8, 20), Vector2(12, 12)));
 	ECS::AddComponent(player, Movement());

@@ -368,6 +368,6 @@ struct Rectangle
     Rectangle(float x=0, float y=0, float w=0, float h=0) 
         : x(x), y(y), w(w), h(h) {}
     
-    Rectangle(const Vector2& position=Vector2(0, 0), float w=0, float h=0)
+    Rectangle(const Vector2& position=Vector2::ZERO, float w=0, float h=0)
         : x (position.x), y(position.y), w(w), h(h) {}
 };

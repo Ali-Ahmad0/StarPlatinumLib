@@ -1,9 +1,10 @@
 #include "TestScene.hpp"
-#include "../../../src/input/InputMap.hpp"
 #include <iostream>
 
 void TestScene::Ready()
 {
+    Tilemap tilemap = Tilemap(Vector2(0, 0), 16, 4);
+
     tilemap.AddTileset("src/test/assets/untitled.png");
     tilemap.LoadMap("src/test/assets/level/untitled.json");
 

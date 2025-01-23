@@ -169,6 +169,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp" />
+    <ClCompile Include="src\common\Utils.cpp" />
     <ClCompile Include="src\ecs\ECS.cpp" />
     <ClCompile Include="src\ecs\systems\CollisionSystem.cpp" />
     <ClCompile Include="src\ecs\systems\MovementSystem.cpp" />

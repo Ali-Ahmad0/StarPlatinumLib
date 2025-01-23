@@ -18,8 +18,12 @@ struct Color
     int a;
 
     // Constructor to initialize color values using RGB values
-    Color(const int red, const int green, const int blue, const int alpha = 255)
+    Color(int red, int green, int blue, int alpha = 255)
         : r(clamp(red)), g(clamp(green)), b(clamp(blue)), a(clamp(alpha)) {}
+
+    static const Color RED;
+    static const Color GREEN;
+    static const Color BLUE;
 
     // Constructor to initialize color values using HSV values
     Color(const float h,const float s, const float v, const int alpha = 255)
@@ -145,6 +149,12 @@ struct Vector2
     float y;
 
     Vector2(float x=0, float y=0) : x(x), y(y) {}
+
+    static const Vector2 ZERO;
+    static const Vector2 UP;
+    static const Vector2 LEFT;
+    static const Vector2 DOWN;
+    static const Vector2 RIGHT;
 
     // Add two vectors
     static Vector2 add(const Vector2& a, const Vector2& b)

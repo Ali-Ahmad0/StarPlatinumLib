@@ -14,5 +14,4 @@ public:
 
 private:
 	TestPlayer player;
-	Tilemap tilemap = Tilemap(Vector2(0, 0), 16, 4);
 };

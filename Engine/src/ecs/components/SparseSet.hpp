@@ -31,7 +31,7 @@ public:
         }
 
         // Add component to the dense array
-        setDenseIndex(e, dense.size());
+        setDenseIndex(e, (uint16_t)dense.size());
         dense.push_back(std::move(component));
         denseToEntity.push_back(e);
         
@@ -46,7 +46,7 @@ public:
     // Get a pointer to the component of Type T for entity e
     T* GetData(EntityID e)
     {
-        size_t index = getDenseIndex(e);
+        uint16_t index = getDenseIndex(e);
         if (index == NULL_INDEX)
         {
             fprintf(stderr, "[ERROR]: Entity %u does not have component of type: %s\n", e, typeid(T).name());
@@ -59,7 +59,7 @@ public:
     // Remove a component of Type T for entity e
     void RemoveData(EntityID e)
     {
-        size_t index = getDenseIndex(e);
+        uint16_t index = getDenseIndex(e);
         if (index == NULL_INDEX)
         {
             fprintf(stderr, "[ERROR]: Entity %u does not have component of type: %s\n", e, typeid(T).name());
@@ -89,19 +89,16 @@ public:
     }
 
 private:
-    std::vector<std::vector<size_t>> sparsePages; 
+    std::vector<std::vector<uint16_t>> sparsePages; 
     std::vector<T> dense; 
     
     std::vector<EntityID> denseToEntity; 
-    
-    static constexpr size_t NULL_INDEX = std::numeric_limits<size_t>::max();
-    static constexpr size_t MAX_PAGE_SIZE = 512;
-
+   
     // Map an index of a component to an entity 
-    void setDenseIndex(EntityID e, size_t index)
+    void setDenseIndex(EntityID e, uint16_t index)
     {
-        size_t page = e / MAX_PAGE_SIZE;
-        size_t pageIndex = e % MAX_PAGE_SIZE;
+        uint16_t page = e / MAX_PAGE_SIZE;
+        uint16_t pageIndex = e % MAX_PAGE_SIZE;
 
         // Create a new page if needed
         if (page >= sparsePages.size())
@@ -116,10 +113,10 @@ private:
     }
 
     // Get the dense index for an entity
-    size_t getDenseIndex(EntityID e)
+    uint16_t getDenseIndex(EntityID e)
     {
-        size_t page = e / MAX_PAGE_SIZE;
-        size_t pageIndex = e % MAX_PAGE_SIZE;
+        uint16_t page = e / MAX_PAGE_SIZE;
+        uint16_t pageIndex = e % MAX_PAGE_SIZE;
 
         // Check if the page exists and the entity has a valid index
         if (page < sparsePages.size())

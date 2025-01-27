@@ -1,5 +1,6 @@
 #include "SpriteSystem.hpp"
-#include "../../main/Game.hpp"
+#include "../../ECS.hpp"
+#include "../../../main/Game.hpp"
 
 void SpriteSystem::sortZ() 
 {

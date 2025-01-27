@@ -171,11 +171,10 @@
     <ClCompile Include="src\camera\Camera.cpp" />
     <ClCompile Include="src\common\Utils.cpp" />
     <ClCompile Include="src\ecs\ECS.cpp" />
-    <ClCompile Include="src\ecs\systems\CollisionSystem.cpp" />
-    <ClCompile Include="src\ecs\systems\MovementSystem.cpp" />
-    <ClCompile Include="src\ecs\systems\SpriteSystem.cpp" />
+    <ClCompile Include="src\ecs\systems\collision\CollisionSystem.cpp" />
+    <ClCompile Include="src\ecs\systems\movement\MovementSystem.cpp" />
+    <ClCompile Include="src\ecs\systems\sprite\SpriteSystem.cpp" />
     <ClCompile Include="src\input\InputMap.cpp" />
-    <ClCompile Include="src\scene\InitialScene.cpp" />
     <ClCompile Include="src\scene\SceneManager.cpp" />
     <ClCompile Include="src\ecs\managers\EntityManager.cpp" />
     <ClCompile Include="src\ecs\managers\SystemManager.cpp" />
@@ -186,7 +185,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\camera\Camera.hpp" />
-    <ClInclude Include="src\ecs\systems\CollisionSystem.hpp" />
+    <ClInclude Include="src\ecs\systems\collision\CollisionSystem.hpp" />
     <ClInclude Include="src\common\Utils.hpp" />
     <ClInclude Include="src\ecs\components\SparseSet.hpp" />
     <ClInclude Include="src\ecs\components\Components.hpp" />
@@ -194,13 +193,12 @@
     <ClInclude Include="src\ecs\managers\EntityManager.hpp" />
     <ClInclude Include="src\ecs\managers\SystemManager.hpp" />
     <ClInclude Include="src\ecs\systems\BaseSystem.hpp" />
-    <ClInclude Include="src\ecs\systems\MovementSystem.hpp" />
-    <ClInclude Include="src\ecs\systems\SpriteSystem.hpp" />
+    <ClInclude Include="src\ecs\systems\movement\MovementSystem.hpp" />
+    <ClInclude Include="src\ecs\systems\sprite\SpriteSystem.hpp" />
     <ClInclude Include="src\ecs\systems\System.hpp" />
     <ClInclude Include="src\input\InputMap.hpp" />
     <ClInclude Include="src\main\init\Init.hpp" />
     <ClInclude Include="src\tilemap\Tilemap.hpp" />
-    <ClInclude Include="src\scene\InitialScene.hpp" />
     <ClInclude Include="src\scene\Scene.hpp" />
     <ClInclude Include="src\scene\SceneManager.hpp" />
     <ClInclude Include="src\ecs\ECS.hpp" />

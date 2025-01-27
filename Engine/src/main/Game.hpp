@@ -11,7 +11,6 @@
 #include "../tilemap/Tilemap.hpp"
 
 #include "../scene/SceneManager.hpp"
-#include "../scene/InitialScene.hpp"
 
 #include "../texture/TextureManager.hpp"
 #include "../common/Utils.hpp"

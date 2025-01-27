@@ -14,12 +14,9 @@ class Tilemap
 public:
 	Tilemap() = default;
 	Tilemap(Vector2 position=Vector2::ZERO, size_t tilesize=16, size_t scale=1, int8_t z_index=0);
-	~Tilemap() = default;
 
 	void AddTileset(const char* path);
-
 	void LoadMap(const char* path);
-
 	void AddCollision(size_t layer, const std::vector<size_t>& tiles);
 
 private:

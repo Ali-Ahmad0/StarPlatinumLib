@@ -1,4 +1,3 @@
-// InputMap.cpp
 #include "InputMap.hpp"
 #include "../common/Utils.hpp"
 

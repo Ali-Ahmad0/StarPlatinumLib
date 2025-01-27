@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include <SDL.h>
 
 // All scenes will extend this

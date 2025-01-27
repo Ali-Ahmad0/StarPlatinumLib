@@ -1,4 +1,5 @@
 #include "CollisionSystem.hpp"
+#include "../../ECS.hpp"
 
 void CollisionSystem::sortEdges()
 {

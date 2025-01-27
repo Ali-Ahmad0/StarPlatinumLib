@@ -1,7 +1,7 @@
 #pragma once
 
-#include "BaseSystem.hpp"
-#include "../ECS.hpp"
+#include "../BaseSystem.hpp"
+#include "../../components/Components.hpp"
 
 struct CollisionSystem : public BaseSystem
 {

@@ -19,3 +19,6 @@ using ComponentID = std::uint8_t;
 constexpr std::uint8_t MAX_COMPONENTS = 16;
 
 using Signature = std::bitset<MAX_COMPONENTS>;
+
+constexpr uint16_t NULL_INDEX = std::numeric_limits<uint16_t>::max();
+constexpr size_t MAX_PAGE_SIZE = 512;

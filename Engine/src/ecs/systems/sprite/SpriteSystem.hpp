@@ -1,7 +1,6 @@
 #pragma once
 
-#include "BaseSystem.hpp"
-#include "../ECS.hpp"
+#include "../BaseSystem.hpp"
 
 struct SpriteSystem : BaseSystem
 {

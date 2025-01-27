@@ -1,8 +1,5 @@
 #pragma once
-#include "../ECS.hpp"
-#include "BaseSystem.hpp"
-
-#include <iostream>
+#include "../BaseSystem.hpp"
 
 struct MovementSystem : public BaseSystem
 {

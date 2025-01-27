@@ -39,19 +39,16 @@
     <ClCompile Include="src\scene\SceneManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\scene\InitialScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\ecs\ECS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ecs\systems\CollisionSystem.cpp">
+    <ClCompile Include="src\ecs\systems\collision\CollisionSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ecs\systems\MovementSystem.cpp">
+    <ClCompile Include="src\ecs\systems\movement\MovementSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ecs\systems\SpriteSystem.cpp">
+    <ClCompile Include="src\ecs\systems\sprite\SpriteSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\input\InputMap.cpp">
@@ -83,10 +80,7 @@
     <ClInclude Include="src\test\TestScene.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\scene\InitialScene.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ecs\systems\CollisionSystem.hpp">
+    <ClInclude Include="src\ecs\systems\collision\CollisionSystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\common\Utils.hpp">
@@ -110,7 +104,7 @@
     <ClInclude Include="src\ecs\systems\BaseSystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ecs\systems\SpriteSystem.hpp">
+    <ClInclude Include="src\ecs\systems\sprite\SpriteSystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ecs\systems\System.hpp">
@@ -122,7 +116,7 @@
     <ClInclude Include="src\tilemap\Tilemap.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ecs\systems\MovementSystem.hpp">
+    <ClInclude Include="src\ecs\systems\movement\MovementSystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\input\InputMap.hpp">

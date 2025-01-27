@@ -1,4 +1,5 @@
 #pragma once
-#include "SpriteSystem.hpp"
-#include "MovementSystem.hpp"
-#include "CollisionSystem.hpp"
+
+#include "collision/CollisionSystem.hpp"
+#include "movement/MovementSystem.hpp"
+#include "sprite/SpriteSystem.hpp"

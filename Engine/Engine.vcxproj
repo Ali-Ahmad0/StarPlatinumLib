@@ -175,6 +175,7 @@
     <ClCompile Include="src\ecs\systems\movement\MovementSystem.cpp" />
     <ClCompile Include="src\ecs\systems\sprite\SpriteSystem.cpp" />
     <ClCompile Include="src\input\InputMap.cpp" />
+    <ClCompile Include="src\main\helper\DebugShape.cpp" />
     <ClCompile Include="src\scene\SceneManager.cpp" />
     <ClCompile Include="src\ecs\managers\EntityManager.cpp" />
     <ClCompile Include="src\ecs\managers\SystemManager.cpp" />
@@ -197,6 +198,7 @@
     <ClInclude Include="src\ecs\systems\sprite\SpriteSystem.hpp" />
     <ClInclude Include="src\ecs\systems\System.hpp" />
     <ClInclude Include="src\input\InputMap.hpp" />
+    <ClInclude Include="src\main\helper\DebugShape.hpp" />
     <ClInclude Include="src\main\init\Init.hpp" />
     <ClInclude Include="src\tilemap\Tilemap.hpp" />
     <ClInclude Include="src\scene\Scene.hpp" />

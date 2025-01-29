@@ -9,4 +9,5 @@ public:
 	virtual void Ready() {}
 	virtual void Update(double delta) {}
 	virtual void Events(SDL_Event event) {}
+	virtual void Render() {}
 };

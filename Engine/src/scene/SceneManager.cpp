@@ -19,6 +19,14 @@ void SceneManager::Events(SDL_Event event)
 	}
 }
 
+void SceneManager::Render() 
+{
+	if (currentScene) 
+	{
+		currentScene->Render();
+	}
+}
+
 void SceneManager::DeleteScene(const char* name) 
 {
 	if (isAdded(name)) 

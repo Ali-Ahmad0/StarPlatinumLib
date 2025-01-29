@@ -32,9 +32,7 @@ void Engine::Init()
 		renderer = SDL_CreateRenderer(window, -1, 0);
 		if (renderer)
 		{
-			Color color("#000000");
-
-			SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 			printf("[INFO]: Renderer created\n");
 		}
 		isRunning = true;
@@ -105,6 +103,7 @@ void Engine::Update()
 void Engine::Render() 
 {
 	ECS::GetSystem<SpriteSystem>()->update();
+	SceneManager::Render();
 }
 
 void Engine::GameLoop() 

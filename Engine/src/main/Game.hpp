@@ -14,6 +14,7 @@
 
 #include "../texture/TextureManager.hpp"
 #include "../common/Utils.hpp"
+#include "helper/DebugShape.hpp"
 
 #include "../camera/Camera.hpp"
 

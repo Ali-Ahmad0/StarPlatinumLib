@@ -92,7 +92,7 @@ void SpriteSystem::update()
         if (sprite->flipv) flip = (SDL_RendererFlip)(flip | SDL_FLIP_VERTICAL);
 
         // Render sprite
-        SDL_RenderCopyEx(Engine::GetRenderer(), sprite->texture, &sprite->src, &sprite->dst, transform->rotation, NULL, flip);
+        SDL_RenderCopyEx(StarPlatinumEngine::GetRenderer(), sprite->texture, &sprite->src, &sprite->dst, transform->rotation, NULL, flip);
     }
 }
 

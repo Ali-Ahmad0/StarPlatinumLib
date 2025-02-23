@@ -12,7 +12,6 @@ class SceneManager
 public:
 	static void Update(double delta);
 	static void Events(SDL_Event event);
-	static void Render();
 
 	// Add a new scene to the scene manager
 	template <typename T>

@@ -5,11 +5,6 @@
 #include <iomanip>
 #include <string>
 
-enum Direction
-{
-    UP, LEFT, DOWN, RIGHT
-};
-
 struct Color
 {
     int r;
@@ -353,21 +348,4 @@ struct Vector2
         return this->magnitudeSquared() <= Vector2::magnitudeSquared(b);
     }
 
-};
-
-struct Rectangle
-{
-    // Position
-    float x;
-    float y;
-
-    // Dimensions
-    float w;
-    float h;
-
-    Rectangle(float x=0, float y=0, float w=0, float h=0) 
-        : x(x), y(y), w(w), h(h) {}
-    
-    Rectangle(const Vector2& position=Vector2::ZERO, float w=0, float h=0)
-        : x (position.x), y(position.y), w(w), h(h) {}
 };

@@ -1,49 +1,50 @@
 #include "Game.hpp"
 #include <thread>
 
-SDL_Renderer* Engine::renderer = nullptr;
+SDL_Renderer* StarPlatinumEngine::renderer = nullptr;
 
-Engine::Engine(const Properties &properties)
-	: delta(0), properties(properties), isRunning(false), window(nullptr) {}
-
-Engine::~Engine() = default;
-
-void Engine::Init() 
+StarPlatinumEngine::StarPlatinumEngine(const char* title, int w, int h, bool fullscreen, const Vector2& position)
+	: delta(0), window(nullptr) 
 {
-	int flags = properties.fullscreen ? SDL_WINDOW_FULLSCREEN : 0;
+	int flags = fullscreen ? SDL_WINDOW_FULLSCREEN : 0;
 
 	// Initialize SDL
-	if (SDL_Init(SDL_INIT_EVERYTHING) == 0) 
+	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{
 		printf("[INFO]: Initialized subsystems\n");
-		
+
 		// Create window
 		window = SDL_CreateWindow(
-			properties.title, (int)properties.windowPos.x, (int)properties.windowPos.y, 
-			(int)properties.windowSize.x, (int)properties.windowSize.y, flags
+			title, (int)position.x, (int)position.y, w, h, flags
 		);
 
-		if (window)
+		if (window == nullptr)
 		{
-			printf("[INFO]: Window created\n");
+			fprintf(stderr, "[ERROR]: Unable to create SDL window, exiting...\n");
+			exit();
 		}
+
+		printf("[INFO]: Window created\n");
+
 
 		// Create renderer
 		renderer = SDL_CreateRenderer(window, -1, 0);
-		if (renderer)
+		if (renderer == nullptr)
 		{
-			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-			printf("[INFO]: Renderer created\n");
+			fprintf(stderr, "[ERROR]: Unable to create SDL renderer, exiting...\n");
+			exit();
 		}
-		isRunning = true;
+
+		printf("[INFO]: Renderer created\n");
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	}
 
-	else 
+	else
 	{
 		fprintf(stderr, "[ERROR] Failed to initialize SDL, exiting...\n");
-		isRunning = false;
+		exit();
 	}
-	
+
 
 	// Initialize ECS related stuff
 	ECS::Init();
@@ -56,9 +57,11 @@ void Engine::Init()
 	printf("[INFO]: Engine systems initialized\n");
 }
 
+StarPlatinumEngine::~StarPlatinumEngine() = default;
+
 bool showFPS = false;
 
-void Engine::Events()
+bool StarPlatinumEngine::events()
 {
 	SDL_Event event;
 	SDL_PollEvent(&event);
@@ -68,7 +71,7 @@ void Engine::Events()
 	{
 
 	case SDL_QUIT:
-		isRunning = false;
+		return false;
 		break;
 	
 	case SDL_KEYDOWN:
@@ -90,9 +93,10 @@ void Engine::Events()
 
 
 	SceneManager::Events(event);
+	return true;
 }
 
-void Engine::Update()
+void StarPlatinumEngine::update()
 {
 	ECS::GetSystem<MovementSystem>()->update(delta);
 	ECS::GetSystem<CollisionSystem>()->update();
@@ -100,35 +104,37 @@ void Engine::Update()
 	SceneManager::Update(delta);
 }
 
-void Engine::Render() 
+void StarPlatinumEngine::render() 
 {
 	ECS::GetSystem<SpriteSystem>()->update();
-	SceneManager::Render();
 }
 
-void Engine::GameLoop() 
+void StarPlatinumEngine::Run() 
 {
 	// Times in milliseconds
-	uint32_t targetDeltaTime = 1000 / properties.targetFPS;
+	uint32_t targetDeltaTime = 1000 / 60;
 
 	uint32_t frameStartTime;
 	uint32_t frameDrawTime;
 
 	printf("[INFO]: Starting update loop...\n");
 
-	while (Running())
+	while (true)
 	{
 		frameStartTime = SDL_GetTicks();
 
 		SDL_RenderClear(renderer);
 		
-		Events();
+		if (!events())
+		{
+			break;
+		}
 
-		std::thread updateThread(&Engine::Update, this);
-		std::thread renderThread(&Engine::Render, this);
+		std::thread renderThread(&StarPlatinumEngine::render, this);
+		std::thread updateThread(&StarPlatinumEngine::update, this);
 		
+		renderThread.join(); 
 		updateThread.join();
-		renderThread.join();
 
 		SDL_RenderPresent(renderer);
 
@@ -149,13 +155,16 @@ void Engine::GameLoop()
 
 		if (showFPS)
 		{
-			printf("FPS: %f | Entities: %zu\n", ((float)targetDeltaTime / (float)delta) * properties.targetFPS, ECS::GetEntityCount());
+			printf("FPS: %f | Entities: %zu\n", ((float)targetDeltaTime / (float)delta) * 60, ECS::GetEntityCount());
 			showFPS = false;
 		}		
 	}
+
+	// Close when exiting game loop
+	exit();
 }
 
-void Engine::Exit()
+void StarPlatinumEngine::exit()
 {
 	printf("[INFO]: Exiting...\n");
 

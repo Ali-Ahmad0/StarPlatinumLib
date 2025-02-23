@@ -3,24 +3,14 @@
 
 #undef main
 
-Engine* game = nullptr;
-
 int main() 
 {
-	game = new Engine();
+	StarPlatinumEngine game = StarPlatinumEngine();
 
-	game->Init();
-
-	// Change to initial scene
 	SceneManager::AddScene<TestScene>("test_scene");
 	SceneManager::ChangeScene("test_scene");
 
-	game->GameLoop();
-	game->Exit();
-
-	// Free memory
-	delete game;
-	game = nullptr;
+	game.Run();
 
 	return 0;
 }

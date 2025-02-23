@@ -146,3 +146,32 @@ private:
     bool isColliding = false;
 };
 
+struct CircleCollider 
+{
+    // Center and dimensions
+    Vector2 center;
+    float r;
+
+    AABB aabb;
+
+    CircleCollider(float cx, float cy, float r) : center(Vector2(cx, cy)), r(r) {}
+    CircleCollider(const Vector2& center, float r) : center(center), r(r) {}
+};
+
+struct BoxCollider 
+{
+    // Center and dimensions
+    Vector2 center;
+    float w;
+    float h;
+
+    AABB aabb;
+
+    // Box vertices
+    std::array<Vector2, 4> vertices{ Vector2::ZERO };
+    std::array<Vector2, 4> transformedVertices{ Vector2::ZERO };
+
+    BoxCollider(float cx, float cy, float w, float h) : center(Vector2(cx, cy)), w(w), h(h) {};
+    BoxCollider(const Vector2& center, float w, float h) : center(center), w(w), h(h) {};
+};
+

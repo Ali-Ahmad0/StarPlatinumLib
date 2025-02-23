@@ -14,62 +14,36 @@
 
 #include "../texture/TextureManager.hpp"
 #include "../common/Utils.hpp"
-#include "helper/DebugShape.hpp"
 
 #include "../camera/Camera.hpp"
-
-struct Properties
-{
-	const char* title;
-
-	bool fullscreen;
-
-	int targetFPS;
-
-	Vector2 windowPos;
-	Vector2 windowSize;
-
-	Properties(const char* title, int w = 640, int h = 480, int targetFPS = 60, bool fullscreen = false,
-		Vector2 windowPos = { SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED })
-		: title(title), windowSize({ (float)w, (float)h }), targetFPS(targetFPS), fullscreen(fullscreen), windowPos(windowPos) {}
-};
-
-class Engine 
+ 
+class StarPlatinumEngine 
 {
 public:
 	// Constructor and destructor
-	Engine(const Properties& properties = Properties("Game"));
-	~Engine();
+	StarPlatinumEngine(const char* title = "Game", int w = 640, int h = 480, bool fullscreen = false, 
+		const Vector2& position = Vector2(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED));
+	~StarPlatinumEngine();
 
-	void Init();
-
-	void Events();
-	void Update();
-	void Render();
-
-	void GameLoop();
-
-	void Exit();
-
-	// Engine property getters
-	bool Running() 
-	{ 
-		return isRunning; 
-	}
+	// Run the engine
+	void Run();
 	
+	// Returns SDL renderer
 	static SDL_Renderer* GetRenderer() 
 	{ 
 		return renderer; 
 	}
 
 private:
-	Properties properties;
-
-	bool isRunning;
-
 	// Delta time in milliseconds
 	double delta;
 
 	SDL_Window* window;
 	static SDL_Renderer* renderer;
+
+	bool events();
+	void update();
+	void render();
+
+	void exit();
 };

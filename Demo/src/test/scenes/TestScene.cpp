@@ -22,8 +22,3 @@ void TestScene::Events(SDL_Event event)
 {
     player.Events(event);
 }
-
-void TestScene::Render() 
-{
-    DebugShape::DrawRect(Vector2::ZERO, 32, 32);
-}

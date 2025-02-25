@@ -112,7 +112,7 @@ void StarPlatinumEngine::render()
 void StarPlatinumEngine::Run() 
 {
 	// Times in milliseconds
-	uint32_t targetDeltaTime = 1000 / 60;
+	uint32_t targetDelta = 1000 / 60;
 
 	uint32_t frameStartTime;
 	uint32_t frameDrawTime;
@@ -141,10 +141,10 @@ void StarPlatinumEngine::Run()
 		frameDrawTime = SDL_GetTicks() - frameStartTime;
 
 		// FPS is at target FPS
-		if (targetDeltaTime > frameDrawTime) 
+		if (targetDelta > frameDrawTime) 
 		{
-			SDL_Delay(targetDeltaTime - frameDrawTime);
-			delta = (double)targetDeltaTime / 1000;
+			SDL_Delay(targetDelta - frameDrawTime);
+			delta = (double)targetDelta / 1000;
 		}
 
 		// FPS is less than target FPS
@@ -155,7 +155,7 @@ void StarPlatinumEngine::Run()
 
 		if (showFPS)
 		{
-			printf("FPS: %f | Entities: %zu\n", ((float)targetDeltaTime / (float)delta) * 60, ECS::GetEntityCount());
+			printf("FPS: %f | Entities: %zu\n", targetDelta / (delta * 1000) * 60, ECS::GetEntityCount());
 			showFPS = false;
 		}		
 	}

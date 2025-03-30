@@ -34,6 +34,7 @@ void TestPlayer::Ready()
 	 
 	movement = ECS::GetComponent<Movement>(player);
 
+	// Set camera boundaries
 	Camera::boundaries = { 0, 320, 0, 240 };
 }
 
@@ -89,6 +90,7 @@ void TestPlayer::Update(double delta)
 
 	movement->speed.y = movement->speed.x;
 
+	// Upadate camera position
 	Camera::SetOffset(Vector2(transform->position.x - 320, transform->position.y - 240));
 }
 

@@ -32,7 +32,7 @@ void SpriteSystem::update()
         sortZ();
         prevEntityCount = entities.size();
     }
-
+    
     // Update and animate all sprites
     for (const EntityID e : entities)
     {
@@ -92,7 +92,7 @@ void SpriteSystem::update()
         if (sprite->flipv) flip = (SDL_RendererFlip)(flip | SDL_FLIP_VERTICAL);
 
         // Render sprite
-        SDL_RenderCopyEx(StarPlatinumEngine::GetRenderer(), sprite->texture, &sprite->src, &sprite->dst, transform->rotation, NULL, flip);
+        SDL_RenderCopyEx(StarPlatinumEngine::Renderer, sprite->texture, &sprite->src, &sprite->dst, transform->rotation, NULL, flip);
     }
 }
 

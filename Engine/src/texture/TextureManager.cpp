@@ -11,7 +11,7 @@ SDL_Texture* TextureManager::LoadTexture(const char* path)
 		fprintf(stderr, "[ERROR] Unable to load image: %s\n", IMG_GetError());
 	}
 
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(StarPlatinumEngine::GetRenderer(), tmpSurface);
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(StarPlatinumEngine::Renderer, tmpSurface);
 	printf("[INFO]: Texture loadeds successfully!\n");
 
 	SDL_FreeSurface(tmpSurface);

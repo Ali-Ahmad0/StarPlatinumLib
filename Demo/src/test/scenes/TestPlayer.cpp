@@ -2,15 +2,15 @@
 
 void TestPlayer::Ready() 
 {
-	// Create player entity
-	player = ECS::CreateEntity();
-
 	// Load player texture
 	texture = TextureManager::LoadTexture("src/test/assets/character.png");
 	preview = TextureManager::LoadTexture("src/test/assets/preview.png");
+		
+	// Create player entity
+	player = ECS::CreateEntity();
 
 	// Add components
-	ECS::AddComponent(player, Transform(Vector2::ZERO, 0.0, 4));
+	ECS::AddComponent(player, Transform(Vector2(32, 384), 0.0, 3));
 	ECS::AddComponent(player, Sprite(texture, 3, 4, 6, 0));
 	ECS::AddComponent(player, AABB(Vector2(8, 20), Vector2(12, 12)));
 	ECS::AddComponent(player, Movement());
@@ -29,8 +29,12 @@ void TestPlayer::Ready()
 	sprite->addAnim("walk_left", { 6, 7, 8 });
 	sprite->addAnim("walk_up", { 3, 4, 5 });
 	sprite->addAnim("walk_down", { 0, 1, 2 });
- 
+
+	sprite->setAnim("idle_right");
+	 
 	movement = ECS::GetComponent<Movement>(player);
+
+	Camera::boundaries = { 0, 320, 0, 240 };
 }
 
 void TestPlayer::Update(double delta) 
@@ -80,10 +84,12 @@ void TestPlayer::Update(double delta)
 	}
 
 	movement->direction = direction;
-	movement->speed.x = 200.0f * (state[SDL_SCANCODE_LEFT] || state[SDL_SCANCODE_RIGHT]
+	movement->speed.x = 128.0f * (state[SDL_SCANCODE_LEFT] || state[SDL_SCANCODE_RIGHT]
 								|| state[SDL_SCANCODE_UP] || state[SDL_SCANCODE_DOWN]);
 
 	movement->speed.y = movement->speed.x;
+
+	Camera::SetOffset(Vector2(transform->position.x - 320, transform->position.y - 240));
 }
 
 void TestPlayer::Events(SDL_Event event) 
@@ -97,7 +103,7 @@ void TestPlayer::Events(SDL_Event event)
 		srand((unsigned int)(time(nullptr)));
 		try
 		{
-			for (int i = 0; i < 100; i++)
+			for (int i = 0; i < 1000; i++)
 			{
 				EntityID entity = ECS::CreateEntity();
 
@@ -111,7 +117,6 @@ void TestPlayer::Events(SDL_Event event)
 			}
 		}
 
-
 		catch (const std::runtime_error& e)
 		{
 			fprintf(stderr, "[ERROR]: %s\n", e.what());
@@ -122,5 +127,4 @@ void TestPlayer::Events(SDL_Event event)
 		 
 		break;
 	}
-
 }

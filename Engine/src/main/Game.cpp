@@ -1,11 +1,16 @@
 #include "Game.hpp"
 #include <thread>
+#include <vector>
+#include <future>
+#include <Windows.h>
 
-SDL_Renderer* StarPlatinumEngine::renderer = nullptr;
+SDL_Renderer* StarPlatinumEngine::Renderer = nullptr;
 
 StarPlatinumEngine::StarPlatinumEngine(const char* title, int w, int h, bool fullscreen, const Vector2& position)
 	: delta(0), window(nullptr) 
 {
+	SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_HIGHEST);
+
 	int flags = fullscreen ? SDL_WINDOW_FULLSCREEN : 0;
 
 	// Initialize SDL
@@ -28,15 +33,15 @@ StarPlatinumEngine::StarPlatinumEngine(const char* title, int w, int h, bool ful
 
 
 		// Create renderer
-		renderer = SDL_CreateRenderer(window, -1, 0);
-		if (renderer == nullptr)
+		Renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+		if (Renderer == nullptr)
 		{
 			fprintf(stderr, "[ERROR]: Unable to create SDL renderer, exiting...\n");
 			exit();
 		}
 
 		printf("[INFO]: Renderer created\n");
-		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+		SDL_SetRenderDrawColor(Renderer, 0, 0, 0, 255);
 	}
 
 	else
@@ -91,15 +96,14 @@ bool StarPlatinumEngine::events()
 		break;
 	}
 
-
 	SceneManager::Events(event);
 	return true;
 }
 
 void StarPlatinumEngine::update()
 {
-	ECS::GetSystem<MovementSystem>()->update(delta);
 	ECS::GetSystem<CollisionSystem>()->update();
+	ECS::GetSystem<MovementSystem>()->update(delta);
 
 	SceneManager::Update(delta);
 }
@@ -123,7 +127,7 @@ void StarPlatinumEngine::Run()
 	{
 		frameStartTime = SDL_GetTicks();
 
-		SDL_RenderClear(renderer);
+		SDL_RenderClear(Renderer);
 		
 		if (!events())
 		{
@@ -136,7 +140,7 @@ void StarPlatinumEngine::Run()
 		renderThread.join(); 
 		updateThread.join();
 
-		SDL_RenderPresent(renderer);
+		SDL_RenderPresent(Renderer);
 
 		frameDrawTime = SDL_GetTicks() - frameStartTime;
 
@@ -169,7 +173,7 @@ void StarPlatinumEngine::exit()
 	printf("[INFO]: Exiting...\n");
 
 	SDL_DestroyWindow(window);
-	SDL_DestroyRenderer(renderer);
+	SDL_DestroyRenderer(Renderer);
 	SDL_Quit();
 
 	printf("[INFO]: Game exited\n");

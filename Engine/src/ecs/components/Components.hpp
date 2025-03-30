@@ -146,6 +146,7 @@ private:
     bool isColliding = false;
 };
 
+// Work in progress
 struct CircleCollider 
 {
     // Center and dimensions

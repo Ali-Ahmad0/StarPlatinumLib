@@ -21,25 +21,19 @@ class StarPlatinumEngine
 {
 public:
 	// Constructor and destructor
-	StarPlatinumEngine(const char* title = "Game", int w = 640, int h = 480, bool fullscreen = false, 
+	StarPlatinumEngine(const char* title = "Star Platinum Project", int w = 640, int h = 480, bool fullscreen = false, 
 		const Vector2& position = Vector2(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED));
 	~StarPlatinumEngine();
 
 	// Run the engine
 	void Run();
-	
-	// Returns SDL renderer
-	static SDL_Renderer* GetRenderer() 
-	{ 
-		return renderer; 
-	}
+	static SDL_Renderer* Renderer;
 
 private:
 	// Delta time in milliseconds
 	double delta;
 
 	SDL_Window* window;
-	static SDL_Renderer* renderer;
 
 	bool events();
 	void update();

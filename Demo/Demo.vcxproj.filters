@@ -28,6 +28,7 @@
   <ItemGroup>
     <None Include="src\test\assets\level\tilemap.json" />
     <None Include="src\test\assets\level\untitled.json" />
+    <None Include="src\test\assets\level\untitled.tsx" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="src\test\assets\character.png">

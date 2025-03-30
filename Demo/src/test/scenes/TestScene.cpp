@@ -3,12 +3,12 @@
 
 void TestScene::Ready()
 {
-    Tilemap tilemap = Tilemap(Vector2::ZERO, 16, 4);
+    Tilemap tilemap = Tilemap(Vector2::ZERO, 16, 3);
 
     tilemap.AddTileset("src/test/assets/untitled.png");
     tilemap.LoadMap("src/test/assets/level/untitled.json");
 
-    tilemap.AddCollision(1, { 28, 31, 37, 81, 82, 84, 89, 90 });
+    tilemap.AddCollision(1, { 80, 81, 82, 88, 89, 90, 96, 97, 98, 110, 111, 118, 119 });
 
     player.Ready();
 }

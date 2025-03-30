@@ -26,6 +26,10 @@ private:
 	SDL_Texture* tileset;
 	std::vector<SDL_Texture*> tiles;
 	size_t tilesize;
+	
+	// Orientation of the tiles
+	// Obtained from JSON file
+	std::string orientation;
 
 	// Height and width of tilemap
 	// (In number of tiles)
@@ -34,22 +38,17 @@ private:
 
 	size_t scale;
 	int8_t z_index;
-	
-	// Tilemap layers
+
 	std::vector<SDL_Texture*> layers;
 
-	// Texture map, stores index of textures in tilemap
+	// Texture map, tores index of textures in tilemap
 	std::vector<std::vector<std::vector<int>>> texture;
 
 	// Collision map, stores if a tile has collision or not
 	std::vector<std::vector<bool>> collision;
 
-	// Initialize texture map
 	void initTextureMap(size_t layers, size_t rows, size_t cols);
-
-	// Initialize collision map
 	void initCollisionMap();
 
-	// Generate collision entities
 	void generateCollisionTiles();
 };

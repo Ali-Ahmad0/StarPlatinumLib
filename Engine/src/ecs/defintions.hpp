@@ -13,7 +13,7 @@
 #include <stdexcept>
 
 using EntityID = std::uint16_t;
-constexpr std::uint16_t MAX_ENTITIES = 10240;
+constexpr std::uint16_t MAX_ENTITIES = std::numeric_limits<uint16_t>::max();
 
 using ComponentID = std::uint8_t;
 constexpr std::uint8_t MAX_COMPONENTS = 16;

@@ -19,6 +19,8 @@ struct Color
     static const Color RED;
     static const Color GREEN;
     static const Color BLUE;
+    static const Color BLACK;
+    static const Color WHITE;
 
     // Constructor to initialize color values using HSV values
     Color(const float h,const float s, const float v, const int alpha = 255)

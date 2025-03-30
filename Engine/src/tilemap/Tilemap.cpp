@@ -21,19 +21,19 @@ void Tilemap::AddTileset(const char* path)
         for (int j = 0; j < columns; j++)
         {
             // Create texture for an individual tile
-            SDL_Texture* tile = SDL_CreateTexture(StarPlatinumEngine::GetRenderer(),
+            SDL_Texture* tile = SDL_CreateTexture(StarPlatinumEngine::Renderer,
                 SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, (int)tilesize, (int)tilesize);
 
             SDL_Rect src = { (int)(j * tilesize), (int)(i * tilesize), (int)tilesize, (int)tilesize };
 
             // Set the target texture to the new tile texture
-            SDL_SetRenderTarget(StarPlatinumEngine::GetRenderer(), tile);
+            SDL_SetRenderTarget(StarPlatinumEngine::Renderer, tile);
 
             // Copy Current tile into the tile texture
-            SDL_RenderCopy(StarPlatinumEngine::GetRenderer(), tileset, &src, NULL);
+            SDL_RenderCopy(StarPlatinumEngine::Renderer, tileset, &src, NULL);
 
             // Reset the render target 
-            SDL_SetRenderTarget(StarPlatinumEngine::GetRenderer(), NULL);
+            SDL_SetRenderTarget(StarPlatinumEngine::Renderer, NULL);
 
             // Add the new tile texture to the tiles vector
             tiles.push_back(tile);
@@ -82,11 +82,10 @@ void Tilemap::LoadMap(const char* path)
     }
 
     // Height and width of tilemap (in number of tiles)
-    size_t rows = mapfilejson["height"];
-    size_t cols = mapfilejson["width"];
+    height = mapfilejson["height"];
+    width = mapfilejson["width"];
 
-    height = rows;
-    width = cols;
+    orientation = mapfilejson["orientation"];
 
     initTextureMap(mapfilejson["layers"].size(), height, width);
 
@@ -98,28 +97,28 @@ void Tilemap::LoadMap(const char* path)
 
         // Preload the tilemap as a single texture
         // Height and width of tilemap (in number of pixels)
-        size_t mapWidth = cols * tilesize;
-        size_t mapHeight = rows * tilesize;
+        size_t mapWidth = width * tilesize;
+        size_t mapHeight = height * tilesize;
 
         // Create a texture to hold the entire map
-        layers.push_back(SDL_CreateTexture(StarPlatinumEngine::GetRenderer(),
+        layers.push_back(SDL_CreateTexture(StarPlatinumEngine::Renderer,
             SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, (int)mapWidth, (int)mapHeight));
 
         // Set the texture to blend mode for transparency
         SDL_SetTextureBlendMode(layers[i], SDL_BLENDMODE_BLEND);
 
         // Set the target to be the map texture
-        SDL_SetRenderTarget(StarPlatinumEngine::GetRenderer(), layers[i]);
+        SDL_SetRenderTarget(StarPlatinumEngine::Renderer, layers[i]);
 
         // Clear the texture with transparent color
-        SDL_SetRenderDrawColor(StarPlatinumEngine::GetRenderer(), 0, 0, 0, 0);
-        SDL_RenderClear(StarPlatinumEngine::GetRenderer());
+        SDL_SetRenderDrawColor(StarPlatinumEngine::Renderer, 0, 0, 0, 0);
+        SDL_RenderClear(StarPlatinumEngine::Renderer);
 
         // Draw each tile onto the map texture
         for (size_t j = 0; j < layout.size(); j++)
         {
-            size_t row = j / cols;
-            size_t col = j % cols;
+            size_t row = j / width;
+            size_t col = j % width;
 
             int index = layout[j] - 1;
             texture[i][row][col] = index;
@@ -131,11 +130,11 @@ void Tilemap::LoadMap(const char* path)
             }
 
             SDL_Rect dst = { (int)(col * tilesize), (int)(row * tilesize), (int)tilesize, (int)tilesize };
-            SDL_RenderCopy(StarPlatinumEngine::GetRenderer(), tiles[index], NULL, &dst);
+            SDL_RenderCopy(StarPlatinumEngine::Renderer, tiles[index], NULL, &dst);
         }
 
         // Reset the render target to the default renderer target
-        SDL_SetRenderTarget(StarPlatinumEngine::GetRenderer(), NULL);
+        SDL_SetRenderTarget(StarPlatinumEngine::Renderer, NULL);
     }
     printf("[INFO]: Tilemap loaded successfully\n");
 

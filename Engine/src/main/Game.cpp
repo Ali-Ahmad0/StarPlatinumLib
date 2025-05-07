@@ -50,7 +50,6 @@ StarPlatinumEngine::StarPlatinumEngine(const char* title, int w, int h, bool ful
 		exit();
 	}
 
-
 	// Initialize ECS related stuff
 	ECS::Init();
 	printf("[INFO]: ECS initialized\n");

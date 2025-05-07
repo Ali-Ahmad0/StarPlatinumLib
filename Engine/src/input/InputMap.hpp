@@ -12,8 +12,8 @@ public:
     static void BindKey(const std::string& key, SDL_Scancode scancode);
     static bool IsKeyPressed(const std::string& key);
     static bool IsKeyReleased(const std::string& key);
-    static int GetDirection(const std::string& negativeKey, const std::string& positiveKey);
-    static Vector2& GetVector(const std::string& leftKey, const std::string& rightKey, const std::string& upKey, const std::string& downKey);
+    static int GetDirection(const std::string& neg, const std::string& pos);
+    static Vector2& GetVector(const std::string& negX, const std::string& posX, const std::string& negY, const std::string& posY);
 
     static bool MouseLeftPressed(SDL_Event event);
     static bool MouseMiddlePressed(SDL_Event event);

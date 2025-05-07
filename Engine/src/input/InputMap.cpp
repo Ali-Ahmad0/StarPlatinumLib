@@ -8,6 +8,7 @@ void InputMap::BindKey(const std::string& key, SDL_Scancode scancode)
     bindings[key] = scancode;
 }
 
+// Keyboard input
 bool InputMap::IsKeyPressed(const std::string& key)
 {
     SDL_Scancode scancode = bindings[key];
@@ -17,28 +18,27 @@ bool InputMap::IsKeyPressed(const std::string& key)
 
 bool InputMap::IsKeyReleased(const std::string& key)
 {
-    SDL_Scancode scancode = bindings[key];
-    const Uint8* state = SDL_GetKeyboardState(NULL);
-    return !state[scancode];
+    return !IsKeyPressed(key);
 }
 
-int InputMap::GetDirection(const std::string& negativeKey, const std::string& positiveKey)
+int InputMap::GetDirection(const std::string& neg, const std::string& pos)
 {
-    int negativePressed = IsKeyPressed(negativeKey) ? -1 : 0;
-    int positivePressed = IsKeyPressed(positiveKey) ? 1 : 0;
+    int negPressed = IsKeyPressed(neg) ? -1 : 0;
+    int posPressed = IsKeyPressed(pos) ? 1 : 0;
 
-    return negativePressed + positivePressed;
+    return negPressed + posPressed;
 }
 
-Vector2& InputMap::GetVector(const std::string& leftKey, const std::string& rightKey, const std::string& upKey, const std::string& downKey)
+Vector2& InputMap::GetVector(const std::string& negX, const std::string& posX, const std::string& negY, const std::string& posY)
 {
-    static Vector2 vector;
-    vector.x = (float)GetDirection(leftKey, rightKey);
-    vector.y = (float)GetDirection(upKey, downKey);
+    Vector2 vector;
+    vector.x = (float)GetDirection(negX, posX);
+    vector.y = (float)GetDirection(negY, posY);
+    
     return vector;
 }
 
-// Mouse input functions
+// Mouse input
 bool InputMap::MouseLeftPressed(SDL_Event event)
 {
     return event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT;

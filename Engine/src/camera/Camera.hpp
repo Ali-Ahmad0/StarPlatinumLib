@@ -4,7 +4,6 @@
 #include <algorithm>
 #include "../common/Utils.hpp"
 
-
 class Camera 
 {
 public:
@@ -13,7 +12,6 @@ public:
 
     // left, right, up, down
     static std::array<float, 4> boundaries;
-
 private:
     static Vector2 offset;
 };

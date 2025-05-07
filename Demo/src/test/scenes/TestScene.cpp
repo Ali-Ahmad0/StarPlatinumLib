@@ -8,7 +8,7 @@ void TestScene::Ready()
     tilemap.AddTileset("src/test/assets/untitled.png");
     tilemap.LoadMap("src/test/assets/level/untitled.json");
 
-    tilemap.AddCollision(1, { 80, 81, 82, 88, 89, 90, 96, 97, 98, 110, 111, 118, 119 });
+    tilemap.AddCollision(1, { 89, 90, 97, 98, 110, 118, 119 });
 
     player.Ready();
 }

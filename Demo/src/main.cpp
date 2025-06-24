@@ -10,7 +10,7 @@ int main()
 
 	SceneManager::AddScene<TestScene>("test_scene");
 	SceneManager::AddScene<StressTest>("stress_test");
-	SceneManager::ChangeScene("stress_test");
+	SceneManager::ChangeScene("test_scene");
 
 	game.Run();
 

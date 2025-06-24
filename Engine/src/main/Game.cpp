@@ -1,7 +1,4 @@
 #include "Game.hpp"
-#include <thread>
-#include <vector>
-#include <future>
 #include <Windows.h>
 
 SDL_Renderer* StarPlatinumEngine::Renderer = nullptr;

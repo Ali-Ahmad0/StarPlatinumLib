@@ -13,7 +13,9 @@ public:
     static bool IsKeyPressed(const std::string& key);
     static bool IsKeyReleased(const std::string& key);
     static int GetDirection(const std::string& neg, const std::string& pos);
-    static Vector2& GetVector(const std::string& negX, const std::string& posX, const std::string& negY, const std::string& posY);
+    static void GetVector(
+        const std::string& negX, const std::string& posX, 
+        const std::string& negY, const std::string& posY, Vector2& outVector);
 
     static bool MouseLeftPressed(SDL_Event event);
     static bool MouseMiddlePressed(SDL_Event event);

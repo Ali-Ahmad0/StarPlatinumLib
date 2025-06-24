@@ -92,19 +92,28 @@ bool StarPlatinumEngine::events()
 		break;
 
 	default:
+		SceneManager::Events(event);
 		break;
 	}
 
-	SceneManager::Events(event);
 	return true;
 }
 
-void StarPlatinumEngine::update()
-{
-	ECS::GetSystem<CollisionSystem>()->update();
-	ECS::GetSystem<MovementSystem>()->update(delta);
+void StarPlatinumEngine::update() {
+	// Parallelized systems and scene update logic
+	auto movementFuture = pool.AddTask([this]() {
+		ECS::GetSystem<MovementSystem>()->update(delta);
+	});
+	
+	auto sceneUpdateFuture = pool.AddTask([this]() {
+		SceneManager::Update(delta);
+	});
 
-	SceneManager::Update(delta);
+	movementFuture.wait();
+	sceneUpdateFuture.wait();
+
+	// Handle collisions at the end on main thread
+	ECS::GetSystem<CollisionSystem>()->update();
 }
 
 void StarPlatinumEngine::render() 
@@ -128,17 +137,10 @@ void StarPlatinumEngine::Run()
 
 		SDL_RenderClear(Renderer);
 		
-		if (!events())
-		{
-			break;
-		}
-
-		std::thread renderThread(&StarPlatinumEngine::render, this);
-		std::thread updateThread(&StarPlatinumEngine::update, this);
-		
-		renderThread.join(); 
-		updateThread.join();
-
+		// Events, update and rendering
+		if (!events()) break;
+		update();
+		render();
 		SDL_RenderPresent(Renderer);
 
 		frameDrawTime = SDL_GetTicks() - frameStartTime;

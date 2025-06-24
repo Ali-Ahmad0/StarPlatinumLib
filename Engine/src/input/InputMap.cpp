@@ -29,13 +29,12 @@ int InputMap::GetDirection(const std::string& neg, const std::string& pos)
     return negPressed + posPressed;
 }
 
-Vector2& InputMap::GetVector(const std::string& negX, const std::string& posX, const std::string& negY, const std::string& posY)
+void InputMap::GetVector(
+    const std::string& negX, const std::string& posX, 
+    const std::string& negY, const std::string& posY, Vector2& outVector)
 {
-    Vector2 vector;
-    vector.x = (float)GetDirection(negX, posX);
-    vector.y = (float)GetDirection(negY, posY);
-    
-    return vector;
+    outVector.x = (float)GetDirection(negX, posX);
+    outVector.y = (float)GetDirection(negY, posY);   
 }
 
 // Mouse input

@@ -148,6 +148,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\test\scenes\StressTest.cpp" />
+    <ClCompile Include="src\test\scenes\StressTest.hpp" />
     <ClCompile Include="src\test\scenes\TestPlayer.cpp" />
     <ClCompile Include="src\test\scenes\TestScene.cpp" />
   </ItemGroup>

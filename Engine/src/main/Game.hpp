@@ -16,6 +16,8 @@
 #include "../common/Utils.hpp"
 
 #include "../camera/Camera.hpp"
+
+#include "../threads/Threads.hpp"
  
 class StarPlatinumEngine 
 {
@@ -30,10 +32,12 @@ public:
 	static SDL_Renderer* Renderer;
 
 private:
-	// Delta time in milliseconds
-	double delta;
 
 	SDL_Window* window;
+	ThreadPool pool;
+
+	// Delta time in milliseconds
+	double delta;
 
 	bool events();
 	void update();

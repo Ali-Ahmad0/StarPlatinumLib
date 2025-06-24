@@ -181,6 +181,8 @@
     <ClCompile Include="src\main\Game.cpp" />
     <ClCompile Include="src\main\init\Init.cpp" />
     <ClCompile Include="src\texture\TextureManager.cpp" />
+    <ClCompile Include="src\threads\Threads.cpp" />
+    <ClCompile Include="src\threads\Threads.hpp" />
     <ClCompile Include="src\tilemap\Tilemap.cpp" />
   </ItemGroup>
   <ItemGroup>

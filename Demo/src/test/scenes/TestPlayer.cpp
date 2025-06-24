@@ -5,7 +5,6 @@ void TestPlayer::Ready()
 {
 	// Load player texture
 	texture = TextureManager::LoadTexture("src/test/assets/character.png");
-	preview = TextureManager::LoadTexture("src/test/assets/preview.png");
 
 	// Create player entity
 	player = ECS::CreateEntity();
@@ -48,7 +47,8 @@ void TestPlayer::Ready()
 void TestPlayer::Update(double delta)
 {
 	// Get input direction using the InputMap system
-	Vector2 input = InputMap::GetVector("move_l", "move_r", "move_u", "move_d");
+	Vector2 input; 
+	InputMap::GetVector("move_l", "move_r", "move_u", "move_d", input);
 
 	// User input
 	if (input.x != 0 || input.y != 0) {

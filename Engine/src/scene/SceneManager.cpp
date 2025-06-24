@@ -19,7 +19,7 @@ void SceneManager::Events(SDL_Event event)
 	}
 }
 
-void SceneManager::DeleteScene(const char* name) 
+void SceneManager::DeleteScene(const char* name)
 {
 	if (isAdded(name)) 
 	{

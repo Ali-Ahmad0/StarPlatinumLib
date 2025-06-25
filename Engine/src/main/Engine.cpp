@@ -1,54 +1,12 @@
 #include "Engine.hpp"
 #include <Windows.h>
 
-//SDL_Renderer* ViewPort::GetRenderer() = nullptr;
-
-StarPlatinumEngine::StarPlatinumEngine(const char* title, int w, int h, bool fullscreen, const Vector2& position)
-	: delta(0) //, window(nullptr) 
+StarPlatinumEngine::StarPlatinumEngine(const char* title, int w, int h, bool fullscreen) : delta(0)
 {
 	SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_HIGHEST);
 
-	//int flags = fullscreen ? SDL_WINDOW_FULLSCREEN : 0;
-
-	//// Initialize SDL
-	//if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
-	//{
-	//	printf("[INFO]: Initialized subsystems\n");
-
-	//	// Create window
-	//	window = SDL_CreateWindow(
-	//		title, (int)position.x, (int)position.y, w, h, flags
-	//	);
-
-	//	if (window == nullptr)
-	//	{
-	//		fprintf(stderr, "[ERROR]: Unable to create SDL window, exiting...\n");
-	//		exit();
-	//	}
-
-	//	printf("[INFO]: Window created\n");
-
-
-	//	// Create renderer
-	//	Renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	//	if (Renderer == nullptr)
-	//	{
-	//		fprintf(stderr, "[ERROR]: Unable to create SDL renderer, exiting...\n");
-	//		exit();
-	//	}
-
-	//	printf("[INFO]: Renderer created\n");
-	//	SDL_SetRenderDrawColor(Renderer, 0, 0, 0, 255);
-	//}
-
-	//else
-	//{
-	//	fprintf(stderr, "[ERROR] Failed to initialize SDL, exiting...\n");
-	//	exit();
-	//}
-
 	// Initialize the engine viewport
-	if (!ViewPort::Init()) exit();
+	if (!ViewPort::Init(title, w, h, fullscreen)) exit();
 
 	// Initialize ECS related stuff
 	ECS::Init();

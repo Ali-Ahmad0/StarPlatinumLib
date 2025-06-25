@@ -3,7 +3,7 @@
 SDL_Window* ViewPort::window = nullptr;
 SDL_Renderer* ViewPort::renderer = nullptr;
 
-bool ViewPort::Init(const char* title, int w, int h, bool fullscreen, const Vector2& position)
+bool ViewPort::Init(const char* title, int w, int h, bool fullscreen)
 {
 	int flags = fullscreen ? SDL_WINDOW_FULLSCREEN : 0;
 
@@ -14,7 +14,7 @@ bool ViewPort::Init(const char* title, int w, int h, bool fullscreen, const Vect
 
 		// Create window
 		window = SDL_CreateWindow(
-			title, (int)position.x, (int)position.y, w, h, flags
+			title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, flags
 		);
 
 		if (window == nullptr)
@@ -53,5 +53,17 @@ void ViewPort::Exit()
 	SDL_DestroyRenderer(renderer);
 }
 
-SDL_Window* ViewPort::GetWindow() { return window; }
-SDL_Renderer* ViewPort::GetRenderer() { return renderer; }
+SDL_Window* ViewPort::GetWindow() 
+{ 
+	return window; 
+}
+
+SDL_Renderer* ViewPort::GetRenderer() 
+{ 
+	return renderer; 
+}
+
+void ViewPort::GetSize(int* w, int* h) 
+{
+	SDL_GetWindowSize(window, w, h);
+}

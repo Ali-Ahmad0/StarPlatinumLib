@@ -12,7 +12,7 @@ void TestPlayer::Ready()
 	// Add components
 	ECS::AddComponent(player, Transform(Vector2(32, 384), 0.0, 3));
 	ECS::AddComponent(player, Sprite(texture, 3, 4, 6, 0));
-	ECS::AddComponent(player, AABB(Vector2(8, 20), Vector2(12, 12)));
+	//ECS::AddComponent(player, AABB(Vector2(8, 20), Vector2(12, 12)));
 	ECS::AddComponent(player, Movement());
 	
 	transform = ECS::GetComponent<Transform>(player);

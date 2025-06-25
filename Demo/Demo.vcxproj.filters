@@ -18,16 +18,16 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\test\scenes\TestPlayer.cpp">
+    <ClCompile Include="src\test\scenes\world_test\TestPlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\test\scenes\TestScene.cpp">
+    <ClCompile Include="src\test\scenes\world_test\TestScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\test\scenes\StressTest.hpp">
+    <ClCompile Include="src\test\scenes\stress_test\StressTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\test\scenes\StressTest.cpp">
+    <ClCompile Include="src\test\scenes\collision_test\CollisionTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -51,10 +51,16 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\test\scenes\TestPlayer.hpp">
+    <ClInclude Include="src\test\scenes\world_test\TestPlayer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\test\scenes\TestScene.hpp">
+    <ClInclude Include="src\test\scenes\world_test\TestScene.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\test\scenes\stress_test\StressTest.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\test\scenes\collision_test\CollisionTest.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

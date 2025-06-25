@@ -175,6 +175,7 @@
     <ClCompile Include="src\ecs\systems\movement\MovementSystem.cpp" />
     <ClCompile Include="src\ecs\systems\sprite\SpriteSystem.cpp" />
     <ClCompile Include="src\input\InputMap.cpp" />
+    <ClCompile Include="src\main\debug\Debug.cpp" />
     <ClCompile Include="src\viewport\ViewPort.cpp" />
     <ClCompile Include="src\scene\SceneManager.cpp" />
     <ClCompile Include="src\ecs\managers\EntityManager.cpp" />
@@ -186,6 +187,7 @@
     <ClCompile Include="src\tilemap\Tilemap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\main\debug\Debug.hpp" />
     <ClInclude Include="src\camera\Camera.hpp" />
     <ClInclude Include="src\ecs\systems\collision\CollisionSystem.hpp" />
     <ClInclude Include="src\common\Utils.hpp" />

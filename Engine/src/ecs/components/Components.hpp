@@ -96,75 +96,28 @@ struct Movement
     Movement(const Vector2& direction = { 0, 0 }, const Vector2& speed = { 0, 0 }) : direction(direction), speed(speed) {}
 };
 
-struct AABB 
-{
-    // Center
-    Vector2 center;
-
-    // Size
-    Vector2 dimensions;
-
-    // Boundaries
-    Vector2 min;
-    Vector2 max;
-
-    bool isSolid;
-    bool isRigid;
-
-    AABB(float cx, float cy, float w, float h, 
-        bool isSolid=true, bool isRigid=true)
-        : center({ cx, cy }), dimensions({ w, h }), isSolid(isSolid), isRigid(isRigid)
-    {
-        min = { -w / 2, -h / 2 };
-        max = {  w / 2,  h / 2 };
-    }
-
-    AABB(const Vector2& center = { 0, 0 }, const Vector2& dimensions = { 0, 0 },
-        bool isSolid=true, bool isRigid=true)
-        : center(center), dimensions(dimensions), isSolid(isSolid), isRigid(isRigid)
-    {
-        min = { -dimensions.x / 2, -dimensions.y / 2 };
-        max = {  dimensions.x / 2,  dimensions.y / 2 };
-    }
-
-    // Check for AABB overlap
-    bool intersects(AABB& other) 
-    {
-        // Set isColliding to true if there is overlap on both the X and Y axes
-        isColliding = !(max.x < other.min.x || min.x > other.max.x || max.y < other.min.y || min.y > other.max.y);
-        other.isColliding = isColliding;
-
-        return isColliding;
-    }
-
-    bool colliding() 
-    {
-        return isColliding;
-    }
-
-private:
-    bool isColliding = false;
-};
-
 struct Collider
 {
     // Position and rotation
     Vector2 center;
     float rotation;
-    
-    // Update flags
-    bool aabbUpdateRequired;
-    bool verticesUpdateRequired;
-
+   
     // Circle collider constructor
-    Collider(float cx, float cy, float r) : center(Vector2(cx, cy)), r(r), rotation(0), 
-        aabbUpdateRequired(true), verticesUpdateRequired(false), shape(ShapeType::CIRCLE) {}
+    Collider(float cx, float cy, float r) : center(Vector2(cx, cy)), r(r), w(0), h(0), rotation(0), shape(ShapeType::CIRCLE), 
+           aabbUpdateRequired(true), verticesUpdateRequired(false)
+    {
+        // Initialize the collider AABB
+        aabb = AABB(cx, cy, r, r);
+    }
 
     // Box collider constructor
-    Collider(float cx, float cy, float w, float h) : center(Vector2(cx, cy)), w(w), h(h), rotation(0), 
-        aabbUpdateRequired(true), verticesUpdateRequired(true), shape(ShapeType::BOX)
+    Collider(float cx, float cy, float w, float h) : center(Vector2(cx, cy)), r(0), w(w), h(h), rotation(0), shape(ShapeType::BOX),
+        aabbUpdateRequired(true), verticesUpdateRequired(true)
     {
-        // Initialize box vertices without rotation
+        // Initialize the collider AABB
+        aabb = AABB(cx, cy, w, h);
+        
+        // Initialize box vertices
         vertices[0] = Vector2(-w / 2,  h / 2); // Top left
         vertices[1] = Vector2( w / 2,  h / 2); // Top right
         vertices[2] = Vector2( w / 2, -h / 2); // Bottom right
@@ -177,7 +130,7 @@ struct Collider
     std::array<Vector2, 4>& getTransformedVertices()
     {
         // Return if no need to update vertices
-        if (!verticesUpdateRequired || shape == ShapeType::CIRCLE)
+        if (shape == ShapeType::CIRCLE)
             return transformedVertices;
 
         // Create a transformation matrix
@@ -196,11 +149,7 @@ struct Collider
 
     // Get updated aabb
     AABB& getAABB()
-    {
-        // Return if no need to update AABB
-        if (!aabbUpdateRequired) 
-            return aabb;
-        
+    { 
         if (shape == ShapeType::BOX) 
         {
             const auto& vertices = getTransformedVertices();
@@ -233,11 +182,26 @@ struct Collider
         return aabb;
     }
 
+    ShapeType getShape() { return shape; }
+
+    float getRadius() { return r; }
+    float getWidth() { return w; }
+    float getHeight() { return h; }
+
+    void setUpdateRequired() 
+    {
+        aabbUpdateRequired = true;
+        verticesUpdateRequired = true;
+    }
+
 private:
     // Dimensions
     float r;
     float w;
     float h;
+
+    bool aabbUpdateRequired;
+    bool verticesUpdateRequired;
 
     // Shape and bounding box
     ShapeType shape; AABB aabb;

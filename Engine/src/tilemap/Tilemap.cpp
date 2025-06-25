@@ -213,7 +213,7 @@ void Tilemap::generateCollisionTiles()
 
                 EntityID tile = ECS::CreateEntity();
                 ECS::AddComponent(tile, Transform(Vector2(x, y), 0.0, scale));
-                ECS::AddComponent(tile, AABB(Vector2(w / 2, h / 2), Vector2(w, h), true, false));
+                // ECS::AddComponent(tile, AABB(Vector2(w / 2, h / 2), w, h));
             }
             else
             {

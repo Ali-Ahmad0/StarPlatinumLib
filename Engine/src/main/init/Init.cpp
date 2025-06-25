@@ -5,7 +5,6 @@ void Init::InitComponents()
 	ECS::RegisterComponent<Transform>();
 	ECS::RegisterComponent<Sprite>();
 	ECS::RegisterComponent<Movement>();
-	ECS::RegisterComponent<AABB>();
 	ECS::RegisterComponent<Collider>();
 }
 
@@ -27,6 +26,5 @@ void Init::InitSystems()
 	ECS::RegisterSystem<CollisionSystem>();
 
 	ECS::AddComponentToSystem<Transform, CollisionSystem>();
-	ECS::AddComponentToSystem<AABB, CollisionSystem>();
-	//ECS::AddComponentToSystem<Collider, CollisionSystem>();
+	ECS::AddComponentToSystem<Collider, CollisionSystem>();
 }

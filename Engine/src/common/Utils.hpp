@@ -388,3 +388,42 @@ struct Matrix3x2 {
         };
     }
 };
+
+struct AABB
+{
+    // Center
+    Vector2 center;
+
+    // Size
+    float w;
+    float h;
+
+    // Boundaries
+    Vector2 min;
+    Vector2 max;
+
+    AABB(float cx = 0, float cy = 0, float w = 0, float h = 0) 
+        : center({ cx, cy }), w(w), h(h)
+    {
+        min = { -w / 2, -h / 2 };
+        max = { w / 2,  h / 2 };
+    }
+
+    // Check for AABB intersection
+    bool checkIntersect(AABB& other)
+    {
+        // Set isColliding to true if there is overlap on both the X and Y axes
+        isIntersecting = !(max.x < other.min.x || min.x > other.max.x || max.y < other.min.y || min.y > other.max.y);
+        other.isIntersecting = isIntersecting;
+
+        return isIntersecting;
+    }
+
+    bool getIsIntersecting()
+    {
+        return isIntersecting;
+    }
+
+private:
+    bool isIntersecting = false;
+};

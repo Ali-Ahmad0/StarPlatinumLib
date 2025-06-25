@@ -147,10 +147,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\test\scenes\collision_test\CollisionTest.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\test\scenes\StressTest.cpp" />
-    <ClCompile Include="src\test\scenes\TestPlayer.cpp" />
-    <ClCompile Include="src\test\scenes\TestScene.cpp" />
+    <ClCompile Include="src\test\scenes\stress_test\StressTest.cpp" />
+    <ClCompile Include="src\test\scenes\world_test\TestPlayer.cpp" />
+    <ClCompile Include="src\test\scenes\world_test\TestScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.vcxproj">
@@ -169,9 +170,10 @@
     <Image Include="src\test\assets\untitled.png" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\test\scenes\StressTest.hpp" />
-    <ClInclude Include="src\test\scenes\TestPlayer.hpp" />
-    <ClInclude Include="src\test\scenes\TestScene.hpp" />
+    <ClInclude Include="src\test\scenes\collision_test\CollisionTest.hpp" />
+    <ClInclude Include="src\test\scenes\stress_test\StressTest.hpp" />
+    <ClInclude Include="src\test\scenes\world_test\TestPlayer.hpp" />
+    <ClInclude Include="src\test\scenes\world_test\TestScene.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

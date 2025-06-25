@@ -66,6 +66,9 @@
     <ClCompile Include="src\viewport\ViewPort.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\main\debug\Debug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\main\Engine.hpp">
@@ -132,6 +135,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\viewport\ViewPort.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main\debug\Debug.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -15,7 +15,7 @@ struct CollisionSystem : public BaseSystem
             : entity(entity), x(x), isLeft(isLeft) {}
     };
 
-    // X axis edges for AABB
+    // X axis edges for AABBs
     std::vector<Edge> edges;
 
     // Keep track of touching edges
@@ -23,9 +23,9 @@ struct CollisionSystem : public BaseSystem
 
     void sortEdges();
     void update();
-    void resolve(
-        AABB* boxA, Transform* transformA, 
-        AABB* boxB, Transform* transformB);
+    //void resolve(
+    //    AABB* boxA, Transform* transformA, 
+    //    AABB* boxB, Transform* transformB);
 
     void onEntityAdded(EntityID e) override;
     void onEntityRemoved(EntityID e) override;

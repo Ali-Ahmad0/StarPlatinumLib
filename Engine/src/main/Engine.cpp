@@ -1,51 +1,54 @@
 #include "Engine.hpp"
 #include <Windows.h>
 
-SDL_Renderer* StarPlatinumEngine::Renderer = nullptr;
+//SDL_Renderer* ViewPort::GetRenderer() = nullptr;
 
 StarPlatinumEngine::StarPlatinumEngine(const char* title, int w, int h, bool fullscreen, const Vector2& position)
-	: delta(0), window(nullptr) 
+	: delta(0) //, window(nullptr) 
 {
 	SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_HIGHEST);
 
-	int flags = fullscreen ? SDL_WINDOW_FULLSCREEN : 0;
+	//int flags = fullscreen ? SDL_WINDOW_FULLSCREEN : 0;
 
-	// Initialize SDL
-	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
-	{
-		printf("[INFO]: Initialized subsystems\n");
+	//// Initialize SDL
+	//if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
+	//{
+	//	printf("[INFO]: Initialized subsystems\n");
 
-		// Create window
-		window = SDL_CreateWindow(
-			title, (int)position.x, (int)position.y, w, h, flags
-		);
+	//	// Create window
+	//	window = SDL_CreateWindow(
+	//		title, (int)position.x, (int)position.y, w, h, flags
+	//	);
 
-		if (window == nullptr)
-		{
-			fprintf(stderr, "[ERROR]: Unable to create SDL window, exiting...\n");
-			exit();
-		}
+	//	if (window == nullptr)
+	//	{
+	//		fprintf(stderr, "[ERROR]: Unable to create SDL window, exiting...\n");
+	//		exit();
+	//	}
 
-		printf("[INFO]: Window created\n");
+	//	printf("[INFO]: Window created\n");
 
 
-		// Create renderer
-		Renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-		if (Renderer == nullptr)
-		{
-			fprintf(stderr, "[ERROR]: Unable to create SDL renderer, exiting...\n");
-			exit();
-		}
+	//	// Create renderer
+	//	Renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	//	if (Renderer == nullptr)
+	//	{
+	//		fprintf(stderr, "[ERROR]: Unable to create SDL renderer, exiting...\n");
+	//		exit();
+	//	}
 
-		printf("[INFO]: Renderer created\n");
-		SDL_SetRenderDrawColor(Renderer, 0, 0, 0, 255);
-	}
+	//	printf("[INFO]: Renderer created\n");
+	//	SDL_SetRenderDrawColor(Renderer, 0, 0, 0, 255);
+	//}
 
-	else
-	{
-		fprintf(stderr, "[ERROR] Failed to initialize SDL, exiting...\n");
-		exit();
-	}
+	//else
+	//{
+	//	fprintf(stderr, "[ERROR] Failed to initialize SDL, exiting...\n");
+	//	exit();
+	//}
+
+	// Initialize the engine viewport
+	if (!ViewPort::Init()) exit();
 
 	// Initialize ECS related stuff
 	ECS::Init();
@@ -57,8 +60,6 @@ StarPlatinumEngine::StarPlatinumEngine(const char* title, int w, int h, bool ful
 	Init::InitSystems();
 	printf("[INFO]: Engine systems initialized\n");
 }
-
-StarPlatinumEngine::~StarPlatinumEngine() = default;
 
 bool showFPS = false;
 
@@ -132,13 +133,13 @@ void StarPlatinumEngine::Run()
 	{
 		frameStartTime = SDL_GetTicks();
 
-		SDL_RenderClear(Renderer);
+		SDL_RenderClear(ViewPort::GetRenderer());
 		
 		// Events, update and rendering
 		if (!events()) break;
 		update();
 		render();
-		SDL_RenderPresent(Renderer);
+		SDL_RenderPresent(ViewPort::GetRenderer());
 
 		frameDrawTime = SDL_GetTicks() - frameStartTime;
 
@@ -169,10 +170,8 @@ void StarPlatinumEngine::Run()
 void StarPlatinumEngine::exit()
 {
 	printf("[INFO]: Exiting...\n");
-
-	SDL_DestroyWindow(window);
-	SDL_DestroyRenderer(Renderer);
-	SDL_Quit();
+	
+	ViewPort::Exit(); SDL_Quit();
 
 	printf("[INFO]: Game exited\n");
 }

@@ -21,19 +21,19 @@ void Tilemap::AddTileset(const char* path)
         for (int j = 0; j < columns; j++)
         {
             // Create texture for an individual tile
-            SDL_Texture* tile = SDL_CreateTexture(StarPlatinumEngine::Renderer,
+            SDL_Texture* tile = SDL_CreateTexture(ViewPort::GetRenderer(),
                 SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, (int)tilesize, (int)tilesize);
 
             SDL_Rect src = { (int)(j * tilesize), (int)(i * tilesize), (int)tilesize, (int)tilesize };
 
             // Set the target texture to the new tile texture
-            SDL_SetRenderTarget(StarPlatinumEngine::Renderer, tile);
+            SDL_SetRenderTarget(ViewPort::GetRenderer(), tile);
 
             // Copy Current tile into the tile texture
-            SDL_RenderCopy(StarPlatinumEngine::Renderer, tileset, &src, NULL);
+            SDL_RenderCopy(ViewPort::GetRenderer(), tileset, &src, NULL);
 
             // Reset the render target 
-            SDL_SetRenderTarget(StarPlatinumEngine::Renderer, NULL);
+            SDL_SetRenderTarget(ViewPort::GetRenderer(), NULL);
 
             // Add the new tile texture to the tiles vector
             tiles.push_back(tile);
@@ -101,18 +101,18 @@ void Tilemap::LoadMap(const char* path)
         size_t mapHeight = height * tilesize;
 
         // Create a texture to hold the entire map
-        layers.push_back(SDL_CreateTexture(StarPlatinumEngine::Renderer,
+        layers.push_back(SDL_CreateTexture(ViewPort::GetRenderer(),
             SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, (int)mapWidth, (int)mapHeight));
 
         // Set the texture to blend mode for transparency
         SDL_SetTextureBlendMode(layers[i], SDL_BLENDMODE_BLEND);
 
         // Set the target to be the map texture
-        SDL_SetRenderTarget(StarPlatinumEngine::Renderer, layers[i]);
+        SDL_SetRenderTarget(ViewPort::GetRenderer(), layers[i]);
 
         // Clear the texture with transparent color
-        SDL_SetRenderDrawColor(StarPlatinumEngine::Renderer, 0, 0, 0, 0);
-        SDL_RenderClear(StarPlatinumEngine::Renderer);
+        SDL_SetRenderDrawColor(ViewPort::GetRenderer(), 0, 0, 0, 0);
+        SDL_RenderClear(ViewPort::GetRenderer());
 
         // Draw each tile onto the map texture
         for (size_t j = 0; j < layout.size(); j++)
@@ -130,11 +130,11 @@ void Tilemap::LoadMap(const char* path)
             }
 
             SDL_Rect dst = { (int)(col * tilesize), (int)(row * tilesize), (int)tilesize, (int)tilesize };
-            SDL_RenderCopy(StarPlatinumEngine::Renderer, tiles[index], NULL, &dst);
+            SDL_RenderCopy(ViewPort::GetRenderer(), tiles[index], NULL, &dst);
         }
 
         // Reset the render target to the default renderer target
-        SDL_SetRenderTarget(StarPlatinumEngine::Renderer, NULL);
+        SDL_SetRenderTarget(ViewPort::GetRenderer(), NULL);
     }
     printf("[INFO]: Tilemap loaded successfully\n");
 

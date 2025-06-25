@@ -5,6 +5,12 @@
 #include <iomanip>
 #include <string>
 
+enum ShapeType 
+{
+    CIRCLE,
+    BOX
+};
+
 struct Color
 {
     int r;
@@ -137,6 +143,8 @@ private:
         return std::max(0, std::min(255, value));
     }
 };
+
+struct Matrix3x2;
 
 // Stores information for a 2d vector
 struct Vector2
@@ -350,4 +358,33 @@ struct Vector2
         return this->magnitudeSquared() <= Vector2::magnitudeSquared(b);
     }
 
+    // Apply transformation using a 3x2 matrix
+    Vector2 transform(const Matrix3x2& matrix);
+};
+
+struct Matrix3x2 {
+    float m11, m12;
+    float m21, m22;
+    float m31, m32;
+
+    static Matrix3x2 createRotation(float rotation) {
+        float cos = std::cos(rotation);
+        float sin = std::sin(rotation);
+        return { cos, sin, -sin, cos, 0, 0 };
+    }
+
+    static Matrix3x2 createTranslation(const Vector2& position) {
+        return { 1, 0, 0, 1, position.x, position.y };
+    }
+
+    Matrix3x2 operator*(const Matrix3x2& other) const {
+        return {
+            m11 * other.m11 + m12 * other.m21,
+            m11 * other.m12 + m12 * other.m22,
+            m21 * other.m11 + m22 * other.m21,
+            m21 * other.m12 + m22 * other.m22,
+            m31 * other.m11 + m32 * other.m21 + other.m31,
+            m31 * other.m12 + m32 * other.m22 + other.m32
+        };
+    }
 };

@@ -157,8 +157,7 @@ void CollisionSystem::resolve(AABB* boxA, Transform* transformA, AABB* boxB, Tra
 
 void CollisionSystem::onEntityAdded(EntityID e)
 {
-    // Add the edges for AABB
-    auto* aabb = ECS::GetComponent<AABB>(e);
+    AABB* aabb = ECS::GetComponent<AABB>(e);
 
     Edge edge1 = { e, aabb->min.x, true  };
     Edge edge2 = { e, aabb->max.x, false };

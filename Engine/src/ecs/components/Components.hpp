@@ -146,33 +146,103 @@ private:
     bool isColliding = false;
 };
 
-// Work in progress
-struct CircleCollider 
+struct Collider
 {
-    // Center and dimensions
+    // Position and rotation
     Vector2 center;
+    float rotation;
+    
+    // Update flags
+    bool aabbUpdateRequired;
+    bool verticesUpdateRequired;
+
+    // Circle collider constructor
+    Collider(float cx, float cy, float r) : center(Vector2(cx, cy)), r(r), rotation(0), 
+        aabbUpdateRequired(true), verticesUpdateRequired(false), shape(ShapeType::CIRCLE) {}
+
+    // Box collider constructor
+    Collider(float cx, float cy, float w, float h) : center(Vector2(cx, cy)), w(w), h(h), rotation(0), 
+        aabbUpdateRequired(true), verticesUpdateRequired(true), shape(ShapeType::BOX)
+    {
+        // Initialize box vertices without rotation
+        vertices[0] = Vector2(cx - w / 2, cy + h / 2);
+        vertices[1] = Vector2(cx + w / 2, cy + h / 2);
+        vertices[2] = Vector2(cx - w / 2, cy - h / 2);
+        vertices[3] = Vector2(cx + w / 2, cy - h / 2);
+
+        transformedVertices = vertices;
+    }
+
+    // Get updated vertices
+    std::array<Vector2, 4>& getTransformedVertices()
+    {
+        // Return if no need to update vertices
+        if (!verticesUpdateRequired || shape == ShapeType::CIRCLE)
+            return transformedVertices;
+
+        // Create a transformation matrix
+        Matrix3x2 transformationMatrix = Matrix3x2::createRotation(rotation) *
+            Matrix3x2::createTranslation(center);
+
+        // Update transformed vertices using the transformation matrix
+        for (int i = 0; i < vertices.size(); i++) 
+        {
+            transformedVertices[i] = vertices[i].transform(transformationMatrix);
+        }
+
+        verticesUpdateRequired = false;
+        return transformedVertices;
+    }
+
+    // Get updated aabb
+    AABB& getAABB()
+    {
+        // Return if no need to update AABB
+        if (!aabbUpdateRequired) 
+            return aabb;
+        
+        if (shape == ShapeType::BOX) 
+        {
+            const auto& vertices = getTransformedVertices();
+
+            // Find min and max position of edges using vertices
+            float minX = std::numeric_limits<float>::infinity();
+            float minY = std::numeric_limits<float>::infinity();
+            float maxX = -std::numeric_limits<float>::infinity();
+            float maxY = -std::numeric_limits<float>::infinity();
+
+            for (const auto& vertex : vertices)
+            {
+                minX = std::min(minX, vertex.x);
+                minY = std::min(minY, vertex.y);
+                maxX = std::max(maxX, vertex.x);
+                maxY = std::max(maxY, vertex.y);
+            }
+
+            // Update the passed AABB
+            aabb.min = Vector2(minX, minY);
+            aabb.max = Vector2(maxX, maxY);
+        }
+        else 
+        {
+            aabb.min = Vector2(center.x - r, center.y - r);
+            aabb.max = Vector2(center.x + r, center.y + r);
+        }
+
+        aabbUpdateRequired = false;
+        return aabb;
+    }
+
+private:
+    // Dimensions
     float r;
-
-    AABB aabb;
-
-    CircleCollider(float cx, float cy, float r) : center(Vector2(cx, cy)), r(r) {}
-    CircleCollider(const Vector2& center, float r) : center(center), r(r) {}
-};
-
-struct BoxCollider 
-{
-    // Center and dimensions
-    Vector2 center;
     float w;
     float h;
 
-    AABB aabb;
+    // Shape and bounding box
+    ShapeType shape; AABB aabb;
 
-    // Box vertices
     std::array<Vector2, 4> vertices{ Vector2::ZERO };
     std::array<Vector2, 4> transformedVertices{ Vector2::ZERO };
-
-    BoxCollider(float cx, float cy, float w, float h) : center(Vector2(cx, cy)), w(w), h(h) {};
-    BoxCollider(const Vector2& center, float w, float h) : center(center), w(w), h(h) {};
 };
 

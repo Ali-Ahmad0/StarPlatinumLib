@@ -130,6 +130,22 @@ void CollisionSystem::update()
                     if ((colliderA->getShape() == ShapeType::CIRCLE && colliderB->getShape() == ShapeType::BOX)
                         || (colliderA->getShape() == ShapeType::BOX && colliderB->getShape() == ShapeType::CIRCLE)) 
                     {
+                        // First shape is circle and second shape is box
+                        if (colliderA->getShape() == ShapeType::CIRCLE && colliderB->getShape() == ShapeType::BOX) 
+                        {
+                            
+                            break;
+                        }
+
+                        // First shape is box and second shape is circle
+                        if (colliderA->getShape() == ShapeType::BOX && colliderB->getShape() == ShapeType::CIRCLE) 
+                        {
+                        
+                            break;
+                        }
+
+                        // First shape is box and second shape is circle
+
                         break;
                     }
 
@@ -147,6 +163,8 @@ void CollisionSystem::update()
         }
     }
 }
+
+
 
 //void CollisionSystem::resolve(AABB* boxA, Transform* transformA, AABB* boxB, Transform* transformB)
 //{

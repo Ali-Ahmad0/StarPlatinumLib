@@ -182,7 +182,6 @@
     <ClCompile Include="src\main\init\Init.cpp" />
     <ClCompile Include="src\texture\TextureManager.cpp" />
     <ClCompile Include="src\threads\Threads.cpp" />
-    <ClCompile Include="src\threads\Threads.hpp" />
     <ClCompile Include="src\tilemap\Tilemap.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -200,13 +199,13 @@
     <ClInclude Include="src\ecs\systems\System.hpp" />
     <ClInclude Include="src\input\InputMap.hpp" />
     <ClInclude Include="src\main\init\Init.hpp" />
+    <ClInclude Include="src\threads\Threads.hpp" />
     <ClInclude Include="src\tilemap\Tilemap.hpp" />
     <ClInclude Include="src\scene\Scene.hpp" />
     <ClInclude Include="src\scene\SceneManager.hpp" />
     <ClInclude Include="src\ecs\ECS.hpp" />
     <ClInclude Include="src\main\Game.hpp" />
     <ClInclude Include="src\texture\TextureManager.hpp" />
-    <ClInclude Include="src\test\TestScene.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

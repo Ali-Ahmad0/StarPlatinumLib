@@ -149,7 +149,6 @@
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\test\scenes\StressTest.cpp" />
-    <ClCompile Include="src\test\scenes\StressTest.hpp" />
     <ClCompile Include="src\test\scenes\TestPlayer.cpp" />
     <ClCompile Include="src\test\scenes\TestScene.cpp" />
   </ItemGroup>
@@ -170,6 +169,7 @@
     <Image Include="src\test\assets\untitled.png" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\test\scenes\StressTest.hpp" />
     <ClInclude Include="src\test\scenes\TestPlayer.hpp" />
     <ClInclude Include="src\test\scenes\TestScene.hpp" />
   </ItemGroup>

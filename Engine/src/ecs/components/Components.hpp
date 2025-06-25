@@ -165,10 +165,10 @@ struct Collider
         aabbUpdateRequired(true), verticesUpdateRequired(true), shape(ShapeType::BOX)
     {
         // Initialize box vertices without rotation
-        vertices[0] = Vector2(cx - w / 2, cy + h / 2);
-        vertices[1] = Vector2(cx + w / 2, cy + h / 2);
-        vertices[2] = Vector2(cx - w / 2, cy - h / 2);
-        vertices[3] = Vector2(cx + w / 2, cy - h / 2);
+        vertices[0] = Vector2(-w / 2,  h / 2); // Top left
+        vertices[1] = Vector2( w / 2,  h / 2); // Top right
+        vertices[2] = Vector2( w / 2, -h / 2); // Bottom right
+        vertices[3] = Vector2(-w / 2, -h / 2); // Bottom left
 
         transformedVertices = vertices;
     }

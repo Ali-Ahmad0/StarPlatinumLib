@@ -1,4 +1,4 @@
-#include "main/Game.hpp"
+#include "main/Engine.hpp"
 #include "test/scenes/TestScene.hpp"
 #include "test/scenes/StressTest.hpp"
 

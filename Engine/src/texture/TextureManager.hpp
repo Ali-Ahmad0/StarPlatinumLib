@@ -4,7 +4,7 @@
 #include <SDL_image.h>
 #include <iostream>
 #include "../common/Utils.hpp"
-#include "../main/Game.hpp"
+#include "../main/Engine.hpp"
 
 class TextureManager
 {

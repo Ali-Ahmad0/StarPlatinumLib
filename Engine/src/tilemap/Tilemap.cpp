@@ -1,5 +1,5 @@
 #include "Tilemap.hpp"
-#include "../main/Game.hpp"
+#include "../main/Engine.hpp"
 
 Tilemap::Tilemap(Vector2 position, size_t tilesize, size_t scale, int8_t z_index) 
     : tileset(nullptr), position(position), tilesize(tilesize), scale(scale), z_index(z_index) { }

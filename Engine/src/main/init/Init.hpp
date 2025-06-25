@@ -1,6 +1,6 @@
 #pragma once
 #include "../../ecs/systems/System.hpp"
-#include "../Game.hpp"
+#include "../Engine.hpp"
 
 // Includes code for registration of built in components and systems
 // Purpose is to reduce code in the init function of the game class

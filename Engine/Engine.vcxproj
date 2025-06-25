@@ -178,7 +178,7 @@
     <ClCompile Include="src\scene\SceneManager.cpp" />
     <ClCompile Include="src\ecs\managers\EntityManager.cpp" />
     <ClCompile Include="src\ecs\managers\SystemManager.cpp" />
-    <ClCompile Include="src\main\Game.cpp" />
+    <ClCompile Include="src\main\Engine.cpp" />
     <ClCompile Include="src\main\init\Init.cpp" />
     <ClCompile Include="src\texture\TextureManager.cpp" />
     <ClCompile Include="src\threads\Threads.cpp" />
@@ -204,7 +204,7 @@
     <ClInclude Include="src\scene\Scene.hpp" />
     <ClInclude Include="src\scene\SceneManager.hpp" />
     <ClInclude Include="src\ecs\ECS.hpp" />
-    <ClInclude Include="src\main\Game.hpp" />
+    <ClInclude Include="src\main\Engine.hpp" />
     <ClInclude Include="src\texture\TextureManager.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

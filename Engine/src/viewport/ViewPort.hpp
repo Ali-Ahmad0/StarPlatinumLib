@@ -13,6 +13,8 @@ public:
 	static SDL_Renderer* GetRenderer();
 
 	static void GetSize(int* w, int* h);
+	static int GetWidth();
+	static int GetHeight();
 
 private:
 	static SDL_Window* window;

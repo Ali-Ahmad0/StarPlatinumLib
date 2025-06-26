@@ -63,7 +63,7 @@ SDL_Renderer* ViewPort::GetRenderer()
 	return renderer; 
 }
 
-void ViewPort::GetSize(int* w, int* h) 
+void ViewPort::GetSize(int* w, int* h)
 {
 	SDL_GetWindowSize(window, w, h);
 }

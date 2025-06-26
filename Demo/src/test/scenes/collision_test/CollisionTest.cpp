@@ -18,12 +18,6 @@ void CollisionTest::Ready()
 
 	entities.push_back(e1);
 	entities.push_back(e2);
-
-	// Bind keys
-	InputMap::BindKey("move_u", SDL_SCANCODE_UP);
-	InputMap::BindKey("move_l", SDL_SCANCODE_LEFT);
-	InputMap::BindKey("move_d", SDL_SCANCODE_DOWN);
-	InputMap::BindKey("move_r", SDL_SCANCODE_RIGHT);
 }
 
 void CollisionTest::Update(double delta)

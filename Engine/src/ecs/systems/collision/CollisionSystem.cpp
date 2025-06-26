@@ -233,6 +233,8 @@ void CollisionSystem::update()
 
                         if (isColliding) 
                         {
+                            std::cout << "Collision!\n";
+
                             // Apply correction to collision normal
                             Vector2 direction = colliderB->center - colliderA->center;
                             if (direction == Vector2::ZERO)

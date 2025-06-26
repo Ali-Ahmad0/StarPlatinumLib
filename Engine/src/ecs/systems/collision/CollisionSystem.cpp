@@ -34,30 +34,11 @@ void CollisionSystem::update()
         auto* transformA = ECS::GetComponent<Transform>(entityA);
         auto* colliderA = ECS::GetComponent<Collider>(entityA);
 
-        Vector2 newCenterA = Vector2::ZERO;
-
-        // Update collider transform, rotation and flags
-        if (colliderA->getShape() == ShapeType::CIRCLE) 
-        {
-            newCenterA = transformA->position + colliderA->getRadius();
-        }
-        else
-        {
-            float newX = transformA->position.x + colliderA->getWidth();
-            float newY = transformA->position.y + colliderA->getHeight();
-
-            newCenterA = Vector2(newX, newY);
-        }
-
-        if (newCenterA != colliderA->center || transformA->rotation != colliderA->rotation) 
-        {
-            colliderA->setUpdateRequired();
-        }
-
-        colliderA->center = newCenterA;
+        Vector2 centerA = colliderA->center;
+        centerA += transformA->position;
         colliderA->rotation = transformA->rotation;
 
-        AABB* boxA = colliderA->getAABB();
+        AABB* boxA = colliderA->getAABB(transformA->position);
 
         edge.x = edge.isLeft ? boxA->min.x : boxA->max.x;
 
@@ -70,30 +51,11 @@ void CollisionSystem::update()
                 auto* transformB = ECS::GetComponent<Transform>(entityB);
                 auto* colliderB = ECS::GetComponent<Collider>(entityB);
 
-                Vector2 newCenterB = Vector2::ZERO;
-
-                // Update collider transform, rotation and flags
-                if (colliderB->getShape() == ShapeType::CIRCLE)
-                {
-                    newCenterB = transformB->position + colliderB->getRadius();
-                }
-                else
-                {
-                    float newX = transformB->position.x + colliderB->getWidth();
-                    float newY = transformB->position.y + colliderB->getHeight();
-
-                    newCenterB = Vector2(newX, newY);
-                }
-
-                if (newCenterB != colliderB->center || transformB->rotation != colliderB->rotation)
-                {
-                    colliderB->setUpdateRequired();
-                }
-
-                colliderB->center = newCenterB;
+                Vector2 centerB = colliderB->center;
+                centerB += transformB->position;
                 colliderB->rotation = transformB->rotation;
 
-                AABB* boxB = colliderB->getAABB();
+                AABB* boxB = colliderB->getAABB(transformB->position);
 
                 // FIrst: Check for AABB intersection
                 if (boxA->checkIntersect(*boxB))
@@ -102,16 +64,14 @@ void CollisionSystem::update()
                     if (colliderA->getShape() == ShapeType::CIRCLE && colliderB->getShape() == ShapeType::CIRCLE)
                     {
                         // Check for precise collision using radii
-                        float distance = Vector2::magnitude(
-                            colliderB->center - colliderA->center
-                        );
+                        float distance = Vector2::magnitude(centerB - centerA);
                         
                         float totalRadii = 
                             (colliderA->getRadius() + colliderB->getRadius());
                         
                         // Calculate collision normal and depth
                         Vector2 normal = distance > 0 
-                            ? Vector2::normalize(colliderB->center - colliderA->center) 
+                            ? Vector2::normalize(centerB - centerA)
                             : Vector2::RIGHT;
                         float depth = totalRadii - distance;
 
@@ -127,8 +87,6 @@ void CollisionSystem::update()
 
                             colliderB->normal = normal;
                             colliderB->depth = depth;
-
-                            std::cout << "Collision - Normal:  (" << normal.x << ", " << normal.y << ") | Depth: " << depth << "\n";
                         }
 
                         else 
@@ -159,8 +117,8 @@ void CollisionSystem::update()
                         float maxB = -(float)INFINITY;
 
 
-                        std::array<Vector2, 4> verticesA = colliderA->getTransformedVertices();
-                        std::array<Vector2, 4> verticesB = colliderB->getTransformedVertices();
+                        std::array<Vector2, 4> verticesA = colliderA->getTransformedVertices(transformA->position);
+                        std::array<Vector2, 4> verticesB = colliderB->getTransformedVertices(transformB->position);
 
                         // Polygon A
                         for (size_t i = 0; i < verticesA.size(); i++) 
@@ -234,7 +192,7 @@ void CollisionSystem::update()
                         if (isColliding) 
                         {
                             // Apply correction to collision normal
-                            Vector2 direction = colliderB->center - colliderA->center;
+                            Vector2 direction = centerB - centerA;
                             if (direction == Vector2::ZERO)
                             {
                                 normal = Vector2::RIGHT;
@@ -286,21 +244,21 @@ void CollisionSystem::update()
                         // First shape is circle and second shape is box
                         if (colliderA->getShape() == ShapeType::CIRCLE && colliderB->getShape() == ShapeType::BOX) 
                         {
-                            centerC = colliderA->center;
-                            centerP = colliderB->center;
+                            centerC = centerA;
+                            centerP = centerB;
 
                             radius = colliderA->getRadius();
-                            vertices = colliderB->getTransformedVertices();
+                            vertices = colliderB->getTransformedVertices(transformB->position);
                         }
 
                         // First shape is box and second shape is circle
                         else if (colliderA->getShape() == ShapeType::BOX && colliderB->getShape() == ShapeType::CIRCLE) 
                         {
-                            centerC = colliderB->center;
-                            centerP = colliderA->center;
+                            centerC = centerB;
+                            centerP = centerA;
 
                             radius = colliderB->getRadius();
-                            vertices = colliderA->getTransformedVertices();
+                            vertices = colliderA->getTransformedVertices(transformA->position);
                         }
 
                         // Polygon
@@ -360,6 +318,8 @@ void CollisionSystem::update()
                             // Collision occurred
                             else
                             {
+                                std::cout << "Collision\n";
+
                                 float axisDepth = std::min(maxB - minA, maxA - minB);
                                 if (axisDepth < depth)
                                 {
@@ -368,7 +328,7 @@ void CollisionSystem::update()
                                 }
 
                                 // Apply correction to collision normal
-                                Vector2 direction = colliderB->center - colliderA->center;
+                                Vector2 direction = centerB - centerA;
                                 if (direction == Vector2::ZERO)
                                 {
                                     normal = Vector2::RIGHT;
@@ -471,10 +431,11 @@ void CollisionSystem::update()
 
 void CollisionSystem::onEntityAdded(EntityID e)
 {
+    Transform* transform = ECS::GetComponent<Transform>(e);
     Collider* collider = ECS::GetComponent<Collider>(e);
 
-    Edge edge1 = { e, collider->getAABB()->min.x,  true };
-    Edge edge2 = { e, collider->getAABB()->max.x, false };
+    Edge edge1 = { e, collider->getAABB(transform->position)->min.x,  true };
+    Edge edge2 = { e, collider->getAABB(transform->position)->max.x, false };
 
     edges.push_back(edge1);
     edges.push_back(edge2);

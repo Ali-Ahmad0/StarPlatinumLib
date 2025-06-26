@@ -110,7 +110,7 @@ struct Collider
 
     // Circle collider constructor
     Collider(float cx, float cy, float r) : center(Vector2(cx, cy)), r(r), w(0), h(0), rotation(0), 
-        shape(ShapeType::CIRCLE), aabbUpdateRequired(true), verticesUpdateRequired(false)
+        shape(ShapeType::CIRCLE)
     {
         // Initialize the collider AABB
         aabb = AABB(cx, cy, r, r);
@@ -118,7 +118,7 @@ struct Collider
 
     // Box collider constructor
     Collider(float cx, float cy, float w, float h) : center(Vector2(cx, cy)), r(0), w(w), h(h), rotation(0), 
-        shape(ShapeType::BOX), aabbUpdateRequired(true), verticesUpdateRequired(true)
+        shape(ShapeType::BOX)
     {
         // Initialize the collider AABB
         aabb = AABB(cx, cy, w, h);
@@ -133,7 +133,7 @@ struct Collider
     }
 
     // Get updated vertices
-    std::array<Vector2, 4>& getTransformedVertices()
+    std::array<Vector2, 4>& getTransformedVertices(const Vector2& translation)
     {
         // Return if no need to update vertices
         if (shape == ShapeType::CIRCLE)
@@ -141,7 +141,7 @@ struct Collider
 
         // Create a transformation matrix
         Matrix3x2 transformationMatrix = Matrix3x2::createRotation(rotation) *
-            Matrix3x2::createTranslation(center);
+            Matrix3x2::createTranslation(center + translation);
 
         // Update transformed vertices using the transformation matrix
         for (int i = 0; i < vertices.size(); i++) 
@@ -149,16 +149,15 @@ struct Collider
             transformedVertices[i] = vertices[i].transform(transformationMatrix);
         }
 
-        verticesUpdateRequired = false;
         return transformedVertices;
     }
 
     // Get updated aabb
-    AABB* getAABB()
+    AABB* getAABB(const Vector2& translation)
     { 
         if (shape == ShapeType::BOX) 
         {
-            const auto& vertices = getTransformedVertices();
+            const auto& vertices = getTransformedVertices(translation);
 
             // Find min and max position of edges using vertices
             float minX = std::numeric_limits<float>::infinity();
@@ -180,11 +179,11 @@ struct Collider
         }
         else 
         {
-            aabb.min = Vector2(center.x - r, center.y - r);
-            aabb.max = Vector2(center.x + r, center.y + r);
+            Vector2 worldCenter = center + translation;
+            aabb.min = Vector2(worldCenter.x - r, worldCenter.y - r);
+            aabb.max = Vector2(worldCenter.x + r, worldCenter.y + r);
         }
 
-        aabbUpdateRequired = false;
         return &aabb;
     }
 
@@ -194,20 +193,11 @@ struct Collider
     float getWidth() { return w; }
     float getHeight() { return h; }
 
-    void setUpdateRequired() 
-    {
-        aabbUpdateRequired = true;
-        verticesUpdateRequired = true;
-    }
-
 private:
     // Dimensions
     float r;
     float w;
     float h;
-
-    bool aabbUpdateRequired;
-    bool verticesUpdateRequired;
 
     // Shape and bounding box
     ShapeType shape; AABB aabb;

@@ -6,8 +6,8 @@
 class CollisionTest : public IScene
 {
 public:
-	void Ready();
-	void Update(double delta);
+	void Ready() override;
+	void Update(double delta) override;
 
 private:
 	std::vector<EntityID> entities;

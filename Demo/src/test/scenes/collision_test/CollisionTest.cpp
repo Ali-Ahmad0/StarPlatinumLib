@@ -14,7 +14,7 @@ void CollisionTest::Ready()
 
 	EntityID e2 = ECS::CreateEntity();
 	ECS::AddComponent<Transform>(e2, Transform(Vector2(150, 150), -15));
-	ECS::AddComponent<Collider>(e2, Collider(170, 170, 40, 40));
+	ECS::AddComponent<Collider>(e2, Collider(170, 170, 20));
 
 	entities.push_back(e1);
 	entities.push_back(e2);

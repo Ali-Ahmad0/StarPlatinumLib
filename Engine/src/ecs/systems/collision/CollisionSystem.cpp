@@ -99,8 +99,7 @@ void CollisionSystem::update()
                 if (boxA->checkIntersect(*boxB))
                 {
                     // Case 1: Check for circle - circle collision
-                    if (colliderA->getShape() == ShapeType::CIRCLE
-                        && colliderB->getShape() == ShapeType::CIRCLE)
+                    if (colliderA->getShape() == ShapeType::CIRCLE && colliderB->getShape() == ShapeType::CIRCLE)
                     {
                         // Check for precise collision using radii
                         float distance = Vector2::magnitude(
@@ -144,11 +143,13 @@ void CollisionSystem::update()
                     }
 
                     // Case 2: Check for box - box collision (SAT)
-                    else if (colliderA->getShape() == ShapeType::BOX 
-                        && colliderB->getShape() == ShapeType::BOX) 
+                    else if (colliderA->getShape() == ShapeType::BOX && colliderB->getShape() == ShapeType::BOX) 
                     {
+                        // Collision data
                         Vector2 normal = Vector2::ZERO;
                         float depth = (float)INFINITY;
+
+                        bool isColliding = true;
 
                         // Min and max projections of polygons
                         float minA = (float)INFINITY;
@@ -157,7 +158,6 @@ void CollisionSystem::update()
                         float minB = (float)INFINITY;
                         float maxB = -(float)INFINITY;
 
-                        bool isColliding = true;
 
                         std::array<Vector2, 4> verticesA = colliderA->getTransformedVertices();
                         std::array<Vector2, 4> verticesB = colliderB->getTransformedVertices();
@@ -171,7 +171,7 @@ void CollisionSystem::update()
 
                             Vector2 edge = vertex2 - vertex1;
 
-                            // Get the possible seperating axis
+                            // Get the axis
                             Vector2 axis = Vector2(-edge.y, edge.x);
                             axis = Vector2::normalize(axis);
                             
@@ -179,7 +179,7 @@ void CollisionSystem::update()
                             projectVertices(verticesA, axis, &minA, &maxA);
                             projectVertices(verticesB, axis, &minB, &maxB);
 
-                            // Seperating axis exists, no collision
+                            // Seperation, no collision
                             if (minA >= maxB || minB >= maxA) 
                             {
                                 isColliding = false;
@@ -205,7 +205,7 @@ void CollisionSystem::update()
 
                             Vector2 edge = vertex2 - vertex1;
 
-                            // Get the possible seperating axis
+                            // Get the axis
                             Vector2 axis = Vector2(-edge.y, edge.x);
                             axis = Vector2::normalize(axis);
 
@@ -213,7 +213,7 @@ void CollisionSystem::update()
                             projectVertices(verticesA, axis, &minA, &maxA);
                             projectVertices(verticesB, axis, &minB, &maxB);
 
-                            // Seperating axis exists, no collision
+                            // Seperation, no collision
                             if (minA >= maxB || minB >= maxA) 
                             {
                                 isColliding = false;
@@ -233,8 +233,6 @@ void CollisionSystem::update()
 
                         if (isColliding) 
                         {
-                            std::cout << "Collision!\n";
-
                             // Apply correction to collision normal
                             Vector2 direction = colliderB->center - colliderA->center;
                             if (direction == Vector2::ZERO)
@@ -263,25 +261,144 @@ void CollisionSystem::update()
                         }
                     }
 
-                    // Case 3: Check for circle - box collision (SAT)
-                    else if ((colliderA->getShape() == ShapeType::CIRCLE && colliderB->getShape() == ShapeType::BOX)
-                        || (colliderA->getShape() == ShapeType::BOX && colliderB->getShape() == ShapeType::CIRCLE)) 
+                    // Case 3: Check for circle - box or box - circle collision (SAT)
+                    else 
                     {
+                        // Collision data
+                        Vector2 normal = Vector2::ZERO;
+                        float depth = (float)INFINITY;
+
+                        bool isColliding = true;
+
+                        // Min and max projections of shapes
+                        float minA = (float)INFINITY;
+                        float maxA = -(float)INFINITY;
+
+                        float minB = (float)INFINITY;
+                        float maxB = -(float)INFINITY;
+
+                        Vector2 centerC; // Center of circle
+                        Vector2 centerP; // Center of polyon
+
+                        std::array<Vector2, 4> vertices;
+                        float radius = 0;
+
                         // First shape is circle and second shape is box
                         if (colliderA->getShape() == ShapeType::CIRCLE && colliderB->getShape() == ShapeType::BOX) 
                         {
-                            
+                            centerC = colliderA->center;
+                            centerP = colliderB->center;
+
+                            radius = colliderA->getRadius();
+                            vertices = colliderB->getTransformedVertices();
                         }
 
                         // First shape is box and second shape is circle
                         else if (colliderA->getShape() == ShapeType::BOX && colliderB->getShape() == ShapeType::CIRCLE) 
                         {
-                        
-                        }
-                    }
+                            centerC = colliderB->center;
+                            centerP = colliderA->center;
 
-                    // Resolve collisions
-                    //resolve(boxA, transformA, boxB, transformB);
+                            radius = colliderB->getRadius();
+                            vertices = colliderA->getTransformedVertices();
+                        }
+
+                        // Polygon
+                        for (int i = 0; i < vertices.size(); i++) 
+                        {
+                            // Get a pair of vertices from the polygon
+                            Vector2 vertex1 = vertices[i];
+                            Vector2 vertex2 = vertices[(i + 1) % vertices.size()];
+
+                            Vector2 edge = vertex2 - vertex1;
+
+                            // Get the axis
+                            Vector2 axis = Vector2(-edge.y, edge.x);
+                            axis = Vector2::normalize(axis);
+
+                            // Project the vertices and circle onto the axis
+                            projectVertices(vertices, axis, &minA, &maxA);
+                            projectCircle(centerC, radius, axis, &minB, &maxB);
+
+                            // Seperation, no collision
+                            if (minA >= maxB || minB >= maxA) 
+                            {
+                                isColliding = false;
+                                break;
+                            }
+
+                            float axisDepth = std::min(maxB - minA, maxA - minB);
+                            if (axisDepth < depth)
+                            {
+                                depth = axisDepth;
+                                normal = axis;
+                            }
+                        }
+
+                        if (isColliding) 
+                        {
+                            // Get closest polygon vertex to center and compute axis
+                            Vector2 closestVertex = vertices[findClosestVertex(centerC, vertices)];
+                            Vector2 axis = Vector2::normalize(closestVertex - centerC);
+
+                            // Project vertices and circle onto this axis
+                            projectVertices(vertices, axis, &minA, &maxA);
+                            projectCircle(centerC, radius, axis, &minB, &maxB);
+
+                            // Seperation, no collision
+                            if (minA >= maxB || minB >= maxA)
+                            {
+                                isColliding = false;
+
+                                colliderA->normal = Vector2::ZERO;
+                                colliderA->depth = 0;
+
+                                colliderB->normal = Vector2::ZERO;
+                                colliderB->depth = 0;
+                            }
+
+                            // Collision occurred
+                            else
+                            {
+                                float axisDepth = std::min(maxB - minA, maxA - minB);
+                                if (axisDepth < depth)
+                                {
+                                    depth = axisDepth;
+                                    normal = axis;
+                                }
+
+                                // Apply correction to collision normal
+                                Vector2 direction = colliderB->center - colliderA->center;
+                                if (direction == Vector2::ZERO)
+                                {
+                                    normal = Vector2::RIGHT;
+                                }
+                                else if (Vector2::dot(direction, normal) < 0)
+                                {
+                                    normal = -normal;
+                                }
+
+                                colliderA->normal = -normal;
+                                colliderA->depth = depth;
+
+                                colliderB->normal = normal;
+                                colliderB->depth = depth;
+                            }
+                        }
+                        
+                        else 
+                        {
+                            colliderA->normal = Vector2::ZERO;
+                            colliderB->depth = 0;
+
+                            colliderB->normal = Vector2::ZERO;
+                            colliderB->depth = 0;
+                        }
+
+                        colliderA->isColliding = isColliding;
+                        colliderB->isColliding = isColliding;
+
+                    }
                 }
             }
 
@@ -295,87 +412,62 @@ void CollisionSystem::update()
     }
 }
 
-// Project vertices onto possible seperating axis to get min and max values
-void CollisionSystem::projectVertices(const std::array<Vector2, 4>& vertices, const Vector2& axis, float* min, float* max) 
-{
-    for (auto& vertex : vertices) 
+    // Returns the index of the vertex closest to circle center
+    size_t CollisionSystem::findClosestVertex(const Vector2& center, const std::array<Vector2, 4>& vertices)
     {
-        // Projection using dot product
-        float projection = Vector2::dot(vertex, axis);
+        size_t index = std::numeric_limits<size_t>::max();
+        float min = (float)INFINITY;
 
-        if (projection < *min) *min = projection;
-        if (projection > *max) *max = projection;
+        for (int i = 0; i < vertices.size(); i++) 
+        {
+            // Get distance squared
+            float distanceSquared = Vector2::magnitudeSquared(Vector2::subtract(center, vertices[i]));
+
+            // Update minimum value
+            if (distanceSquared < min) 
+            {
+                min = distanceSquared;
+                index = i;
+            }
+        }
+
+        return index;
     }
-}
 
-//void CollisionSystem::resolve(AABB* boxA, Transform* transformA, AABB* boxB, Transform* transformB)
-//{
-//    // Seperate colliding boxes
-//    if (boxA->isSolid && boxB->isSolid)
-//    {
-//        // Calculate overlap on the x and y axes
-//        float overlapX = std::min(boxA->max.x - boxB->min.x, boxB->max.x - boxA->min.x);
-//        float overlapY = std::min(boxA->max.y - boxB->min.y, boxB->max.y - boxA->min.y);
-//
-//        int divideFactor1 = boxA->isRigid ? 2 : 1;
-//        int divideFactor2 = boxB->isRigid ? 2 : 1;
-//
-//        // Find the axis with the least overlap and move the entities along that axis
-//        if (overlapX < overlapY)
-//        {
-//            // Move the entities apart along the x-axis
-//            if (transformA->position.x < transformB->position.x)
-//            {
-//                if (boxA->isRigid)
-//                {
-//                    transformA->position.x -= overlapX / divideFactor2;
-//                }
-//                if (boxB->isRigid)
-//                {
-//                    transformB->position.x += overlapX / divideFactor1;
-//                }
-//            }
-//            else
-//            {
-//                if (boxA->isRigid)
-//                {
-//                    transformA->position.x += overlapX / divideFactor2;
-//                }
-//                if (boxB->isRigid)
-//                {
-//                    transformB->position.x -= overlapX / divideFactor1;
-//                }
-//            }
-//        }
-//        else
-//        {
-//            // Move the entities apart along the y-axis
-//            if (transformA->position.y < transformB->position.y)
-//            {
-//                if (boxA->isRigid)
-//                {
-//                    transformA->position.y -= overlapY / divideFactor2;
-//                }
-//                if (boxB->isRigid)
-//                {
-//                    transformB->position.y += overlapY / divideFactor1;
-//                }
-//            }
-//            else
-//            {
-//                if (boxA->isRigid)
-//                {
-//                    transformA->position.y += overlapY / divideFactor2;
-//                }
-//                if (boxB->isRigid)
-//                {
-//                    transformB->position.y -= overlapY / divideFactor1;
-//                }
-//            }
-//        }
-//    }
-//
-//}
+    // Project vertices onto possible seperating axis to get min and max values
+    void CollisionSystem::projectVertices(const std::array<Vector2, 4>& vertices, const Vector2& axis, float* min, float* max) 
+    {
+        for (auto& vertex : vertices) 
+        {
+            // Projection using dot product
+            float projection = Vector2::dot(vertex, axis);
+
+            if (projection < *min) *min = projection;
+            if (projection > *max) *max = projection;
+        }
+    }
+
+    void CollisionSystem::projectCircle(const Vector2& center, float radius, const Vector2& axis, float* min, float* max)
+    {
+        /*
+        Draw a diameter line perpendicular
+        to the axis and then get the points
+        on the circumference that the line
+        intersects
+        */
+        Vector2 radiusVector = Vector2::multiply(axis, radius);
+
+        // Get points on both ends of the line
+        Vector2 pointA = Vector2::add(center, radiusVector);
+        Vector2 pointB = Vector2::subtract(center, radiusVector);
+
+        // Projection using dot product
+        *min = Vector2::dot(pointA, axis);
+        *max = Vector2::dot(pointB, axis);
+
+        if (*min > *max)
+            std::swap(*min, *max);
+    }
 
 void CollisionSystem::onEntityAdded(EntityID e)
 {

@@ -101,18 +101,24 @@ struct Collider
     // Position and rotation
     Vector2 center;
     float rotation;
-   
+    
+    // Collision data
+    Vector2 normal = Vector2::ZERO;
+    float depth = 0;
+
+    bool isColliding = false;
+
     // Circle collider constructor
-    Collider(float cx, float cy, float r) : center(Vector2(cx, cy)), r(r), w(0), h(0), rotation(0), shape(ShapeType::CIRCLE), 
-           aabbUpdateRequired(true), verticesUpdateRequired(false)
+    Collider(float cx, float cy, float r) : center(Vector2(cx, cy)), r(r), w(0), h(0), rotation(0), 
+        shape(ShapeType::CIRCLE), aabbUpdateRequired(true), verticesUpdateRequired(false)
     {
         // Initialize the collider AABB
         aabb = AABB(cx, cy, r, r);
     }
 
     // Box collider constructor
-    Collider(float cx, float cy, float w, float h) : center(Vector2(cx, cy)), r(0), w(w), h(h), rotation(0), shape(ShapeType::BOX),
-        aabbUpdateRequired(true), verticesUpdateRequired(true)
+    Collider(float cx, float cy, float w, float h) : center(Vector2(cx, cy)), r(0), w(w), h(h), rotation(0), 
+        shape(ShapeType::BOX), aabbUpdateRequired(true), verticesUpdateRequired(true)
     {
         // Initialize the collider AABB
         aabb = AABB(cx, cy, w, h);
@@ -148,7 +154,7 @@ struct Collider
     }
 
     // Get updated aabb
-    AABB& getAABB()
+    AABB* getAABB()
     { 
         if (shape == ShapeType::BOX) 
         {
@@ -179,7 +185,7 @@ struct Collider
         }
 
         aabbUpdateRequired = false;
-        return aabb;
+        return &aabb;
     }
 
     ShapeType getShape() { return shape; }

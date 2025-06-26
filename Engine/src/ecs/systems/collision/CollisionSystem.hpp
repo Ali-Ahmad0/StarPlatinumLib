@@ -5,6 +5,16 @@
 
 struct CollisionSystem : public BaseSystem
 {
+
+    void update();
+    //void resolve(
+    //    AABB* boxA, Transform* transformA, 
+    //    AABB* boxB, Transform* transformB);
+
+    void onEntityAdded(EntityID e) override;
+    void onEntityRemoved(EntityID e) override;
+
+private:
     struct Edge 
     {
         EntityID entity;
@@ -22,11 +32,5 @@ struct CollisionSystem : public BaseSystem
     std::set<EntityID> touching;
 
     void sortEdges();
-    void update();
-    //void resolve(
-    //    AABB* boxA, Transform* transformA, 
-    //    AABB* boxB, Transform* transformB);
-
-    void onEntityAdded(EntityID e) override;
-    void onEntityRemoved(EntityID e) override;
+    void projectVertices(const std::array<Vector2, 4>& vertices, const Vector2& axis, float* min, float* max);
 };

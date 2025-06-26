@@ -206,6 +206,17 @@ struct Vector2
         return { x / value, y / value };
     }
 
+    // Negate a vector
+    Vector2 negate() const
+    {
+        return { -x, -y };
+    }
+
+    static Vector2 negate(const Vector2& a)
+    {
+        return { -a.x, -a.y };
+    }
+
     // Dot product of two vectors
     static float dot(const Vector2& a, const Vector2& b)
     {
@@ -325,6 +336,12 @@ struct Vector2
         x /= value;
         y /= value;
         return *this;
+    }
+
+    // Inside the Vector2 class:
+    Vector2 operator-() const
+    {
+        return this->negate();
     }
 
     // Comparison operators

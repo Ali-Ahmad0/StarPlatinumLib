@@ -34,15 +34,14 @@ void CollisionTest::Update(double delta)
 		if (collider->getShape() == ShapeType::CIRCLE) 
 		{
 			Debug::DrawCircle(
-				collider->center + transform->position, 
-				collider->getRadius()
+				collider->center + transform->position, collider->getRadius()
 			);
 		}
 		else 
 		{
 			Debug::DrawRect(
 				collider->center + transform->position, 
-				collider->getWidth(), collider->getHeight(), collider->rotation
+				collider->getWidth(), collider->getHeight(), transform->rotation
 			);
 		}
 	}

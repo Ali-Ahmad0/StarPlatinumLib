@@ -36,9 +36,8 @@ void CollisionSystem::update()
 
         Vector2 centerA = colliderA->center;
         centerA += transformA->position;
-        colliderA->rotation = transformA->rotation;
 
-        AABB* boxA = colliderA->getAABB(transformA->position);
+        AABB* boxA = colliderA->getAABB(transformA);
 
         edge.x = edge.isLeft ? boxA->min.x : boxA->max.x;
 
@@ -53,9 +52,8 @@ void CollisionSystem::update()
 
                 Vector2 centerB = colliderB->center;
                 centerB += transformB->position;
-                colliderB->rotation = transformB->rotation;
 
-                AABB* boxB = colliderB->getAABB(transformB->position);
+                AABB* boxB = colliderB->getAABB(transformB);
 
                 // FIrst: Check for AABB intersection
                 if (boxA->checkIntersect(*boxB))
@@ -117,8 +115,8 @@ void CollisionSystem::update()
                         float maxB = -(float)INFINITY;
 
 
-                        std::array<Vector2, 4> verticesA = colliderA->getTransformedVertices(transformA->position);
-                        std::array<Vector2, 4> verticesB = colliderB->getTransformedVertices(transformB->position);
+                        std::array<Vector2, 4> verticesA = colliderA->getTransformedVertices(transformA);
+                        std::array<Vector2, 4> verticesB = colliderB->getTransformedVertices(transformB);
 
                         // Polygon A
                         for (size_t i = 0; i < verticesA.size(); i++) 
@@ -248,7 +246,7 @@ void CollisionSystem::update()
                             centerP = centerB;
 
                             radius = colliderA->getRadius();
-                            vertices = colliderB->getTransformedVertices(transformB->position);
+                            vertices = colliderB->getTransformedVertices(transformB);
                         }
 
                         // First shape is box and second shape is circle
@@ -258,7 +256,7 @@ void CollisionSystem::update()
                             centerP = centerA;
 
                             radius = colliderB->getRadius();
-                            vertices = colliderA->getTransformedVertices(transformA->position);
+                            vertices = colliderA->getTransformedVertices(transformA);
                         }
 
                         // Polygon
@@ -434,8 +432,8 @@ void CollisionSystem::onEntityAdded(EntityID e)
     Transform* transform = ECS::GetComponent<Transform>(e);
     Collider* collider = ECS::GetComponent<Collider>(e);
 
-    Edge edge1 = { e, collider->getAABB(transform->position)->min.x,  true };
-    Edge edge2 = { e, collider->getAABB(transform->position)->max.x, false };
+    Edge edge1 = { e, collider->getAABB(transform)->min.x,  true };
+    Edge edge2 = { e, collider->getAABB(transform)->max.x, false };
 
     edges.push_back(edge1);
     edges.push_back(edge2);

@@ -100,7 +100,6 @@ struct Collider
 {
     // Position and rotation
     Vector2 center;
-    float rotation;
     
     // Collision data
     Vector2 normal = Vector2::ZERO;
@@ -109,7 +108,7 @@ struct Collider
     bool isColliding = false;
 
     // Circle collider constructor
-    Collider(float cx, float cy, float r) : center(Vector2(cx, cy)), r(r), w(0), h(0), rotation(0), 
+    Collider(float cx, float cy, float r) : center(Vector2(cx, cy)), r(r), w(0), h(0), 
         shape(ShapeType::CIRCLE)
     {
         // Initialize the collider AABB
@@ -117,7 +116,7 @@ struct Collider
     }
 
     // Box collider constructor
-    Collider(float cx, float cy, float w, float h) : center(Vector2(cx, cy)), r(0), w(w), h(h), rotation(0), 
+    Collider(float cx, float cy, float w, float h) : center(Vector2(cx, cy)), r(0), w(w), h(h), 
         shape(ShapeType::BOX)
     {
         // Initialize the collider AABB
@@ -133,15 +132,15 @@ struct Collider
     }
 
     // Get updated vertices
-    std::array<Vector2, 4>& getTransformedVertices(const Vector2& translation)
+    std::array<Vector2, 4>& getTransformedVertices(const Transform* transform)
     {
         // Return if no need to update vertices
         if (shape == ShapeType::CIRCLE)
             return transformedVertices;
 
         // Create a transformation matrix
-        Matrix3x2 transformationMatrix = Matrix3x2::createRotation(rotation) *
-            Matrix3x2::createTranslation(center + translation);
+        Matrix3x2 transformationMatrix = Matrix3x2::createRotation(transform->rotation) 
+            * Matrix3x2::createTranslation(center + transform->position);
 
         // Update transformed vertices using the transformation matrix
         for (int i = 0; i < vertices.size(); i++) 
@@ -153,11 +152,11 @@ struct Collider
     }
 
     // Get updated aabb
-    AABB* getAABB(const Vector2& translation)
+    AABB* getAABB(const Transform* transform)
     { 
         if (shape == ShapeType::BOX) 
         {
-            const auto& vertices = getTransformedVertices(translation);
+            const auto& vertices = getTransformedVertices(transform);
 
             // Find min and max position of edges using vertices
             float minX = std::numeric_limits<float>::infinity();
@@ -179,7 +178,7 @@ struct Collider
         }
         else 
         {
-            Vector2 worldCenter = center + translation;
+            Vector2 worldCenter = center + transform->position;
             aabb.min = Vector2(worldCenter.x - r, worldCenter.y - r);
             aabb.max = Vector2(worldCenter.x + r, worldCenter.y + r);
         }

@@ -138,9 +138,11 @@ struct Collider
         if (shape == ShapeType::CIRCLE)
             return transformedVertices;
 
+        float radians = transform->rotation * ((float)M_PI / 180.0f);
+
         // Create a transformation matrix
-        Matrix3x2 transformationMatrix =
-            Matrix3x2::createScale(transform->scale) * Matrix3x2::createRotation(transform->rotation) *
+        Matrix3x2 transformationMatrix = 
+            Matrix3x2::createScale(transform->scale) * Matrix3x2::createRotation(radians) * 
             Matrix3x2::createTranslation(centerOffset + transform->position);
 
         // Update transformed vertices using the transformation matrix

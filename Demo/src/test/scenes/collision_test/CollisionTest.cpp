@@ -3,6 +3,7 @@
 #include "../../../src/main/debug/Debug.hpp"
 #include "../../../src/ecs/ECS.hpp"
 #include "../../../src/input/InputMap.hpp"
+#include "../../../src/viewport/ViewPort.hpp"
 
 void CollisionTest::Ready()
 {
@@ -39,12 +40,17 @@ void CollisionTest::Update(double delta)
 		}
 		else 
 		{
+			transform->rotation++;
+
 			Debug::DrawRect(
 				collider->centerOffset + transform->position, 
 				collider->getWidth() * transform->scale, 
 				collider->getHeight() * transform->scale, transform->rotation
 			);
+
+			std::array<Vector2, 4> vertices = collider->getTransformedVertices(transform);
 		}
+
 	}
 
 }

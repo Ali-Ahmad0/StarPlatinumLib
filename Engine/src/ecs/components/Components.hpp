@@ -98,8 +98,8 @@ struct Movement
 
 struct Collider
 {
-    // Position and rotation
-    Vector2 center;
+    // Offset of collider center from transform position
+    Vector2 centerOffset;
     
     // Collision data
     Vector2 normal = Vector2::ZERO;
@@ -108,7 +108,7 @@ struct Collider
     bool isColliding = false;
 
     // Circle collider constructor
-    Collider(float cx, float cy, float r) : center(Vector2(cx, cy)), r(r), w(0), h(0), 
+    Collider(float cx, float cy, float r) : centerOffset(Vector2(cx, cy)), r(r), w(0), h(0), 
         shape(ShapeType::CIRCLE)
     {
         // Initialize the collider AABB
@@ -116,7 +116,7 @@ struct Collider
     }
 
     // Box collider constructor
-    Collider(float cx, float cy, float w, float h) : center(Vector2(cx, cy)), r(0), w(w), h(h), 
+    Collider(float cx, float cy, float w, float h) : centerOffset(Vector2(cx, cy)), r(0), w(w), h(h), 
         shape(ShapeType::BOX)
     {
         // Initialize the collider AABB
@@ -139,8 +139,9 @@ struct Collider
             return transformedVertices;
 
         // Create a transformation matrix
-        Matrix3x2 transformationMatrix = Matrix3x2::createRotation(transform->rotation) 
-            * Matrix3x2::createTranslation(center + transform->position);
+        Matrix3x2 transformationMatrix =
+            Matrix3x2::createScale(transform->scale) * Matrix3x2::createRotation(transform->rotation) *
+            Matrix3x2::createTranslation(centerOffset + transform->position);
 
         // Update transformed vertices using the transformation matrix
         for (int i = 0; i < vertices.size(); i++) 
@@ -178,7 +179,7 @@ struct Collider
         }
         else 
         {
-            Vector2 worldCenter = center + transform->position;
+            Vector2 worldCenter = centerOffset + transform->position;
             aabb.min = Vector2(worldCenter.x - r, worldCenter.y - r);
             aabb.max = Vector2(worldCenter.x + r, worldCenter.y + r);
         }
@@ -186,11 +187,25 @@ struct Collider
         return &aabb;
     }
 
-    ShapeType getShape() { return shape; }
+    ShapeType getShape() 
+    { 
+        return shape; 
+    }
 
-    float getRadius() { return r; }
-    float getWidth() { return w; }
-    float getHeight() { return h; }
+    float getRadius() 
+    { 
+        return r; 
+    }
+    
+    float getWidth() 
+    { 
+        return w; 
+    }
+    
+    float getHeight() 
+    { 
+        return h; 
+    }
 
 private:
     // Dimensions

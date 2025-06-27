@@ -17,7 +17,8 @@ const Vector2 Vector2::RIGHT = {  1, 0 };
 // Vector2 matrix transformation
 Vector2 Vector2::transform(const Matrix3x2& matrix)
 {
-    return {
+    return 
+    {
         x * matrix.m11 + y * matrix.m21 + matrix.m31,
         x * matrix.m12 + y * matrix.m22 + matrix.m32
     };

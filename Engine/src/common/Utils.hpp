@@ -338,8 +338,7 @@ struct Vector2
         return *this;
     }
 
-    // Inside the Vector2 class:
-    Vector2 operator-() const
+    Vector2 operator-()
     {
         return this->negate();
     }
@@ -379,23 +378,33 @@ struct Vector2
     Vector2 transform(const Matrix3x2& matrix);
 };
 
-struct Matrix3x2 {
+struct Matrix3x2 
+{
     float m11, m12;
     float m21, m22;
     float m31, m32;
 
-    static Matrix3x2 createRotation(float rotation) {
+    static Matrix3x2 createRotation(float rotation) 
+    {
         float cos = std::cos(rotation);
         float sin = std::sin(rotation);
         return { cos, sin, -sin, cos, 0, 0 };
     }
 
-    static Matrix3x2 createTranslation(const Vector2& position) {
+    static Matrix3x2 createTranslation(const Vector2& position) 
+    {
         return { 1, 0, 0, 1, position.x, position.y };
     }
 
-    Matrix3x2 operator*(const Matrix3x2& other) const {
-        return {
+    static Matrix3x2 createScale(size_t scale) 
+    {
+        return { (float)scale, 0, 0, (float)scale, 0, 0 };
+    }
+
+    Matrix3x2 operator*(const Matrix3x2& other)
+    {
+        return 
+        {
             m11 * other.m11 + m12 * other.m21,
             m11 * other.m12 + m12 * other.m22,
             m21 * other.m11 + m22 * other.m21,
@@ -408,8 +417,8 @@ struct Matrix3x2 {
 
 struct AABB
 {
-    // Center
-    Vector2 center;
+    // Offset of AABB center from transform position
+    Vector2 centerOffset;
 
     // Size
     float w;
@@ -420,7 +429,7 @@ struct AABB
     Vector2 max;
 
     AABB(float cx = 0, float cy = 0, float w = 0, float h = 0) 
-        : center({ cx, cy }), w(w), h(h)
+        : centerOffset({ cx, cy }), w(w), h(h)
     {
         min = { -w / 2, -h / 2 };
         max = { w / 2,  h / 2 };

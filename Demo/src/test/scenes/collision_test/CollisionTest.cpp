@@ -8,7 +8,7 @@ void CollisionTest::Ready()
 {
 	// Testing, spawn two circle collision entities
 	EntityID e1 = ECS::CreateEntity();
-	ECS::AddComponent<Transform>(e1, Transform(Vector2(64, 64)));
+	ECS::AddComponent<Transform>(e1, Transform(Vector2(64, 64), 0, 2));
 	ECS::AddComponent<Collider>(e1, Collider(16, 16, 32, 32));
 	ECS::AddComponent<Movement>(e1, Movement(Vector2::ZERO, Vector2(100, 100)));
 
@@ -34,14 +34,15 @@ void CollisionTest::Update(double delta)
 		if (collider->getShape() == ShapeType::CIRCLE) 
 		{
 			Debug::DrawCircle(
-				collider->center + transform->position, collider->getRadius()
+				collider->centerOffset + transform->position, collider->getRadius()
 			);
 		}
 		else 
 		{
 			Debug::DrawRect(
-				collider->center + transform->position, 
-				collider->getWidth(), collider->getHeight(), transform->rotation
+				collider->centerOffset + transform->position, 
+				collider->getWidth() * transform->scale, 
+				collider->getHeight() * transform->scale, transform->rotation
 			);
 		}
 	}

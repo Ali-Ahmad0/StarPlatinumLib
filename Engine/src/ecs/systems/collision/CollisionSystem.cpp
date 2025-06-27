@@ -34,7 +34,7 @@ void CollisionSystem::update()
         auto* transformA = ECS::GetComponent<Transform>(entityA);
         auto* colliderA = ECS::GetComponent<Collider>(entityA);
 
-        Vector2 centerA = colliderA->center;
+        Vector2 centerA = colliderA->centerOffset;
         centerA += transformA->position;
 
         AABB* boxA = colliderA->getAABB(transformA);
@@ -50,7 +50,7 @@ void CollisionSystem::update()
                 auto* transformB = ECS::GetComponent<Transform>(entityB);
                 auto* colliderB = ECS::GetComponent<Collider>(entityB);
 
-                Vector2 centerB = colliderB->center;
+                Vector2 centerB = colliderB->centerOffset;
                 centerB += transformB->position;
 
                 AABB* boxB = colliderB->getAABB(transformB);

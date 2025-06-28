@@ -431,9 +431,10 @@ void CollisionSystem::onEntityAdded(EntityID e)
 {
     Transform* transform = ECS::GetComponent<Transform>(e);
     Collider* collider = ECS::GetComponent<Collider>(e);
-
-    Edge edge1 = { e, collider->getAABB(transform)->min.x,  true };
-    Edge edge2 = { e, collider->getAABB(transform)->max.x, false };
+    
+    AABB* aabb = collider->getAABB(transform);
+    Edge edge1 = { e, aabb->min.x,  true };
+    Edge edge2 = { e, aabb->max.x, false };
 
     edges.push_back(edge1);
     edges.push_back(edge2);

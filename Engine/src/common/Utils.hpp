@@ -417,19 +417,11 @@ struct Matrix3x2
 
 struct AABB
 {
-    // Offset of AABB center from transform position
-    Vector2 centerOffset;
-
-    // Size
-    float w;
-    float h;
-
     // Boundaries
     Vector2 min;
     Vector2 max;
 
-    AABB(float cx = 0, float cy = 0, float w = 0, float h = 0) 
-        : centerOffset({ cx, cy }), w(w), h(h)
+    AABB(float w = 0, float h = 0)
     {
         min = { -w / 2, -h / 2 };
         max = { w / 2,  h / 2 };

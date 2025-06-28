@@ -112,7 +112,7 @@ struct Collider
         shape(ShapeType::CIRCLE)
     {
         // Initialize the collider AABB
-        aabb = AABB(cx, cy, r, r);
+        aabb = AABB(r, r);
     }
 
     // Box collider constructor
@@ -120,7 +120,7 @@ struct Collider
         shape(ShapeType::BOX)
     {
         // Initialize the collider AABB
-        aabb = AABB(cx, cy, w, h);
+        aabb = AABB(w, h);
         
         // Initialize box vertices
         vertices[0] = Vector2(-w / 2,  h / 2); // Top left
@@ -215,10 +215,14 @@ private:
     float w;
     float h;
 
-    // Shape and bounding box
-    ShapeType shape; AABB aabb;
+    // Shape type
+    ShapeType shape; 
 
+    // Vertices 
     std::array<Vector2, 4> vertices{ Vector2::ZERO };
     std::array<Vector2, 4> transformedVertices{ Vector2::ZERO };
+    
+    // Bounding box
+    AABB aabb;
 };
 

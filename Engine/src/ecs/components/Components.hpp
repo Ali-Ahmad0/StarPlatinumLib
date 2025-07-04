@@ -226,3 +226,23 @@ private:
     AABB aabb;
 };
 
+struct PhysicsBody
+{
+    PhysicsBody(float mass) : acceleration(Vector2::ZERO), previousPos(Vector2::ZERO)
+    {
+        if (mass <= 0.0f) throw std::runtime_error("[RUNTIME ERROR]: Mass cannot be negative");
+        this->mass = mass;
+    }
+
+    void applyForce(const Vector2& force) 
+    {
+        acceleration = Vector2::divide(force, mass);
+    }
+private:
+    // Physical material properties
+    float mass;
+
+    // Verlet integration properties
+    Vector2 acceleration;
+    Vector2 previousPos;
+};

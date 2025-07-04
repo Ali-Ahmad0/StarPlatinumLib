@@ -421,7 +421,7 @@ struct AABB
     Vector2 min;
     Vector2 max;
 
-    AABB(float w = 0, float h = 0)
+    AABB(float w = 0, float h = 0) : isIntersecting(false)
     {
         min = { -w / 2, -h / 2 };
         max = { w / 2,  h / 2 };
@@ -437,11 +437,6 @@ struct AABB
         return isIntersecting;
     }
 
-    bool getIsIntersecting()
-    {
-        return isIntersecting;
-    }
-
 private:
-    bool isIntersecting = false;
+    bool isIntersecting;
 };

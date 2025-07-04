@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../../src/scene/SceneManager.hpp"
-#include "../../../src/ecs/definitions.hpp"
+#include "scene/SceneManager.hpp"
+#include "ecs/definitions.hpp"
 
 class PhysicsTest : public IScene
 {

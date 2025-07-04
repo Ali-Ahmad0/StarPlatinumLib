@@ -1,9 +1,9 @@
 #include "CollisionTest.hpp"
 
-#include "../../../src/main/debug/Debug.hpp"
-#include "../../../src/ecs/ECS.hpp"
-#include "../../../src/input/InputMap.hpp"
-#include "../../../src/viewport/ViewPort.hpp"
+#include "main/debug/Debug.hpp"
+#include "ecs/ECS.hpp"
+#include "input/InputMap.hpp"
+#include "viewport/ViewPort.hpp"
 
 void CollisionTest::Ready()
 {
@@ -54,7 +54,7 @@ void CollisionTest::Update(double delta)
 		}
 
 		// Print if collision occurs
-		if (collider->isColliding) 
+		if (e == 0 && collider->isColliding)
 		{
 			std::cout << "Collision!\n";
 		}

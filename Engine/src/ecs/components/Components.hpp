@@ -105,19 +105,20 @@ struct Collider
     Vector2 normal = Vector2::ZERO;
     float depth = 0;
 
-    bool isColliding = false;
+    bool isColliding;
+    bool resolveCollisions; 
 
     // Circle collider constructor
-    Collider(float cx, float cy, float r) : centerOffset(Vector2(cx, cy)), r(r), w(0), h(0), 
-        shape(ShapeType::CIRCLE)
+    Collider(float cx, float cy, float r)
+        : centerOffset(Vector2(cx, cy)), r(r), w(0), h(0), shape(ShapeType::CIRCLE), isColliding(false), resolveCollisions(true)
     {
         // Initialize the collider AABB
         aabb = AABB(r, r);
     }
 
     // Box collider constructor
-    Collider(float cx, float cy, float w, float h) : centerOffset(Vector2(cx, cy)), r(0), w(w), h(h), 
-        shape(ShapeType::BOX)
+    Collider(float cx, float cy, float w, float h) 
+        : centerOffset(Vector2(cx, cy)), r(0), w(w), h(h), shape(ShapeType::BOX), isColliding(false), resolveCollisions(true)
     {
         // Initialize the collider AABB
         aabb = AABB(w, h);
@@ -228,7 +229,10 @@ private:
 
 struct PhysicsBody
 {
-    PhysicsBody(float mass) : acceleration(Vector2::ZERO), previousPos(Vector2::ZERO)
+    bool isStatic;
+
+    PhysicsBody(float mass, bool isStatic = false) 
+        : isStatic(isStatic), acceleration(Vector2::ZERO), previousPos(Vector2::ZERO)
     {
         if (mass <= 0.0f) throw std::runtime_error("[RUNTIME ERROR]: Mass cannot be negative");
         this->mass = mass;
@@ -238,11 +242,26 @@ struct PhysicsBody
     {
         acceleration = Vector2::divide(force, mass);
     }
+
+    Vector2& getPreviousPos() 
+    {
+        return previousPos;
+    }
+
+    void updatePreviousPos(const Vector2& pos) 
+    {
+        previousPos = pos;
+    }
+
+    Vector2& getAcceleration() 
+    {
+        return acceleration;
+    }
 private:
-    // Physical material properties
+    // Physics properties
     float mass;
 
-    // Verlet integration properties
+    // Verlet integration
     Vector2 acceleration;
     Vector2 previousPos;
 };

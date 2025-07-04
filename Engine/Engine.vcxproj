@@ -168,6 +168,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\ecs\systems\physics\PhysicsSystem.cpp" />
     <ClCompile Include="src\camera\Camera.cpp" />
     <ClCompile Include="src\common\Utils.cpp" />
     <ClCompile Include="src\ecs\ECS.cpp" />
@@ -187,6 +188,7 @@
     <ClCompile Include="src\tilemap\Tilemap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ecs\systems\physics\PhysicsSystem.hpp" />
     <ClInclude Include="src\main\debug\Debug.hpp" />
     <ClInclude Include="src\camera\Camera.hpp" />
     <ClInclude Include="src\ecs\systems\collision\CollisionSystem.hpp" />

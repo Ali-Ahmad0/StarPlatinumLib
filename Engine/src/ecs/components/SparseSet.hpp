@@ -47,9 +47,8 @@ public:
     T* GetData(EntityID e)
     {
         uint16_t index = getDenseIndex(e);
-        if (index == NULL_INDEX)
+        if (index == NULL_INDEX) 
         {
-            fprintf(stderr, "[ERROR]: Entity %u does not have component of type: %s\n", e, typeid(T).name());
             return nullptr;
         }
         

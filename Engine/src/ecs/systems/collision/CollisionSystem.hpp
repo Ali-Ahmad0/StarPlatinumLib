@@ -36,4 +36,9 @@ private:
     size_t findClosestVertex(const Vector2& center, const std::array<Vector2, 4>& vertices);
     void projectVertices(const std::array<Vector2, 4>& vertices, const Vector2& axis, float* min, float* max);
     void projectCircle(const Vector2& center, float radius, const Vector2& axis, float* min, float* max);
+
+    void resolve(
+        Transform* transformA, Transform* transformB, const Collider* colliderA, const Collider* colliderB, 
+        bool isStaticA, bool isStaticB
+    );
 };

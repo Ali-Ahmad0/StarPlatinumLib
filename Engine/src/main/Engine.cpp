@@ -68,8 +68,12 @@ void StarPlatinumEngine::update() {
 	movementFuture.wait();
 	sceneUpdateFuture.wait();
 
-	// Handle collisions at the end on main thread
-	ECS::GetSystem<CollisionSystem>()->update();
+	// Handle physics at the end on seperate thread
+	for (size_t substep = 0; substep < 4; substep++)
+	{
+		ECS::GetSystem<CollisionSystem>()->update();
+		ECS::GetSystem<PhysicsSystem>()->update(delta / 16);
+	}
 }
 
 void StarPlatinumEngine::render() 

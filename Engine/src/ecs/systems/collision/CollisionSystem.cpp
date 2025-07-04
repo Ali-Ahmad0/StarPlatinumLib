@@ -85,6 +85,18 @@ void CollisionSystem::update()
 
                             colliderB->normal = normal;
                             colliderB->depth = depth;
+
+                            // Resolve the collisions
+                            if (colliderA->resolveCollisions && colliderB->resolveCollisions)
+                            {
+                                PhysicsBody* physicsA = ECS::GetComponent<PhysicsBody>(entityA);
+                                PhysicsBody* physicsB = ECS::GetComponent<PhysicsBody>(entityB);
+
+                                bool isStaticA = physicsA != nullptr && physicsA->isStatic;
+                                bool isStaticB = physicsB != nullptr && physicsB->isStatic;
+
+                                resolve(transformA, transformB, colliderA, colliderB, isStaticA, isStaticB);
+                            }
                         }
 
                         else 
@@ -205,6 +217,18 @@ void CollisionSystem::update()
 
                             colliderB->normal = normal;
                             colliderB->depth = depth;
+
+                            // Resolve the collisions
+                            if (colliderA->resolveCollisions && colliderB->resolveCollisions)
+                            {
+                                PhysicsBody* physicsA = ECS::GetComponent<PhysicsBody>(entityA);
+                                PhysicsBody* physicsB = ECS::GetComponent<PhysicsBody>(entityB);
+
+                                bool isStaticA = physicsA != nullptr && physicsA->isStatic;
+                                bool isStaticB = physicsB != nullptr && physicsB->isStatic;
+
+                                resolve(transformA, transformB, colliderA, colliderB, isStaticA, isStaticB);
+                            }
                         }
 
                         else 
@@ -339,6 +363,19 @@ void CollisionSystem::update()
 
                                 colliderB->normal = normal;
                                 colliderB->depth = depth;
+
+                                // Resolve the collisions
+                                if (colliderA->resolveCollisions && colliderB->resolveCollisions) 
+                                {
+                                    PhysicsBody* physicsA = ECS::GetComponent<PhysicsBody>(entityA);
+                                    PhysicsBody* physicsB = ECS::GetComponent<PhysicsBody>(entityB);
+
+                                    bool isStaticA = physicsA != nullptr && physicsA->isStatic;
+                                    bool isStaticB = physicsB != nullptr && physicsB->isStatic;
+
+
+                                    resolve(transformA, transformB, colliderA, colliderB, isStaticA, isStaticB);
+                                }
                             }
                         }
                         
@@ -368,62 +405,101 @@ void CollisionSystem::update()
     }
 }
 
-    // Returns the index of the vertex closest to circle center
-    size_t CollisionSystem::findClosestVertex(const Vector2& center, const std::array<Vector2, 4>& vertices)
+// Returns the index of the vertex closest to circle center
+size_t CollisionSystem::findClosestVertex(const Vector2& center, const std::array<Vector2, 4>& vertices)
+{
+    size_t index = std::numeric_limits<size_t>::max();
+    float min = (float)INFINITY;
+
+    for (int i = 0; i < vertices.size(); i++) 
     {
-        size_t index = std::numeric_limits<size_t>::max();
-        float min = (float)INFINITY;
+        // Get distance squared
+        float distanceSquared = Vector2::magnitudeSquared(Vector2::subtract(center, vertices[i]));
 
-        for (int i = 0; i < vertices.size(); i++) 
+        // Update minimum value
+        if (distanceSquared < min) 
         {
-            // Get distance squared
-            float distanceSquared = Vector2::magnitudeSquared(Vector2::subtract(center, vertices[i]));
-
-            // Update minimum value
-            if (distanceSquared < min) 
-            {
-                min = distanceSquared;
-                index = i;
-            }
-        }
-
-        return index;
-    }
-
-    // Project vertices onto possible seperating axis to get min and max values
-    void CollisionSystem::projectVertices(const std::array<Vector2, 4>& vertices, const Vector2& axis, float* min, float* max) 
-    {
-        for (auto& vertex : vertices) 
-        {
-            // Projection using dot product
-            float projection = Vector2::dot(vertex, axis);
-
-            if (projection < *min) *min = projection;
-            if (projection > *max) *max = projection;
+            min = distanceSquared;
+            index = i;
         }
     }
 
-    void CollisionSystem::projectCircle(const Vector2& center, float radius, const Vector2& axis, float* min, float* max)
+    return index;
+}
+
+// Project vertices onto possible seperating axis to get min and max values
+void CollisionSystem::projectVertices(const std::array<Vector2, 4>& vertices, const Vector2& axis, float* min, float* max) 
+{
+    for (auto& vertex : vertices) 
     {
-        /*
-        Draw a diameter line perpendicular
-        to the axis and then get the points
-        on the circumference that the line
-        intersects
-        */
-        Vector2 radiusVector = Vector2::multiply(axis, radius);
-
-        // Get points on both ends of the line
-        Vector2 pointA = Vector2::add(center, radiusVector);
-        Vector2 pointB = Vector2::subtract(center, radiusVector);
-
         // Projection using dot product
-        *min = Vector2::dot(pointA, axis);
-        *max = Vector2::dot(pointB, axis);
+        float projection = Vector2::dot(vertex, axis);
 
-        if (*min > *max)
-            std::swap(*min, *max);
+        if (projection < *min) *min = projection;
+        if (projection > *max) *max = projection;
     }
+}
+
+void CollisionSystem::projectCircle(const Vector2& center, float radius, const Vector2& axis, float* min, float* max)
+{
+    /*
+    Draw a diameter line perpendicular
+    to the axis and then get the points
+    on the circumference that the line
+    intersects
+    */
+    Vector2 radiusVector = Vector2::multiply(axis, radius);
+
+    // Get points on both ends of the line
+    Vector2 pointA = Vector2::add(center, radiusVector);
+    Vector2 pointB = Vector2::subtract(center, radiusVector);
+
+    // Projection using dot product
+    *min = Vector2::dot(pointA, axis);
+    *max = Vector2::dot(pointB, axis);
+
+    if (*min > *max)
+        std::swap(*min, *max);
+}
+
+void CollisionSystem::resolve(
+    Transform* transformA, Transform* transformB, const Collider* colliderA, const Collider* colliderB,
+    bool isStaticA, bool isStaticB
+)
+{
+    // Get collision normal and depth
+    Vector2 normal = colliderA->normal;
+    float depth = colliderA->depth;
+
+    // Calculate the separation vector
+    Vector2 separation = normal * depth;
+
+    // Case 1: Both objects are static - no resolution needed
+    if (isStaticA && isStaticB) 
+    {
+        return;
+    }
+
+    // Case 2: One object is static, the other is dynamic
+    if (isStaticA) 
+    {
+        // Move transformB away by the full separation
+        transformB->position -= separation;
+    }
+    else if (isStaticB) 
+    {
+        // Move transformA away by the full separation
+        transformA->position += separation;
+    }
+    // Case 3: Both objects are dynamic, seperate them
+    else 
+    {
+        // Move each object by half the separation
+        Vector2 halfSeparation = separation * 0.5f;
+        transformA->position += halfSeparation;
+        transformB->position -= halfSeparation;
+    }
+}
 
 void CollisionSystem::onEntityAdded(EntityID e)
 {

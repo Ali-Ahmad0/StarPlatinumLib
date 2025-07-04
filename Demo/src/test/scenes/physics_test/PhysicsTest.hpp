@@ -10,6 +10,6 @@ public:
 	void Update(double delta) override;
 
 private:
-	std::vector<EntityID> entities;
+	EntityID ball;
 };
 

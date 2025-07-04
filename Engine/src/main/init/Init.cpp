@@ -6,6 +6,7 @@ void Init::InitComponents()
 	ECS::RegisterComponent<Sprite>();
 	ECS::RegisterComponent<Movement>();
 	ECS::RegisterComponent<Collider>();
+	ECS::RegisterComponent<PhysicsBody>();
 }
 
 void Init::InitSystems() 
@@ -27,4 +28,9 @@ void Init::InitSystems()
 
 	ECS::AddComponentToSystem<Transform, CollisionSystem>();
 	ECS::AddComponentToSystem<Collider, CollisionSystem>();
+
+	// Physics system
+	ECS::RegisterSystem<PhysicsSystem>();
+	ECS::AddComponentToSystem<Transform, PhysicsSystem>();
+	ECS::AddComponentToSystem<PhysicsBody, PhysicsSystem>();
 }

@@ -1,6 +1,6 @@
 #pragma once
-#include "../../../src/scene/SceneManager.hpp"
-#include "../../../src/texture/TextureManager.hpp"
+#include "scene/SceneManager.hpp"
+#include "texture/TextureManager.hpp"
 
 class TestPlayer : public IScene 
 {

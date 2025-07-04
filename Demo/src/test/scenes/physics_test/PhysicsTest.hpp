@@ -1,9 +1,9 @@
 #pragma once
 
-#include "scene/SceneManager.hpp"
-#include "ecs/definitions.hpp"
+#include "../../../src/scene/SceneManager.hpp"
+#include "../../../src/ecs/definitions.hpp"
 
-class CollisionTest : public IScene
+class PhysicsTest : public IScene
 {
 public:
 	void Ready() override;

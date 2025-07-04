@@ -316,8 +316,6 @@ void CollisionSystem::update()
                             // Collision occurred
                             else
                             {
-                                std::cout << "Collision\n";
-
                                 float axisDepth = std::min(maxB - minA, maxA - minB);
                                 if (axisDepth < depth)
                                 {

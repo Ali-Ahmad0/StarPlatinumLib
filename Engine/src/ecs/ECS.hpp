@@ -1,6 +1,6 @@
 #pragma once
 
-#include "defintions.hpp"
+#include "definitions.hpp"
 #include "components/Components.hpp"
 #include "components/SparseSet.hpp"
 

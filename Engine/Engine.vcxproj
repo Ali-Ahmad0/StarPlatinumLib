@@ -193,7 +193,7 @@
     <ClInclude Include="src\common\Utils.hpp" />
     <ClInclude Include="src\ecs\components\SparseSet.hpp" />
     <ClInclude Include="src\ecs\components\Components.hpp" />
-    <ClInclude Include="src\ecs\defintions.hpp" />
+    <ClInclude Include="src\ecs\definitions.hpp" />
     <ClInclude Include="src\ecs\managers\EntityManager.hpp" />
     <ClInclude Include="src\ecs\managers\SystemManager.hpp" />
     <ClInclude Include="src\ecs\systems\BaseSystem.hpp" />

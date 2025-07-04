@@ -1,7 +1,7 @@
 #pragma once
-#include "../../../src/scene/SceneManager.hpp"
-#include "../../../src/texture/TextureManager.hpp"
-#include "../../../src/tilemap/Tilemap.hpp"
+#include "scene/SceneManager.hpp"
+#include "texture/TextureManager.hpp"
+#include "tilemap/Tilemap.hpp"
 
 #include "TestPlayer.hpp"
 

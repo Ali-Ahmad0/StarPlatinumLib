@@ -1,5 +1,5 @@
 #pragma once
-#include "../defintions.hpp"
+#include "../definitions.hpp"
 
 // Interface for a component map
 class ISparseSet

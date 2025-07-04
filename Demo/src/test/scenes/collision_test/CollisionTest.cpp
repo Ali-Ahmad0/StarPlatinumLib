@@ -32,6 +32,8 @@ void CollisionTest::Update(double delta)
 		Transform* transform = ECS::GetComponent<Transform>(e);
 		Collider* collider = ECS::GetComponent<Collider>(e);
 
+
+		// Draw collider shapes
 		if (collider->getShape() == ShapeType::CIRCLE) 
 		{
 			Debug::DrawCircle(
@@ -51,6 +53,11 @@ void CollisionTest::Update(double delta)
 			std::array<Vector2, 4> vertices = collider->getTransformedVertices(transform);
 		}
 
+		// Print if collision occurs
+		if (collider->isColliding) 
+		{
+			std::cout << "Collision!\n";
+		}
 	}
 
 }

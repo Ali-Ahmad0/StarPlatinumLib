@@ -92,12 +92,12 @@ void CollisionSystem::update()
                                 PhysicsBody* physicsA = ECS::GetComponent<PhysicsBody>(entityA);
                                 PhysicsBody* physicsB = ECS::GetComponent<PhysicsBody>(entityB);
 
-                                bool isStaticA = physicsA != nullptr && physicsA->isStatic;
-                                bool isStaticB = physicsB != nullptr && physicsB->isStatic;
-
-                                separate(transformA, transformB, normal * depth, isStaticA, isStaticB);
                                 if (physicsA != nullptr && physicsB != nullptr)
                                 {
+                                    bool isStaticA = physicsA->isStatic;
+                                    bool isStaticB = physicsB->isStatic;
+                                    separate(transformA, transformB, normal * depth, isStaticA, isStaticB);
+
                                     resolve(physicsA, physicsB, normal, depth);
                                 }
                             }
@@ -231,13 +231,12 @@ void CollisionSystem::update()
                                 PhysicsBody* physicsA = ECS::GetComponent<PhysicsBody>(entityA);
                                 PhysicsBody* physicsB = ECS::GetComponent<PhysicsBody>(entityB);
 
-                                bool isStaticA = physicsA != nullptr && physicsA->isStatic;
-                                bool isStaticB = physicsB != nullptr && physicsB->isStatic;
-
-
-                                separate(transformA, transformB, normal * depth, isStaticA, isStaticB);
                                 if (physicsA != nullptr && physicsB != nullptr)
                                 {
+                                    bool isStaticA = physicsA->isStatic;
+                                    bool isStaticB = physicsB->isStatic;
+                                    separate(transformA, transformB, normal * depth, isStaticA, isStaticB);
+
                                     resolve(physicsA, physicsB, normal, depth);
                                 }
                             }
@@ -387,13 +386,12 @@ void CollisionSystem::update()
                                     PhysicsBody* physicsA = ECS::GetComponent<PhysicsBody>(entityA);
                                     PhysicsBody* physicsB = ECS::GetComponent<PhysicsBody>(entityB);
 
-                                    bool isStaticA = physicsA != nullptr && physicsA->isStatic;
-                                    bool isStaticB = physicsB != nullptr && physicsB->isStatic;
-
-
-                                    separate(transformA, transformB, normal * depth, isStaticA, isStaticB);
                                     if (physicsA != nullptr && physicsB != nullptr)
                                     {
+                                        bool isStaticA = physicsA->isStatic;
+                                        bool isStaticB = physicsB->isStatic;
+                                        separate(transformA, transformB, normal * depth, isStaticA, isStaticB);
+
                                         resolve(physicsA, physicsB, normal, depth);
                                     }
                                 }
@@ -495,20 +493,17 @@ void CollisionSystem::separate(Transform* transformA, Transform* transformB, con
     if (isStaticA) 
     {
         // Move transformB away by the full separation
-        std::cout << "Moving B by: " << -separation.x << ", " << -separation.y << std::endl;
         transformB->position += separation;
     }
     else if (isStaticB)
     {
         // Move transformA away by the full separation
-        std::cout << "Moving A by: " << -separation.x << ", " << -separation.y << std::endl;
         transformA->position -= separation;
     }
     // Case 3: Both objects are dynamic, seperate them
     else
     {
         // Move each object by half the separation
-        std::cout << "Moving both by half separation" << std::endl;
         Vector2 halfSeparation = Vector2::multiply(separation, 0.5);
         transformA->position -= halfSeparation;
         transformB->position += halfSeparation;

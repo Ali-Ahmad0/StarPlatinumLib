@@ -24,7 +24,7 @@ int main()
 	InputMap::BindKey("move_d", SDL_SCANCODE_DOWN);
 	InputMap::BindKey("move_r", SDL_SCANCODE_RIGHT);
 
-	SceneManager::ChangeScene("collision_test");
+	SceneManager::ChangeScene("physics_test");
 
 	game.Run();
 

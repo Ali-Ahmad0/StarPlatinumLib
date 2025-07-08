@@ -9,14 +9,14 @@ void CollisionTest::Ready()
 {
 	// Testing, spawn two circle collision entities
 	EntityID e1 = ECS::CreateEntity();
-	ECS::AddComponent<Transform>(e1, Transform(Vector2(64, 64), 10));
+	ECS::AddComponent<Transform>(e1, Transform(Vector2(64, 64)));
 	ECS::AddComponent<PhysicsBody>(e1, PhysicsBody(1));
-	ECS::AddComponent<Collider>(e1, Collider(0, 0, 50, 50));
+	ECS::AddComponent<Collider>(e1, Collider(0, 0, 48, 48));
 	ECS::AddComponent<Movement>(e1, Movement(Vector2::ZERO, Vector2(100, 100)));
 
 	EntityID e2 = ECS::CreateEntity();
 	ECS::AddComponent<Transform>(e2, Transform(Vector2(128, 128)));
-	ECS::AddComponent<PhysicsBody>(e2, PhysicsBody());
+	ECS::AddComponent<PhysicsBody>(e2, PhysicsBody(1));
 	ECS::AddComponent<Collider>(e2, Collider(0, 0, 30));
 
 	entities.push_back(e1);

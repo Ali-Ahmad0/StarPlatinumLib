@@ -9,8 +9,6 @@ struct PhysicsSystem : public BaseSystem
     void onEntityRemoved(EntityID e) override;
 
 private:
-    const uint8_t meter = 32; // 1 meter = 32px
-
     std::vector<EntityID> entities;
 };
 

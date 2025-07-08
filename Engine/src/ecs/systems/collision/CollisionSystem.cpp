@@ -95,7 +95,11 @@ void CollisionSystem::update()
                                 bool isStaticA = physicsA != nullptr && physicsA->isStatic;
                                 bool isStaticB = physicsB != nullptr && physicsB->isStatic;
 
-                                resolve(transformA, transformB, colliderA, colliderB, isStaticA, isStaticB);
+                                separate(transformA, transformB, normal * depth, isStaticA, isStaticB);
+                                if (physicsA != nullptr && physicsB != nullptr)
+                                {
+                                    resolve(physicsA, physicsB, normal, depth);
+                                }
                             }
                         }
 
@@ -119,14 +123,6 @@ void CollisionSystem::update()
 
                         bool isColliding = true;
 
-                        // Min and max projections of polygons
-                        float minA = (float)INFINITY;
-                        float maxA = -(float)INFINITY;
-
-                        float minB = (float)INFINITY;
-                        float maxB = -(float)INFINITY;
-
-
                         std::array<Vector2, 4> verticesA = colliderA->getTransformedVertices(transformA);
                         std::array<Vector2, 4> verticesB = colliderB->getTransformedVertices(transformB);
 
@@ -144,6 +140,12 @@ void CollisionSystem::update()
                             axis = Vector2::normalize(axis);
                             
                             // Project the vertices onto the axis
+                            float minA = (float)INFINITY;
+                            float maxA = -(float)INFINITY;
+
+                            float minB = (float)INFINITY;
+                            float maxB = -(float)INFINITY;
+
                             projectVertices(verticesA, axis, &minA, &maxA);
                             projectVertices(verticesB, axis, &minB, &maxB);
 
@@ -178,6 +180,11 @@ void CollisionSystem::update()
                             axis = Vector2::normalize(axis);
 
                             // Project the vertices onto the axis
+                            float minA = (float)INFINITY;
+                            float maxA = -(float)INFINITY;
+
+                            float minB = (float)INFINITY;
+                            float maxB = -(float)INFINITY;
                             projectVertices(verticesA, axis, &minA, &maxA);
                             projectVertices(verticesB, axis, &minB, &maxB);
 
@@ -227,7 +234,12 @@ void CollisionSystem::update()
                                 bool isStaticA = physicsA != nullptr && physicsA->isStatic;
                                 bool isStaticB = physicsB != nullptr && physicsB->isStatic;
 
-                                resolve(transformA, transformB, colliderA, colliderB, isStaticA, isStaticB);
+
+                                separate(transformA, transformB, normal * depth, isStaticA, isStaticB);
+                                if (physicsA != nullptr && physicsB != nullptr)
+                                {
+                                    resolve(physicsA, physicsB, normal, depth);
+                                }
                             }
                         }
 
@@ -249,13 +261,6 @@ void CollisionSystem::update()
                         float depth = (float)INFINITY;
 
                         bool isColliding = true;
-
-                        // Min and max projections of shapes
-                        float minA = (float)INFINITY;
-                        float maxA = -(float)INFINITY;
-
-                        float minB = (float)INFINITY;
-                        float maxB = -(float)INFINITY;
 
                         Vector2 centerC; // Center of circle
                         Vector2 centerP; // Center of polyon
@@ -297,7 +302,13 @@ void CollisionSystem::update()
                             axis = Vector2::normalize(axis);
 
                             // Project the vertices and circle onto the axis
+                            float minA = (float)INFINITY;
+                            float maxA = -(float)INFINITY;
+
+                            float minB = (float)INFINITY;
+                            float maxB = -(float)INFINITY;
                             projectVertices(vertices, axis, &minA, &maxA);
+                            
                             projectCircle(centerC, radius, axis, &minB, &maxB);
 
                             // Seperation, no collision
@@ -322,7 +333,13 @@ void CollisionSystem::update()
                             Vector2 axis = Vector2::normalize(closestVertex - centerC);
 
                             // Project vertices and circle onto this axis
+                            float minA = (float)INFINITY;
+                            float maxA = -(float)INFINITY;
+
+                            float minB = (float)INFINITY;
+                            float maxB = -(float)INFINITY;
                             projectVertices(vertices, axis, &minA, &maxA);
+
                             projectCircle(centerC, radius, axis, &minB, &maxB);
 
                             // Seperation, no collision
@@ -374,7 +391,11 @@ void CollisionSystem::update()
                                     bool isStaticB = physicsB != nullptr && physicsB->isStatic;
 
 
-                                    resolve(transformA, transformB, colliderA, colliderB, isStaticA, isStaticB);
+                                    separate(transformA, transformB, normal * depth, isStaticA, isStaticB);
+                                    if (physicsA != nullptr && physicsB != nullptr)
+                                    {
+                                        resolve(physicsA, physicsB, normal, depth);
+                                    }
                                 }
                             }
                         }
@@ -462,18 +483,8 @@ void CollisionSystem::projectCircle(const Vector2& center, float radius, const V
         std::swap(*min, *max);
 }
 
-void CollisionSystem::resolve(
-    Transform* transformA, Transform* transformB, const Collider* colliderA, const Collider* colliderB,
-    bool isStaticA, bool isStaticB
-)
+void CollisionSystem::separate(Transform* transformA, Transform* transformB, const Vector2& separation, bool isStaticA, bool isStaticB)
 {
-    // Get collision normal and depth
-    Vector2 normal = colliderA->normal;
-    float depth = colliderA->depth;
-
-    // Calculate the separation vector
-    Vector2 separation = normal * depth;
-
     // Case 1: Both objects are static - no resolution needed
     if (isStaticA && isStaticB) 
     {
@@ -484,21 +495,49 @@ void CollisionSystem::resolve(
     if (isStaticA) 
     {
         // Move transformB away by the full separation
-        transformB->position -= separation;
+        std::cout << "Moving B by: " << -separation.x << ", " << -separation.y << std::endl;
+        transformB->position += separation;
     }
-    else if (isStaticB) 
+    else if (isStaticB)
     {
         // Move transformA away by the full separation
-        transformA->position += separation;
+        std::cout << "Moving A by: " << -separation.x << ", " << -separation.y << std::endl;
+        transformA->position -= separation;
     }
     // Case 3: Both objects are dynamic, seperate them
-    else 
+    else
     {
         // Move each object by half the separation
-        Vector2 halfSeparation = separation * 0.5f;
-        transformA->position += halfSeparation;
-        transformB->position -= halfSeparation;
+        std::cout << "Moving both by half separation" << std::endl;
+        Vector2 halfSeparation = Vector2::multiply(separation, 0.5);
+        transformA->position -= halfSeparation;
+        transformB->position += halfSeparation;
     }
+}
+
+void CollisionSystem::resolve(PhysicsBody* bodyA, PhysicsBody* bodyB, const Vector2& normal, float depth)
+{
+    //// Get relative velocity of the colliding physics bodies
+    //Vector2 relativeVelocity = bodyB->getLinearVelocity() - bodyA->getLinearVelocity();
+    //
+    //// Get dot product of relative velocity and normal vector
+    //float velocityDotNormal = 0;
+    //if ((velocityDotNormal = Vector2::dot(relativeVelocity, normal)) > 0) return;
+
+    //// Default restitution
+    //float restitution = 0.5;
+
+    //// Reciprocal of masses
+    //float invMassA = 1.0f / bodyA->getMass();
+    //float invMassB = 1.0f / bodyB->getMass();
+
+    //// Calculate impulse magnitude and direction
+    //float impulseM = -(1 + restitution) * velocityDotNormal / (invMassA + invMassB);
+    //Vector2 impulseV = Vector2::multiply(normal, impulseM);
+    //
+    //// Apply the impulse force
+    //bodyA->applyForce(-impulseV);
+    //bodyB->applyForce( impulseV);
 }
 
 void CollisionSystem::onEntityAdded(EntityID e)

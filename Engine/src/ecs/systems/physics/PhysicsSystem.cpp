@@ -14,19 +14,20 @@ void PhysicsSystem::update(double delta)
 
 		Transform* transform = ECS::GetComponent<Transform>(e);
 
-		Vector2 nextPos = Vector2::ZERO;
-		Vector2 prevPos = physics->getPreviousPos();
-		Vector2 currPos = transform->position;
+		Vector2 next = Vector2::ZERO;
+		Vector2 prev = physics->getPreviousPos();
+		Vector2 curr = transform->position;
 
-		// Acceleration in meter per second squared
-		Vector2 acceleration = physics->getAcceleration() * meter;
+		Vector2 acceleration = physics->getAcceleration() * METER;
+	
+		// Update instantaneous linear velocity
+		physics->updateLinearVelocity(curr, delta);
 
-		// Verlet integration formula:
-		// Next position = (current positon * 2) - previous position + (a * dt * dt)
-		nextPos = (currPos * 2) - prevPos + (acceleration * (float)delta * (float)delta);
-
-		physics->updatePreviousPos(currPos); 
-		transform->position = nextPos;
+		// Update position using verlet integration
+		next = (curr * 2) - prev + (acceleration * (float)delta * (float)delta);
+		
+		physics->updatePreviousPos(curr); 
+		transform->position = next;
 	}
 }
 

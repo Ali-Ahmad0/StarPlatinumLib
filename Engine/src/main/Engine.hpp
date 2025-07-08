@@ -37,6 +37,7 @@ private:
 
 	// Delta time in milliseconds
 	double delta;
+	size_t substeps;
 
 	bool events();
 	void update();

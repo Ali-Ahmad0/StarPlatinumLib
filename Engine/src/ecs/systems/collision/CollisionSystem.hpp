@@ -37,8 +37,6 @@ private:
     void projectVertices(const std::array<Vector2, 4>& vertices, const Vector2& axis, float* min, float* max);
     void projectCircle(const Vector2& center, float radius, const Vector2& axis, float* min, float* max);
 
-    void resolve(
-        Transform* transformA, Transform* transformB, const Collider* colliderA, const Collider* colliderB, 
-        bool isStaticA, bool isStaticB
-    );
+    void resolve(PhysicsBody* bodyA, PhysicsBody* bodyB, const Vector2& normal, float depth);
+    void separate(Transform* transformA, Transform* transformB, const Vector2& seperation, bool isStaticA, bool isStaticB);
 };

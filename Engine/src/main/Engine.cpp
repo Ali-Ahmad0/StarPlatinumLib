@@ -1,7 +1,7 @@
 #include "Engine.hpp"
 #include <Windows.h>
 
-StarPlatinumEngine::StarPlatinumEngine(const char* title, int w, int h, bool fullscreen) : delta(0)
+StarPlatinumEngine::StarPlatinumEngine(const char* title, int w, int h, bool fullscreen) : delta(0), substeps(4)
 {
 	SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_HIGHEST);
 
@@ -68,11 +68,11 @@ void StarPlatinumEngine::update() {
 	movementFuture.wait();
 	sceneUpdateFuture.wait();
 
-	// Handle physics at the end on seperate thread
-	for (size_t substep = 0; substep < 4; substep++)
+
+	for (size_t substep = 0; substep < substeps; substep++) 
 	{
 		ECS::GetSystem<CollisionSystem>()->update();
-		ECS::GetSystem<PhysicsSystem>()->update(delta / 16);
+		ECS::GetSystem<PhysicsSystem>()->update(delta / substeps);	
 	}
 }
 

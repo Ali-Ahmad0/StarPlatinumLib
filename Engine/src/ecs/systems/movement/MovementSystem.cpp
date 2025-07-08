@@ -5,8 +5,8 @@ void MovementSystem::update(double delta)
 {
 	for (EntityID e : entities)
 	{
-		auto* transform = ECS::GetComponent<Transform>(e);
-		auto* movement = ECS::GetComponent<Movement>(e);
+		Transform* transform = ECS::GetComponent<Transform>(e);
+		Movement* movement = ECS::GetComponent<Movement>(e);
 
 		// Update transform component based on movemenet component
 		transform->position.x += movement->direction.x * movement->speed.x * (float)delta;

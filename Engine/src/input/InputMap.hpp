@@ -21,6 +21,9 @@ public:
     static bool MouseMiddlePressed(SDL_Event event);
     static bool MouseRightPressed(SDL_Event event);
 
+    static void GetMousePositionWindow(Vector2& outVector);
+    static void GetMousePositionGlobal(Vector2& outVector);
+
 private:
     static std::unordered_map<std::string, SDL_Scancode> bindings;
 };

@@ -87,19 +87,9 @@ void CollisionSystem::update()
                             colliderB->depth = depth;
 
                             // Resolve the collisions
-                            if (colliderA->resolveCollisions && colliderB->resolveCollisions)
+                            if (colliderA->isSolid && colliderB->isSolid)
                             {
-                                PhysicsBody* physicsA = ECS::GetComponent<PhysicsBody>(entityA);
-                                PhysicsBody* physicsB = ECS::GetComponent<PhysicsBody>(entityB);
-
-                                if (physicsA != nullptr && physicsB != nullptr)
-                                {
-                                    bool isStaticA = physicsA->isStatic;
-                                    bool isStaticB = physicsB->isStatic;
-                                    separate(transformA, transformB, normal * depth, isStaticA, isStaticB);
-
-                                    resolve(physicsA, physicsB, normal, depth);
-                                }
+                                separate(transformA, transformB, normal * depth, colliderA->isStatic, colliderB->isStatic);   
                             }
                         }
 
@@ -226,19 +216,9 @@ void CollisionSystem::update()
                             colliderB->depth = depth;
 
                             // Resolve the collisions
-                            if (colliderA->resolveCollisions && colliderB->resolveCollisions)
+                            if (colliderA->isSolid && colliderB->isSolid)
                             {
-                                PhysicsBody* physicsA = ECS::GetComponent<PhysicsBody>(entityA);
-                                PhysicsBody* physicsB = ECS::GetComponent<PhysicsBody>(entityB);
-
-                                if (physicsA != nullptr && physicsB != nullptr)
-                                {
-                                    bool isStaticA = physicsA->isStatic;
-                                    bool isStaticB = physicsB->isStatic;
-                                    separate(transformA, transformB, normal * depth, isStaticA, isStaticB);
-
-                                    resolve(physicsA, physicsB, normal, depth);
-                                }
+                                separate(transformA, transformB, normal * depth, colliderA->isStatic, colliderB->isStatic);
                             }
                         }
 
@@ -381,19 +361,9 @@ void CollisionSystem::update()
                                 colliderB->depth = depth;
 
                                 // Resolve the collisions
-                                if (colliderA->resolveCollisions && colliderB->resolveCollisions) 
+                                if (colliderA->isSolid && colliderB->isSolid) 
                                 {
-                                    PhysicsBody* physicsA = ECS::GetComponent<PhysicsBody>(entityA);
-                                    PhysicsBody* physicsB = ECS::GetComponent<PhysicsBody>(entityB);
-
-                                    if (physicsA != nullptr && physicsB != nullptr)
-                                    {
-                                        bool isStaticA = physicsA->isStatic;
-                                        bool isStaticB = physicsB->isStatic;
-                                        separate(transformA, transformB, normal * depth, isStaticA, isStaticB);
-
-                                        resolve(physicsA, physicsB, normal, depth);
-                                    }
+                                    separate(transformA, transformB, normal* depth, colliderA->isStatic, colliderB->isStatic);
                                 }
                             }
                         }
@@ -508,31 +478,6 @@ void CollisionSystem::separate(Transform* transformA, Transform* transformB, con
         transformA->position -= halfSeparation;
         transformB->position += halfSeparation;
     }
-}
-
-void CollisionSystem::resolve(PhysicsBody* bodyA, PhysicsBody* bodyB, const Vector2& normal, float depth)
-{
-    // Get relative velocity of the colliding physics bodies
-    Vector2 relativeVelocity = (bodyB->getLinearVelocity() - bodyA->getLinearVelocity()) / METER;
-    
-    // Get dot product of relative velocity and normal vector
-    float velocityDotNormal = 0;
-    if ((velocityDotNormal = Vector2::dot(relativeVelocity, normal)) > 0) return;
-
-    // Default restitution
-    float restitution = 0.5;
-
-    // Reciprocal of masses
-    float invMassA = 1.0f / bodyA->getMass();
-    float invMassB = 1.0f / bodyB->getMass();
-
-    // Calculate impulse magnitude and direction
-    float impulseM = -(1 + restitution) * velocityDotNormal / (invMassA + invMassB);
-    Vector2 impulseV = Vector2::multiply(normal, impulseM);
-    
-    // Apply the impulse force
-    bodyA->force = -impulseV;
-    bodyB->force = impulseV;
 }
 
 void CollisionSystem::onEntityAdded(EntityID e)

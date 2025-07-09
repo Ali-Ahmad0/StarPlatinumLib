@@ -7,9 +7,6 @@ struct CollisionSystem : public BaseSystem
 {
 
     void update();
-    //void resolve(
-    //    AABB* boxA, Transform* transformA, 
-    //    AABB* boxB, Transform* transformB);
 
     void onEntityAdded(EntityID e) override;
     void onEntityRemoved(EntityID e) override;
@@ -37,6 +34,5 @@ private:
     void projectVertices(const std::array<Vector2, 4>& vertices, const Vector2& axis, float* min, float* max);
     void projectCircle(const Vector2& center, float radius, const Vector2& axis, float* min, float* max);
 
-    void resolve(PhysicsBody* bodyA, PhysicsBody* bodyB, const Vector2& normal, float depth);
     void separate(Transform* transformA, Transform* transformB, const Vector2& seperation, bool isStaticA, bool isStaticB);
 };

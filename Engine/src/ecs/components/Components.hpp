@@ -8,7 +8,7 @@ struct Transform
     // Transformation in a 2D plane
     Vector2 position; float rotation; size_t scale;
 
-    Transform(const Vector2& position = { 0, 0 }, float rotation = 0.0, size_t scale = 1)
+    Transform(const Vector2& position = { 0, 0 }, float rotation = 0.0f, size_t scale = 1)
         : position(position), rotation(rotation), scale(scale) {}
 };
 
@@ -106,19 +106,24 @@ struct Collider
     float depth = 0;
 
     bool isColliding;
-    bool resolveCollisions; 
+    
+    // Properties
+    bool isStatic;
+    bool isSolid;
 
     // Circle collider constructor
-    Collider(float cx, float cy, float r)
-        : centerOffset(Vector2(cx, cy)), r(r), w(0), h(0), shape(ShapeType::CIRCLE), isColliding(false), resolveCollisions(true)
+    Collider(const Vector2& centerOffset, float r, bool isSolid = true, bool isStatic = false)
+        : centerOffset(centerOffset), r(r), w(0), h(0), 
+        shape(ShapeType::CIRCLE), isColliding(false), isSolid(isSolid), isStatic(isStatic)
     {
         // Initialize the collider AABB
         aabb = AABB(r, r);
     }
 
     // Box collider constructor
-    Collider(float cx, float cy, float w, float h) 
-        : centerOffset(Vector2(cx, cy)), r(0), w(w), h(h), shape(ShapeType::BOX), isColliding(false), resolveCollisions(true)
+    Collider(const Vector2& centerOffset, float w, float h, bool isSolid = true, bool isStatic = false)
+        : centerOffset(centerOffset), r(0), w(w), h(h), 
+        shape(ShapeType::BOX), isColliding(false), isSolid(isSolid), isStatic(isStatic)
     {
         // Initialize the collider AABB
         aabb = AABB(w, h);
@@ -211,6 +216,26 @@ struct Collider
         return h; 
     }
 
+    bool isOnFloor() 
+    {
+        return normal.y > 0.5f;
+    }
+
+    bool isOnLeftWall() 
+    {
+        return normal.x > 0.5f;
+    }
+
+    bool isOnRightWall()
+    {
+        return normal.x < -0.5f;
+    }
+
+    bool isOnCeiling() 
+    {
+        return normal.y < -0.5f;
+    }
+
 private:
     // Dimensions
     float r;
@@ -226,57 +251,4 @@ private:
     
     // Bounding box
     AABB aabb;
-};
-
-struct PhysicsBody
-{
-    Vector2 force;
-    bool isStatic;
-
-    // Static body constructor
-    PhysicsBody() : mass(INFINITY), isStatic(true), previousPos(Vector2::ZERO), 
-        force(Vector2::ZERO), linearVelocity(Vector2::ZERO) {}
-
-    // Rigid body constructor
-    PhysicsBody(float mass) : isStatic(false), previousPos(Vector2::ZERO), 
-        force(Vector2::ZERO), linearVelocity(Vector2::ZERO)
-    {
-        if (mass <= 0.0f) throw std::runtime_error("[RUNTIME ERROR]: Mass cannot be negative");
-        this->mass = mass;
-    }
-
-    float getMass() 
-    {
-        return mass;
-    }
-
-    Vector2& getPreviousPos() 
-    {
-        return previousPos;
-    }
-
-
-    void updatePreviousPos(const Vector2& pos) 
-    {
-        previousPos = pos;
-    }
-
-    Vector2& getLinearVelocity() 
-    {
-        return linearVelocity;
-    }
-
-    void updateLinearVelocity(const Vector2& currentPos, double delta) 
-    {
-        // Instantaneous linear velocity
-        linearVelocity = Vector2::subtract(currentPos, previousPos) / (float)delta;
-    }
-
-private:
-    // Physics properties
-    float mass;
-    Vector2 linearVelocity;
-
-    // Verlet integration
-    Vector2 previousPos;
 };

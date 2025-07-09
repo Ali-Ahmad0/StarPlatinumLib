@@ -69,9 +69,6 @@
     <ClCompile Include="src\main\debug\Debug.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ecs\systems\physics\PhysicsSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\main\Engine.hpp">
@@ -141,9 +138,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\main\debug\Debug.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ecs\systems\physics\PhysicsSystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

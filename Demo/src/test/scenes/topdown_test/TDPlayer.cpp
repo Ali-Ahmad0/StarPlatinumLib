@@ -1,21 +1,21 @@
-#include "TestPlayer.hpp"
+#include "TDPlayer.hpp"
+
 #include "input/InputMap.hpp"
 #include "main/debug/Debug.hpp"
 
-void TestPlayer::Ready() 
+void TDPlayer::Ready() 
 {
 	// Load player texture
-	texture = TextureManager::LoadTexture("src/test/assets/character.png");
+	texture = TextureManager::LoadTexture("src/test/assets/topdown/character.png");
 
 	// Create player entity
 	player = ECS::CreateEntity();
 		
 	// Add components
-	ECS::AddComponent(player, Transform(Vector2(32, 384), 0.0, 3));
+	ECS::AddComponent(player, Transform(Vector2(32, 384), 0.0f, 3));
 	ECS::AddComponent(player, Sprite(texture, 3, 4, 6, 0));
 
-	ECS::AddComponent(player, PhysicsBody(70));
-	ECS::AddComponent(player, Collider(8, 20, 12, 12));
+	ECS::AddComponent(player, Collider(Vector2(8, 20), 12.0f, 12.0f));
 	ECS::AddComponent(player, Movement());
 	
 	transform = ECS::GetComponent<Transform>(player);
@@ -41,7 +41,7 @@ void TestPlayer::Ready()
 	Camera::SetBoundaries(0, 960, 0, 720);
 }
 
-void TestPlayer::Update(double delta)
+void TDPlayer::Update(double delta)
 {
 	// Get input direction using the InputMap system
 	Vector2 input; 

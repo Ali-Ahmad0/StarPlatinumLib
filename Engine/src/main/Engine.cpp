@@ -1,7 +1,7 @@
 #include "Engine.hpp"
 #include <Windows.h>
 
-StarPlatinumEngine::StarPlatinumEngine(const char* title, int w, int h, bool fullscreen) : delta(0), substeps(4)
+StarPlatinumEngine::StarPlatinumEngine(const char* title, int w, int h, bool fullscreen) : delta(0), substeps(12)
 {
 	SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_HIGHEST);
 
@@ -65,15 +65,13 @@ void StarPlatinumEngine::update() {
 		SceneManager::Update(delta);
 	});
 
+	auto collisionFuture = pool.AddTask([this]() {
+		ECS::GetSystem<CollisionSystem>()->update();
+	});
+
 	movementFuture.wait();
 	sceneUpdateFuture.wait();
-
-
-	for (size_t substep = 0; substep < substeps; substep++) 
-	{
-		ECS::GetSystem<CollisionSystem>()->update();
-		ECS::GetSystem<PhysicsSystem>()->update(delta / substeps);	
-	}
+	collisionFuture.wait();
 }
 
 void StarPlatinumEngine::render() 

@@ -213,8 +213,7 @@ void Tilemap::generateCollisionTiles()
 
                 EntityID tile = ECS::CreateEntity();
                 ECS::AddComponent(tile, Transform(Vector2(x, y), 0.0, scale));
-                ECS::AddComponent(tile, Collider(w / 2.0f, h / 2.0f, w, h));
-                ECS::AddComponent(tile, PhysicsBody());
+                ECS::AddComponent(tile, Collider(Vector2(w / 2.0f, h / 2.0f), w, h, true, true));
             }
             else
             {

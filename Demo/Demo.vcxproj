@@ -147,11 +147,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\test\scenes\collision_test\CollisionTest.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\test\scenes\stress_test\StressTest.cpp" />
-    <ClCompile Include="src\test\scenes\world_test\TestPlayer.cpp" />
-    <ClCompile Include="src\test\scenes\world_test\TestScene.cpp" />
+    <ClCompile Include="src\test\scenes\topdown_test\TDPlayer.cpp" />
+    <ClCompile Include="src\test\scenes\topdown_test\TDScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.vcxproj">
@@ -160,20 +159,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\test\assets\level\tilemap.json" />
-    <None Include="src\test\assets\level\untitled.json" />
-    <None Include="src\test\assets\level\untitled.tsx" />
+    <None Include="src\test\assets\topdown\level\map.json" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="src\test\assets\character.png" />
+    <Image Include="src\test\assets\topdown\character.png" />
     <Image Include="src\test\assets\preview.png" />
     <Image Include="src\test\assets\tileset.png" />
-    <Image Include="src\test\assets\untitled.png" />
+    <Image Include="src\test\assets\topdown\tileset.png" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\test\scenes\collision_test\CollisionTest.hpp" />
     <ClInclude Include="src\test\scenes\stress_test\StressTest.hpp" />
-    <ClInclude Include="src\test\scenes\world_test\TestPlayer.hpp" />
-    <ClInclude Include="src\test\scenes\world_test\TestScene.hpp" />
+    <ClInclude Include="src\test\scenes\topdown_test\TDPlayer.hpp" />
+    <ClInclude Include="src\test\scenes\topdown_test\TDScene.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

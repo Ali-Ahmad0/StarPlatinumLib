@@ -2,7 +2,7 @@
 #include "scene/SceneManager.hpp"
 #include "texture/TextureManager.hpp"
 
-class TestPlayer : public IScene 
+class TDPlayer : public IScene 
 {
 public:
 	void Ready() override;

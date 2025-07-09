@@ -3,9 +3,9 @@
 #include "texture/TextureManager.hpp"
 #include "tilemap/Tilemap.hpp"
 
-#include "TestPlayer.hpp"
+#include "TDPlayer.hpp"
 
-class TestScene : public IScene
+class TDScene : public IScene
 {
 public:
 	void Ready() override;
@@ -13,5 +13,5 @@ public:
 	void Events(SDL_Event event) override;
 
 private:
-	TestPlayer player;
+	TDPlayer player;
 };

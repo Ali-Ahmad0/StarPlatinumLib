@@ -52,3 +52,25 @@ bool InputMap::MouseRightPressed(SDL_Event event)
 {
     return event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_RIGHT;
 }
+
+// Get mouse position relative to viewport
+void InputMap::GetMousePositionWindow(Vector2& outVector)
+{
+    int x;
+    int y;
+    SDL_GetMouseState(&x, &y);
+
+    outVector.x = (float)x;
+    outVector.y = (float)y;
+}
+
+// Get mouse position relative to desktop
+void InputMap::GetMousePositionGlobal(Vector2& outVector) 
+{
+    int x;
+    int y;
+    SDL_GetGlobalMouseState(&x, &y);
+
+    outVector.x = (float)x;
+    outVector.y = (float)y;
+}

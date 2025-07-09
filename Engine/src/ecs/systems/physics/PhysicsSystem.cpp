@@ -7,27 +7,30 @@ void PhysicsSystem::update(double delta)
 {
 	for (EntityID e : entities) 
 	{
-		PhysicsBody* physics = ECS::GetComponent<PhysicsBody>(e);
+		PhysicsBody* body = ECS::GetComponent<PhysicsBody>(e);
 
 		// Skip moving static bodies
-		if (physics->isStatic || physics->getAcceleration() == Vector2::ZERO) continue;
+		if (body->isStatic) continue;
 
 		Transform* transform = ECS::GetComponent<Transform>(e);
 
 		Vector2 next = Vector2::ZERO;
-		Vector2 prev = physics->getPreviousPos();
+		Vector2 prev = body->getPreviousPos();
 		Vector2 curr = transform->position;
 
-		Vector2 acceleration = physics->getAcceleration() * METER;
+		Vector2 acceleration = (body->force / body->getMass()) * METER;
 	
 		// Update instantaneous linear velocity
-		physics->updateLinearVelocity(curr, delta);
+		body->updateLinearVelocity(curr, delta);
 
 		// Update position using verlet integration
 		next = (curr * 2) - prev + (acceleration * (float)delta * (float)delta);
 		
-		physics->updatePreviousPos(curr); 
+		body->updatePreviousPos(curr); 
 		transform->position = next;
+
+		// Reset the applied force
+		body->force = Vector2::ZERO;
 	}
 }
 

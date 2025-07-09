@@ -512,27 +512,27 @@ void CollisionSystem::separate(Transform* transformA, Transform* transformB, con
 
 void CollisionSystem::resolve(PhysicsBody* bodyA, PhysicsBody* bodyB, const Vector2& normal, float depth)
 {
-    //// Get relative velocity of the colliding physics bodies
-    //Vector2 relativeVelocity = bodyB->getLinearVelocity() - bodyA->getLinearVelocity();
-    //
-    //// Get dot product of relative velocity and normal vector
-    //float velocityDotNormal = 0;
-    //if ((velocityDotNormal = Vector2::dot(relativeVelocity, normal)) > 0) return;
+    // Get relative velocity of the colliding physics bodies
+    Vector2 relativeVelocity = (bodyB->getLinearVelocity() - bodyA->getLinearVelocity()) / METER;
+    
+    // Get dot product of relative velocity and normal vector
+    float velocityDotNormal = 0;
+    if ((velocityDotNormal = Vector2::dot(relativeVelocity, normal)) > 0) return;
 
-    //// Default restitution
-    //float restitution = 0.5;
+    // Default restitution
+    float restitution = 0.5;
 
-    //// Reciprocal of masses
-    //float invMassA = 1.0f / bodyA->getMass();
-    //float invMassB = 1.0f / bodyB->getMass();
+    // Reciprocal of masses
+    float invMassA = 1.0f / bodyA->getMass();
+    float invMassB = 1.0f / bodyB->getMass();
 
-    //// Calculate impulse magnitude and direction
-    //float impulseM = -(1 + restitution) * velocityDotNormal / (invMassA + invMassB);
-    //Vector2 impulseV = Vector2::multiply(normal, impulseM);
-    //
-    //// Apply the impulse force
-    //bodyA->applyForce(-impulseV);
-    //bodyB->applyForce( impulseV);
+    // Calculate impulse magnitude and direction
+    float impulseM = -(1 + restitution) * velocityDotNormal / (invMassA + invMassB);
+    Vector2 impulseV = Vector2::multiply(normal, impulseM);
+    
+    // Apply the impulse force
+    bodyA->force = -impulseV;
+    bodyB->force = impulseV;
 }
 
 void CollisionSystem::onEntityAdded(EntityID e)

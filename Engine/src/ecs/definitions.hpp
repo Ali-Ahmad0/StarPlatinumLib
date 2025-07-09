@@ -13,7 +13,7 @@
 #include <stdexcept>
 
 // Meter to pixels conversion
-constexpr uint8_t METER = 64;
+constexpr float METER = 64.0f;
 
 using EntityID = std::uint16_t;
 constexpr std::uint16_t MAX_ENTITIES = std::numeric_limits<uint16_t>::max();

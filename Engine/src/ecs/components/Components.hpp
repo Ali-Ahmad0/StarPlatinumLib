@@ -230,23 +230,19 @@ private:
 
 struct PhysicsBody
 {
+    Vector2 force;
     bool isStatic;
 
     // Static body constructor
     PhysicsBody() : mass(INFINITY), isStatic(true), previousPos(Vector2::ZERO), 
-        acceleration(Vector2::ZERO), linearVelocity(Vector2::ZERO) {}
+        force(Vector2::ZERO), linearVelocity(Vector2::ZERO) {}
 
     // Rigid body constructor
     PhysicsBody(float mass) : isStatic(false), previousPos(Vector2::ZERO), 
-        acceleration(Vector2::ZERO), linearVelocity(Vector2::ZERO)
+        force(Vector2::ZERO), linearVelocity(Vector2::ZERO)
     {
         if (mass <= 0.0f) throw std::runtime_error("[RUNTIME ERROR]: Mass cannot be negative");
         this->mass = mass;
-    }
-
-    void applyForce(const Vector2& force) 
-    {
-        acceleration = Vector2::divide(force, mass);
     }
 
     float getMass() 
@@ -276,16 +272,11 @@ struct PhysicsBody
         linearVelocity = Vector2::subtract(currentPos, previousPos) / (float)delta;
     }
 
-    Vector2& getAcceleration() 
-    {
-        return acceleration;
-    }
 private:
     // Physics properties
     float mass;
     Vector2 linearVelocity;
 
     // Verlet integration
-    Vector2 acceleration;
     Vector2 previousPos;
 };

@@ -143,8 +143,9 @@ struct Collider
 
         // Create a transformation matrix
         Matrix3x2 transformationMatrix = 
-            Matrix3x2::createScale(transform->scale) * Matrix3x2::createRotation(radians) * 
-            Matrix3x2::createTranslation(centerOffset + transform->position);
+            Matrix3x2::createScale(transform->scale) * 
+            Matrix3x2::createRotation(radians) * 
+            Matrix3x2::createTranslation(centerOffset * (float)transform->scale + transform->position);
 
         // Update transformed vertices using the transformation matrix
         for (int i = 0; i < vertices.size(); i++) 

@@ -28,28 +28,4 @@ void CollisionTest::Update(double delta)
 	Vector2 input;
 	InputMap::GetVector("move_l", "move_r", "move_u", "move_d", input);
 	ECS::GetComponent<Movement>(entities[0])->direction = input;
-
-	for (EntityID e : entities) 
-	{
-		Transform* transform = ECS::GetComponent<Transform>(e);
-		Collider* collider = ECS::GetComponent<Collider>(e);
-
-		// Draw collider shapes
-		if (collider->getShape() == ShapeType::CIRCLE) 
-		{
-			Debug::DrawCircle(
-				collider->centerOffset + transform->position, collider->getRadius()
-			);
-		}
-		else 
-		{
-			Debug::DrawRect(
-				collider->centerOffset + transform->position, 
-				collider->getWidth() * transform->scale, 
-				collider->getHeight() * transform->scale, transform->rotation
-			);
-
-		}
-	}
-
 }

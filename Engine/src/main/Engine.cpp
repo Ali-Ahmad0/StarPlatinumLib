@@ -99,8 +99,8 @@ void StarPlatinumEngine::Run()
 		
 		// Events, update and rendering
 		if (!events()) break;
-		update();
 		render();
+		update();
 		SDL_RenderPresent(ViewPort::GetRenderer());
 
 		frameDrawTime = SDL_GetTicks() - frameStartTime;

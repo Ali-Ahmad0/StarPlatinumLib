@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "../../viewport/ViewPort.hpp"
+#include "../../camera/Camera.hpp"
 
 void Debug::DrawCircle(const Vector2& center, float r, const Color& color, bool fill)
 {
@@ -10,8 +11,8 @@ void Debug::DrawCircle(const Vector2& center, float r, const Color& color, bool 
     SDL_SetRenderDrawColor(ViewPort::GetRenderer(), color.r, color.g, color.b, color.a);
 
     // Use the function parameters
-    int centerX = (int)center.x;
-    int centerY = (int)center.y;
+    int centerX = (int)(center.x - Camera::GetOffset().x);
+    int centerY = (int)(center.y - Camera::GetOffset().y);
     int radius = (int)r;
 
     if (fill) 
@@ -70,8 +71,8 @@ void Debug::DrawRect(const Vector2& position, float w, float h, float rotation, 
         // Simple case - no rotation
         SDL_Rect rect = 
         {
-            (int)(position.x - w * 0.5f),
-            (int)(position.y - h * 0.5f),
+            (int)((position.x - w * 0.5f) - Camera::GetOffset().x),
+            (int)((position.y - h * 0.5f) - Camera::GetOffset().y),
             (int)(w),
             (int)(h)
         };
@@ -110,8 +111,8 @@ void Debug::DrawRect(const Vector2& position, float w, float h, float rotation, 
             float rotatedX = corners[i].x * cosR - corners[i].y * sinR;
             float rotatedY = corners[i].x * sinR + corners[i].y * cosR;
 
-            points[i].x = (int)(position.x + rotatedX);
-            points[i].y = (int)(position.y + rotatedY);
+            points[i].x = (int)((position.x + rotatedX) - Camera::GetOffset().x);
+            points[i].y = (int)((position.y + rotatedY) - Camera::GetOffset().y);
         }
         points[4] = points[0]; // Close the rectangle
 

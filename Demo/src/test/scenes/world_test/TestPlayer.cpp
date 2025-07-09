@@ -1,5 +1,6 @@
 #include "TestPlayer.hpp"
 #include "input/InputMap.hpp"
+#include "main/debug/Debug.hpp"
 
 void TestPlayer::Ready() 
 {
@@ -12,7 +13,9 @@ void TestPlayer::Ready()
 	// Add components
 	ECS::AddComponent(player, Transform(Vector2(32, 384), 0.0, 3));
 	ECS::AddComponent(player, Sprite(texture, 3, 4, 6, 0));
-	//ECS::AddComponent(player, AABB(Vector2(8, 20), Vector2(12, 12)));
+
+	ECS::AddComponent(player, PhysicsBody(70));
+	ECS::AddComponent(player, Collider(8, 20, 12, 12));
 	ECS::AddComponent(player, Movement());
 	
 	transform = ECS::GetComponent<Transform>(player);
@@ -95,4 +98,19 @@ void TestPlayer::Update(double delta)
 
 	// Update camera position
 	Camera::SetOffset(Vector2(transform->position.x - 320, transform->position.y - 240));
+
+	for (EntityID e = 0; e < ECS::GetEntityCount(); e++) 
+	{
+		Collider* collider = ECS::GetComponent<Collider>(e);
+		if (collider != nullptr) 
+		{
+			Transform* transform = ECS::GetComponent<Transform>(e);
+			Debug::DrawRect(
+				transform->position + collider->centerOffset * transform->scale, 
+				collider->getWidth() * transform->scale,
+				collider->getHeight() * transform->scale,
+				transform->rotation
+			);
+		}
+	}
 }

@@ -98,19 +98,4 @@ void TestPlayer::Update(double delta)
 
 	// Update camera position
 	Camera::SetOffset(Vector2(transform->position.x - 320, transform->position.y - 240));
-
-	for (EntityID e = 0; e < ECS::GetEntityCount(); e++) 
-	{
-		Collider* collider = ECS::GetComponent<Collider>(e);
-		if (collider != nullptr) 
-		{
-			Transform* transform = ECS::GetComponent<Transform>(e);
-			Debug::DrawRect(
-				transform->position + collider->centerOffset * transform->scale, 
-				collider->getWidth() * transform->scale,
-				collider->getHeight() * transform->scale,
-				transform->rotation
-			);
-		}
-	}
 }

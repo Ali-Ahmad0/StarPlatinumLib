@@ -22,11 +22,11 @@
 
 #include "../threads/Threads.hpp"
  
-class StarPlatinumEngine 
+class SPLib 
 {
 public:
 	// Constructor and destructor
-	StarPlatinumEngine(const char* title = "Star Platinum Project", 
+	SPLib(const char* title = "Star Platinum Project", 
 		int w = 640, int h = 480, bool fullscreen = false);
 
 	// Run the engine

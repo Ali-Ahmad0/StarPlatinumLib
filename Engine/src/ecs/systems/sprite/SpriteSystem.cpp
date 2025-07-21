@@ -2,6 +2,8 @@
 #include "../../ECS.hpp"
 #include "../../../main/Engine.hpp"
 
+#define CAMERA_MARGIN 32
+
 void SpriteSystem::sortZ() 
 {
     // Insertion sort entities based on z indices
@@ -22,21 +24,17 @@ void SpriteSystem::sortZ()
     }
 }
 
-void SpriteSystem::update() 
-{
-    static size_t prevEntityCount = 0;
 
-    // The total entity count changes
-    if (entities.size() != prevEntityCount) 
-    {
-        sortZ();
-        prevEntityCount = entities.size();
-    }
+void SpriteSystem::update(double delta) 
+{
+    // Get viewport and camera properties
+    Vector2 cameraOffset = Camera::GetOffset();
+    int screenWidth, screenHeight;
+    ViewPort::GetSize(&screenWidth, &screenHeight);
     
     // Update and animate all sprites
     for (const EntityID e : entities)
     {
-        // Get transform and sprite components
         auto* transform = ECS::GetComponent<Transform>(e);
         auto* sprite = ECS::GetComponent<Sprite>(e);
 
@@ -47,6 +45,12 @@ void SpriteSystem::update()
         // Calculate the width of each frame
         size_t frameWidth = textureWidth / sprite->hframes;
         size_t frameHeight = textureHeight / sprite->vframes;
+
+        // Skip rendering if sprite is not visible to camera
+        if ((transform->position.x + frameWidth) < cameraOffset.x - CAMERA_MARGIN) continue;
+        if (transform->position.x + CAMERA_MARGIN > (cameraOffset.x + screenWidth)) continue;
+        if ((transform->position.y + frameHeight) < cameraOffset.y - CAMERA_MARGIN) continue;
+        if (transform->position.y + CAMERA_MARGIN > (cameraOffset.y + screenHeight)) continue;
 
         // Animate the sprite
         if (sprite->animation != "none")
@@ -98,13 +102,15 @@ void SpriteSystem::update()
 
 void SpriteSystem::onEntityAdded(EntityID e) 
 {
-    // Add the entity
+    // Add the entity, sort the layers
     entities.push_back(e);
+    sortZ();
 }
 
 void SpriteSystem::onEntityRemoved(EntityID e) 
 {
-    // Find and delete entity
+    // Delete the entity, sort the layers
     auto position = std::find(entities.begin(), entities.end(), e);
     entities.erase(position);
+    sortZ();
 }

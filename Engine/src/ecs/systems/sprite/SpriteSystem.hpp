@@ -6,7 +6,7 @@ struct SpriteSystem : BaseSystem
 {
     std::vector<EntityID> entities;
 
-    void update();
+    void update(double delta = 0) override;
 
     void onEntityAdded(EntityID e) override;
     void onEntityRemoved(EntityID e) override;

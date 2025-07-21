@@ -9,7 +9,7 @@
 
 int main() 
 {
-	StarPlatinumEngine game = StarPlatinumEngine();
+	SPLib game = SPLib();
 
 	SceneManager::AddScene<TDScene>("topdown_test");
 	SceneManager::AddScene<StressTest>("stress_test");
@@ -19,7 +19,6 @@ int main()
 	InputMap::BindKey("move_l", SDL_SCANCODE_LEFT);
 	InputMap::BindKey("move_d", SDL_SCANCODE_DOWN);
 	InputMap::BindKey("move_r", SDL_SCANCODE_RIGHT);
-	InputMap::BindKey("spawn", SDL_SCANCODE_RETURN);
 
 	SceneManager::ChangeScene("topdown_test");
 

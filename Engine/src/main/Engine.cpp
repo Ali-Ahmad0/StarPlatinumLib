@@ -1,7 +1,7 @@
 #include "Engine.hpp"
 #include <Windows.h>
 
-StarPlatinumEngine::StarPlatinumEngine(const char* title, int w, int h, bool fullscreen) : delta(0), substeps(12)
+SPLib::SPLib(const char* title, int w, int h, bool fullscreen) : delta(0), substeps(12)
 {
 	SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_HIGHEST);
 
@@ -19,9 +19,9 @@ StarPlatinumEngine::StarPlatinumEngine(const char* title, int w, int h, bool ful
 	printf("[INFO]: Engine systems initialized\n");
 }
 
-bool showFPS = false;
+//bool showFPS = false;
 
-bool StarPlatinumEngine::events()
+bool SPLib::events()
 {
 	SDL_Event event;
 	SDL_PollEvent(&event);
@@ -34,18 +34,18 @@ bool StarPlatinumEngine::events()
 		return false;
 		break;
 	
-	case SDL_KEYDOWN:
-		switch (event.key.keysym.sym)
-		{
-		// Show FPS
-		case SDLK_TAB:
-			showFPS = true;
-			break;
+	//case SDL_KEYDOWN:
+	//	switch (event.key.keysym.sym)
+	//	{
+	//	// Show FPS
+	//	case SDLK_TAB:
+	//		showFPS = true;
+	//		break;
 
-		default:
-			break;
-		}
-		break;
+	//	default:
+	//		break;
+	//	}
+	//	break;
 
 	default:
 		SceneManager::Events(event);
@@ -55,31 +55,19 @@ bool StarPlatinumEngine::events()
 	return true;
 }
 
-void StarPlatinumEngine::update() {
-	// Parallelized systems and scene update logic
-	auto movementFuture = pool.AddTask([this]() {
-		ECS::GetSystem<MovementSystem>()->update(delta);
-	});
-	
-	auto sceneUpdateFuture = pool.AddTask([this]() {
-		SceneManager::Update(delta);
-	});
+void SPLib::update() {
+	SceneManager::Update(delta);
 
-	auto collisionFuture = pool.AddTask([this]() {
-		ECS::GetSystem<CollisionSystem>()->update();
-	});
-
-	movementFuture.wait();
-	sceneUpdateFuture.wait();
-	collisionFuture.wait();
+	ECS::GetSystem<MovementSystem>()->update(delta);
+	ECS::GetSystem<CollisionSystem>()->update();
 }
 
-void StarPlatinumEngine::render() 
+void SPLib::render() 
 {
 	ECS::GetSystem<SpriteSystem>()->update();
 }
 
-void StarPlatinumEngine::Run() 
+void SPLib::Run() 
 {
 	// Times in milliseconds
 	uint32_t targetDelta = 1000 / 60;
@@ -116,18 +104,18 @@ void StarPlatinumEngine::Run()
 			delta = (double)frameDrawTime / 1000;
 		}
 
-		if (showFPS)
-		{
-			printf("FPS: %f | Entities: %zu\n", targetDelta / (delta * 1000) * 60, ECS::GetEntityCount());
-			showFPS = false;
-		}		
+		//if (showFPS)
+		//{
+		//	printf("FPS: %f | Entities: %zu\n", targetDelta / (delta * 1000) * 60, ECS::GetEntityCount());
+		//	showFPS = false;
+		//}
 	}
 
 	// Close when exiting game loop
 	exit();
 }
 
-void StarPlatinumEngine::exit()
+void SPLib::exit()
 {
 	printf("[INFO]: Exiting...\n");
 	

@@ -21,7 +21,7 @@ void CollisionSystem::sortEdges()
     }
 }
 
-void CollisionSystem::update()
+void CollisionSystem::update(double delta)
 {
     // Sort edges from left to right
     sortEdges();

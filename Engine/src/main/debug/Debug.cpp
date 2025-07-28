@@ -55,7 +55,7 @@ void Debug::DrawCircle(const Vector2& center, float r, const Color& color, bool 
         }
     }
 
-    SDL_SetRenderDrawColor(ViewPort::GetRenderer(), 0, 0, 0, 0);
+    SDL_SetRenderDrawColor(ViewPort::GetRenderer(), 0, 0, 0, 255);
 }
 
 void Debug::DrawRect(const Vector2& position, float w, float h, float rotation, const Color& color, bool fill)
@@ -174,5 +174,5 @@ void Debug::DrawRect(const Vector2& position, float w, float h, float rotation, 
         }
     }
 
-    SDL_SetRenderDrawColor(ViewPort::GetRenderer(), 0, 0, 0, 0);
+    SDL_SetRenderDrawColor(ViewPort::GetRenderer(), 0, 0, 0, 255);
 }

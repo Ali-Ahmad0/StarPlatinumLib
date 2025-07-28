@@ -38,6 +38,9 @@ void SpriteSystem::update(double delta)
         auto* transform = ECS::GetComponent<Transform>(e);
         auto* sprite = ECS::GetComponent<Sprite>(e);
 
+        // Apply modulate to the sprite texture
+        SDL_SetTextureColorMod(sprite->texture, ViewPort::Modulate.r, ViewPort::Modulate.g, ViewPort::Modulate.b);
+
         // Get the full width and height of the texture
         int textureWidth, textureHeight;
         SDL_QueryTexture(sprite->texture, NULL, NULL, &textureWidth, &textureHeight);

@@ -13,8 +13,11 @@ public:
 	static SDL_Renderer* GetRenderer();
 
 	static void GetSize(int* w, int* h);
+	static Color Modulate;
+
 
 private:
 	static SDL_Window* window;
 	static SDL_Renderer* renderer;
+
 };

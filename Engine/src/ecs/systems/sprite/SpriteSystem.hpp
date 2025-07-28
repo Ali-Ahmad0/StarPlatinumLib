@@ -13,6 +13,7 @@ struct SpriteSystem : BaseSystem
     
 private:
     void sortZ();
+    void applyBrightness();
 };
 
 

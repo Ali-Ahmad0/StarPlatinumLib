@@ -17,8 +17,3 @@ void TDScene::Update(double delta)
 {
     player.Update(delta);
 }
-
-void TDScene::Events(SDL_Event event) 
-{
-    player.Events(event);
-}

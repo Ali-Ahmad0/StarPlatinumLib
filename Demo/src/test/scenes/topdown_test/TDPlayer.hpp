@@ -1,12 +1,11 @@
 #pragma once
-#include "scene/SceneManager.hpp"
 #include "texture/TextureManager.hpp"
 
-class TDPlayer : public IScene 
+class TDPlayer
 {
 public:
-	void Ready() override;
-	void Update(double delta) override;
+	void Ready();
+	void Update(double delta);
 	
 private:
 	EntityID player;

@@ -3,6 +3,8 @@
 SDL_Window* ViewPort::window = nullptr;
 SDL_Renderer* ViewPort::renderer = nullptr;
 
+Color ViewPort::Modulate = Color::WHITE;
+
 bool ViewPort::Init(const char* title, int w, int h, bool fullscreen)
 {
 	int flags = fullscreen ? SDL_WINDOW_FULLSCREEN : 0;

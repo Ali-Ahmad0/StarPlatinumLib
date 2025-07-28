@@ -15,24 +15,11 @@ class ThreadPool
 {
 public:
     // Initialize thread pool with specified number of threads (defaults to CPU cores)
-    ThreadPool(size_t num_threads = std::thread::hardware_concurrency())
-        : shutdownRequested(false), busyThreads(0)
-    {
-        threads.reserve(num_threads);
-        for (size_t i = 0; i < num_threads; ++i) 
-        {
-            threads.emplace_back([this] {
-                ThreadWorker worker(this);
-                worker();
-            });
-        }
-    }
+    ThreadPool(size_t threadCount = std::thread::hardware_concurrency());
 
     // Clean up threads on destruction
-    ~ThreadPool() 
-    {
-        Shutdown();
-    }
+    ~ThreadPool();
+
 
     // Add a task to be executed by the thread pool
     template <typename F, typename... Args>
@@ -58,35 +45,13 @@ public:
     }
 
     // Get number of currently working threads
-    size_t GetBusyThreads() const 
-    {
-        std::lock_guard<std::mutex> lock(mutex);
-        return busyThreads;
-    }
+    size_t GetBusyThreads() const;
 
     // Get number of pending tasks
-    size_t GetTaskCount() const 
-    {
-        std::lock_guard<std::mutex> lock(mutex);
-        return tasks.size();
-    }
+    size_t GetTaskCount() const;
 
     // Stop the thread pool and wait for all threads
-    void Shutdown() {
-        {
-            std::lock_guard<std::mutex> lock(mutex);
-            shutdownRequested = true;
-        }
-        condition.notify_all();
-
-        for (auto& thread : threads) 
-        {
-            if (thread.joinable()) 
-            {
-                thread.join();
-            }
-        }
-    }
+    void Shutdown();
 
 private:
     class ThreadWorker {

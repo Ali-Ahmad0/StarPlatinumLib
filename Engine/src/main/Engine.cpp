@@ -7,6 +7,7 @@ SPLib::SPLib(const char* title, int w, int h, bool fullscreen) : delta(0), subst
 
 	// Initialize the engine viewport
 	if (!ViewPort::Init(title, w, h, fullscreen)) exit();
+	SDL_SetRenderDrawBlendMode(ViewPort::GetRenderer(), SDL_BLENDMODE_BLEND);
 
 	// Initialize ECS related stuff
 	ECS::Init();

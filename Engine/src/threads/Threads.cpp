@@ -1,32 +1,47 @@
-//#include "Threads.hpp"
-//
-//void ThreadWorker::operator()()
-//{
-//	// Create a lock on the mutex
-//	std::unique_lock<std::mutex> lock(pool->mutex);
-//	
-//	while (!pool->shutdownRequested || (pool->shutdownRequested && !pool->tasks.empty())) 
-//	{
-//		pool->busyThreads--;
-//
-//		// Condition variable releases mutex taken by the lock
-//		// If mutex is woken up, check condition
-//		// If condition is true, continue executing, otherwise sleep
-//		pool->condition.wait(lock, [this] 
-//		{
-//			return this->pool->shutdownRequested || !this->pool->tasks.empty();
-//		});
-//		pool->busyThreads++;
-//
-//		// Process the queue if not empty
-//		if (!this->pool->tasks.empty()) 
-//		{
-//			auto func = pool->tasks.front();
-//			pool->tasks.pop();
-//
-//			lock.unlock();
-//			func();
-//			lock.lock();
-//		}
-//	}
-//}
+#include "Threads.hpp"
+
+ThreadPool::ThreadPool(size_t threadCount) : shutdownRequested(false), busyThreads(0)
+{
+    threads.reserve(threadCount);
+    for (size_t i = 0; i < threadCount; ++i)
+    {
+        threads.emplace_back([this] {
+            ThreadWorker worker(this);
+            worker();
+            });
+    }
+}
+
+ThreadPool::~ThreadPool() 
+{
+    Shutdown();
+}
+
+size_t ThreadPool::GetBusyThreads() const
+{
+    std::lock_guard<std::mutex> lock(mutex);
+    return busyThreads;
+}
+
+size_t ThreadPool::GetTaskCount() const
+{
+    std::lock_guard<std::mutex> lock(mutex);
+    return tasks.size();
+}
+
+void ThreadPool::Shutdown() 
+{
+    {
+        std::lock_guard<std::mutex> lock(mutex);
+        shutdownRequested = true;
+    }
+    condition.notify_all();
+
+    for (auto& thread : threads)
+    {
+        if (thread.joinable())
+        {
+            thread.join();
+        }
+    }
+}

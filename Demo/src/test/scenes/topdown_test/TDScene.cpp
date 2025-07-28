@@ -12,7 +12,6 @@ void TDScene::Ready()
     tilemap.AddCollision(1, { 89, 90, 97, 98, 110, 111, 118, 119 });
 
     player.Ready();
-    ViewPort::Modulate = Color(100, 100, 100);
 }
 
 void TDScene::Update(double delta)

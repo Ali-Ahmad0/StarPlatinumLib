@@ -8,7 +8,7 @@ ThreadPool::ThreadPool(size_t threadCount) : shutdownRequested(false), busyThrea
         threads.emplace_back([this] {
             ThreadWorker worker(this);
             worker();
-            });
+        });
     }
 }
 

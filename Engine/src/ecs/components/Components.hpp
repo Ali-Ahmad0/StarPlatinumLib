@@ -8,7 +8,7 @@ struct Transform
     // Transformation in a 2D plane
     Vector2 position; float rotation; size_t scale;
 
-    Transform(const Vector2& position = { 0, 0 }, float rotation = 0.0f, size_t scale = 1)
+    Transform(const Vector2& position = Vector2::ZERO, float rotation = 0.0f, size_t scale = 1)
         : position(position), rotation(rotation), scale(scale) {}
 };
 
@@ -251,4 +251,40 @@ private:
     
     // Bounding box
     AABB aabb;
+};
+
+struct VerletObject 
+{
+    Vector2 prevPosition;
+    Vector2 acceleration;
+    bool isStationary;
+
+    VerletObject(const Vector2& position, float mass = 1.0f, bool isStationary = false) 
+        : prevPosition(position), acceleration(Vector2::ZERO), isStationary(isStationary)
+    {
+        setMass(mass);
+    }
+
+    // Apply a force
+    void applyForce(const Vector2& amount) 
+    {
+        acceleration = Vector2::divide(amount, mass);
+    }
+
+    float getMass() 
+    {
+        return mass;
+    }
+
+    void setMass(float mass) 
+    {
+        if (mass <= 0.0f)
+        {
+            throw std::runtime_error("[RUNTIME ERROR]: Mass must be positive");
+        }
+        this->mass = mass;
+    }
+
+private:
+    float mass;
 };

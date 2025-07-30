@@ -17,8 +17,8 @@ void StressTest::Update(double delta)
 
 	fpsTimer += delta;
 
-	// Update every second
-	if (fpsTimer >= 1.0)
+	// Update every 0.5 seconds
+	if (fpsTimer >= 0.5)
 	{
 		// Calculate FPS
 		double targetDelta = 1000 / 60;

@@ -6,6 +6,7 @@ void Init::InitComponents()
 	ECS::RegisterComponent<Sprite>();
 	ECS::RegisterComponent<Movement>();
 	ECS::RegisterComponent<Collider>();
+	ECS::RegisterComponent<VerletObject>();
 }
 
 void Init::InitSystems() 
@@ -27,4 +28,10 @@ void Init::InitSystems()
 
 	ECS::AddComponentToSystem<Transform, CollisionSystem>();
 	ECS::AddComponentToSystem<Collider, CollisionSystem>();
+
+	// Verlet integration system
+	ECS::RegisterSystem<VIntegrationSystem>();
+
+	ECS::AddComponentToSystem<Transform, VIntegrationSystem>();
+	ECS::AddComponentToSystem<VerletObject, VIntegrationSystem>();
 }

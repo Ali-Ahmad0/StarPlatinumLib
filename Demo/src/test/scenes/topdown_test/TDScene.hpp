@@ -1,5 +1,5 @@
 #pragma once
-#include "scene/SceneManager.hpp"
+#include "scene/Scene.hpp"
 #include "texture/TextureManager.hpp"
 #include "tilemap/Tilemap.hpp"
 

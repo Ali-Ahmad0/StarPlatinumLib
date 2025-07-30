@@ -55,7 +55,9 @@ void SPLib::update() {
 	SceneManager::Update(delta);
 
 	ECS::GetSystem<MovementSystem>()->update(delta);
+	
 	ECS::GetSystem<CollisionSystem>()->update();
+	ECS::GetSystem<VIntegrationSystem>()->update(delta);
 }
 
 void SPLib::render() 

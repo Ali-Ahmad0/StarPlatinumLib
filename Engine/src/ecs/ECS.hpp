@@ -15,12 +15,14 @@ public:
     // Initialize ECS
     static void Init();
 
-    // Entity related methods
+
     static EntityID CreateEntity();
+
     static void DeleteEntity(EntityID entity);
+
     static size_t GetEntityCount();
 
-    // Component related methods
+
     template <typename T>
     static void RegisterComponent()
     {
@@ -90,7 +92,7 @@ public:
         throw std::runtime_error("[RUNTIME ERROR]: Cannot get ID on unregistered component");
     }
 
-    // System related methods
+
     template <typename T>
     static std::shared_ptr<T> RegisterSystem() 
     {

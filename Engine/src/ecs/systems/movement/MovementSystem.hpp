@@ -3,10 +3,11 @@
 
 struct MovementSystem : public BaseSystem
 {
-	std::vector<EntityID> entities;
-
-	void update(double delta);
+	void update(double delta) override;
 
 	void onEntityAdded(EntityID e) override;
 	void onEntityRemoved(EntityID e) override;
+
+private:
+	std::vector<EntityID> entities;
 };

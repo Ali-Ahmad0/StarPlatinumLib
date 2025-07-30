@@ -36,7 +36,7 @@ public:
             std::lock_guard<std::mutex> lock(mutex);
             if (shutdownRequested) 
             {
-                throw std::runtime_error("ThreadPool is shutting down");
+                throw std::runtime_error("[RUNTIME ERROR]: ThreadPool is shutting down");
             }
             tasks.emplace([task]() { (*task)(); });
         }

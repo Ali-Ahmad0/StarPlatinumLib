@@ -1,11 +1,11 @@
 #include "Utils.hpp"
 
 // Color constants
-const Color Color::RED	 = { 255, 0, 0 };
-const Color Color::GREEN = { 0, 255, 0 };
-const Color Color::BLUE  = { 0, 0, 255 };
-const Color Color::BLACK = { 0, 0, 0 };
-const Color Color::WHITE = { 255, 255, 255 };
+const Color Color::RED	 = { (uint8_t)255, (uint8_t)0, (uint8_t)0 };
+const Color Color::GREEN = { (uint8_t)0, (uint8_t)255, (uint8_t)0 };
+const Color Color::BLUE  = { (uint8_t)0, (uint8_t)0, (uint8_t)255 };
+const Color Color::BLACK = { (uint8_t)0, (uint8_t)0, (uint8_t)0 };
+const Color Color::WHITE = { (uint8_t)255, (uint8_t)255, (uint8_t)255 };
 
 // Vector2 constants
 const Vector2 Vector2::ZERO  = { 0,  0 };

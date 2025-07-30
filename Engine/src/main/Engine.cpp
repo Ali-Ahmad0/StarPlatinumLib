@@ -1,5 +1,6 @@
 #include "Engine.hpp"
 #include <Windows.h>
+#include <SDL_ttf.h>
 
 SPLib::SPLib(const char* title, int w, int h, bool fullscreen) : delta(0), substeps(12)
 {
@@ -8,6 +9,14 @@ SPLib::SPLib(const char* title, int w, int h, bool fullscreen) : delta(0), subst
 	// Initialize the engine viewport
 	if (!ViewPort::Init(title, w, h, fullscreen)) exit();
 	SDL_SetRenderDrawBlendMode(ViewPort::GetRenderer(), SDL_BLENDMODE_BLEND);
+
+	// Initialize SDL_TTF
+	if (TTF_Init() == -1) 
+	{
+		fprintf(stderr, "[ERROR]: Failed to initialize SDL_ttf: %s\n", TTF_GetError());
+		exit();
+	}
+	printf("[INFO]: SDL_ttf initialized successfully\n");
 
 	// Initialize ECS related stuff
 	ECS::Init();
@@ -20,37 +29,23 @@ SPLib::SPLib(const char* title, int w, int h, bool fullscreen) : delta(0), subst
 	printf("[INFO]: Engine systems initialized\n");
 }
 
-//bool showFPS = false;
-
 bool SPLib::events()
 {
 	SDL_Event event;
-	SDL_PollEvent(&event);
 
-	// Test animations
-	switch (event.type)
-	{
+	while (SDL_PollEvent(&event)) 
+	{	
+		switch (event.type)
+		{
 
-	case SDL_QUIT:
-		return false;
-		break;
-	
-	//case SDL_KEYDOWN:
-	//	switch (event.key.keysym.sym)
-	//	{
-	//	// Show FPS
-	//	case SDLK_TAB:
-	//		showFPS = true;
-	//		break;
+		case SDL_QUIT:
+			return false;
+			break;
 
-	//	default:
-	//		break;
-	//	}
-	//	break;
-
-	default:
-		SceneManager::Events(event);
-		break;
+		default:
+			SceneManager::Events(event);
+			break;
+		}
 	}
 
 	return true;
@@ -104,12 +99,6 @@ void SPLib::Run()
 		{
 			delta = (double)frameDrawTime / 1000;
 		}
-
-		//if (showFPS)
-		//{
-		//	printf("FPS: %f | Entities: %zu\n", targetDelta / (delta * 1000) * 60, ECS::GetEntityCount());
-		//	showFPS = false;
-		//}
 	}
 
 	// Close when exiting game loop

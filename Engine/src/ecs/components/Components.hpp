@@ -25,9 +25,9 @@ struct Sprite
     size_t hframes; // Total frames in one row
     size_t vframes; // Total frames in one column
 
-    size_t speed; // Speed in frames per second
+    size_t speed;
 
-    int8_t z_index; // Sprite layer
+    int8_t z_index;
 
     // Map of animations
     std::unordered_map<std::string, std::vector<size_t>> animations{};

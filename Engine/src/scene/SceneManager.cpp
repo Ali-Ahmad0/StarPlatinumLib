@@ -43,6 +43,8 @@ void SceneManager::ChangeScene(const char* name)
 		auto newScene = scenes[name].get();
 		if (currentScene != newScene) 
 		{
+			if (currentScene) currentScene->Leave();
+
 			currentScene = newScene;
 			currentScene->Ready();
 			printf("[INFO]: Successfully changed scene to: %s\n", name);

@@ -4,8 +4,6 @@
 
 struct SpriteSystem : BaseSystem
 {
-    std::vector<EntityID> entities;
-
     void update(double delta = 0) override;
 
     void onEntityAdded(EntityID e) override;
@@ -13,7 +11,7 @@ struct SpriteSystem : BaseSystem
     
 private:
     void sortZ();
-    void applyBrightness();
+    std::vector<EntityID> entities;
 };
 
 

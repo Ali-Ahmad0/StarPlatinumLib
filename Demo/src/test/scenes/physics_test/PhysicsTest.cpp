@@ -6,6 +6,8 @@
 #include <string>
 #include <sstream>
 
+#define MARGIN 4.0f
+
 void PhysicsTest::Ready()
 {
     TextManager::LoadFont("default", "src/test/assets/font.ttf");
@@ -13,7 +15,7 @@ void PhysicsTest::Ready()
 
 void PhysicsTest::Update(double delta)
 {
-    Vector2 ringCenter(320, 240); // Center of screen/ring
+    Vector2 ringCenter(320, 240); // Center of screen / ring
     float ringRadius = 200.0f;    // Ring radius in pixels
 
     for (EntityID e = 0; e < ECS::GetEntityCount(); e++)
@@ -58,7 +60,7 @@ void PhysicsTest::Update(double delta)
     }
 
     // Draw the ring boundary for visualization
-    Debug::DrawCircle(ringCenter, ringRadius, Color::WHITE, false);
+    Debug::DrawCircle(ringCenter, ringRadius + MARGIN, Color::WHITE, false);
 
     // Update FPS only once per second
     static double fpsTimer = 0.0;

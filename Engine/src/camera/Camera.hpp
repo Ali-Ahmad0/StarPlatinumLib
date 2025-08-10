@@ -13,6 +13,6 @@ public:
     static void SetBoundaries(float left, float right, float up, float down);
 private:
     // left, right, up, down
-    static std::array<float, 4> boundaries;
-    static Vector2 offset;
+    static std::array<float, 4> s_boundaries;
+    static Vector2 s_offset;
 };

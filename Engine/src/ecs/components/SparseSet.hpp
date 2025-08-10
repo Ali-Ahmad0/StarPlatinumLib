@@ -16,8 +16,8 @@ public:
     // Reserve memory at initialization to reduce allocations
     void Init()
     {
-        dense.reserve(MAX_COMPONENTS);
-        denseToEntity.reserve(MAX_COMPONENTS);
+        m_dense.reserve(MAX_COMPONENTS);
+        m_denseToEntity.reserve(MAX_COMPONENTS);
     }
 
     // Add a component of Type T for entity e
@@ -31,9 +31,9 @@ public:
         }
 
         // Add component to the dense array
-        setDenseIndex(e, (uint16_t)dense.size());
-        dense.push_back(std::move(component));
-        denseToEntity.push_back(e);
+        setDenseIndex(e, (uint16_t)m_dense.size());
+        m_dense.push_back(std::move(component));
+        m_denseToEntity.push_back(e);
         
     }
 
@@ -52,7 +52,7 @@ public:
             return nullptr;
         }
         
-        return &dense[index];
+        return &m_dense[index];
     }
 
     // Remove a component of Type T for entity e
@@ -66,19 +66,19 @@ public:
         }
 
         // Entity of the last dense element
-        EntityID lastEntity = denseToEntity.back();
+        EntityID lastEntity = m_denseToEntity.back();
 
         // Swap the element to be deleted with the last element
-        std::swap(dense[index], dense.back());
-        std::swap(denseToEntity[index], denseToEntity.back());
+        std::swap(m_dense[index], m_dense.back());
+        std::swap(m_denseToEntity[index], m_denseToEntity.back());
 
         // Update the index for entities
         setDenseIndex(lastEntity, index);
         setDenseIndex(e, NULL_INDEX);
 
         // Remove the last component and its corresponding entity ID
-        dense.pop_back();
-        denseToEntity.pop_back();
+        m_dense.pop_back();
+        m_denseToEntity.pop_back();
     }
 
     // Remove data for entity when it is destroyed
@@ -88,10 +88,10 @@ public:
     }
 
 private:
-    std::vector<std::vector<uint16_t>> sparsePages; 
-    std::vector<T> dense; 
+    std::vector<std::vector<uint16_t>> m_sparsePages; 
+    std::vector<T> m_dense; 
     
-    std::vector<EntityID> denseToEntity; 
+    std::vector<EntityID> m_denseToEntity; 
    
     // Map an index of a component to an entity 
     void setDenseIndex(EntityID e, uint16_t index)
@@ -100,15 +100,15 @@ private:
         uint16_t pageIndex = e % MAX_PAGE_SIZE;
 
         // Create a new page if needed
-        if (page >= sparsePages.size())
+        if (page >= m_sparsePages.size())
         {
 
-            sparsePages.resize(page + 1);
-            sparsePages[page].resize(MAX_PAGE_SIZE, NULL_INDEX);
+            m_sparsePages.resize(page + 1);
+            m_sparsePages[page].resize(MAX_PAGE_SIZE, NULL_INDEX);
         }
 
         // Set the dense index for this entity
-        sparsePages[page][pageIndex] = index;
+        m_sparsePages[page][pageIndex] = index;
     }
 
     // Get the dense index for an entity
@@ -118,9 +118,9 @@ private:
         uint16_t pageIndex = e % MAX_PAGE_SIZE;
 
         // Check if the page exists and the entity has a valid index
-        if (page < sparsePages.size())
+        if (page < m_sparsePages.size())
         {
-            return sparsePages[page][pageIndex];
+            return m_sparsePages[page][pageIndex];
         }
 
         // Return NULL_INDEX if the entity doesn't have a component

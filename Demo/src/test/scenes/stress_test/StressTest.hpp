@@ -9,5 +9,5 @@ public:
 	void Events(SDL_Event event) override;
 
 private:
-	SDL_Texture* texture;
+	SDL_Texture* m_texture;
 };

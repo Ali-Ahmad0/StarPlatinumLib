@@ -25,19 +25,20 @@
 class StarPlatinumEngine 
 {
 public:
-	// Constructor and destructor
-	StarPlatinumEngine(const char* title = "Star Platinum Project", 
-		int w = 640, int h = 480, bool fullscreen = false);
+	// Constructor
+	StarPlatinumEngine(
+		const char* title = "Star Platinum Project", 
+		int w = 640, int h = 480, bool fullscreen = false
+	);
 
 	// Run the engine
 	void Run();
 
 private:
-	ThreadPool pool;
+	ThreadPool m_pool;
 
 	// Delta time in milliseconds
-	double delta;
-	size_t substeps;
+	double m_deltaTime = 0.0;
 
 	bool events();
 	void update();

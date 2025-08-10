@@ -28,15 +28,15 @@ public:
 
 private:
 	// Queue of available entity IDs
-	std::queue<EntityID> availableEntities{};
+	std::queue<EntityID> m_availableEntities{};
 
 	// An array that stores whether an entity is active or not
-	std::array<bool, MAX_ENTITIES> entityStatus{};
+	std::array<bool, MAX_ENTITIES> m_entityStatus{};
 
 	// Array of signatures for each entity
 	// Array index represents entity ID
-	std::array<Signature, MAX_ENTITIES> signatures{};
+	std::array<Signature, MAX_ENTITIES> m_signatures{};
 
 	// Total entities
-	size_t count = 0;
+	size_t m_entityCount = 0;
 };

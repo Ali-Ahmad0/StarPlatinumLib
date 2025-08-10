@@ -25,5 +25,5 @@ public:
     static void GetMousePositionGlobal(Vector2& outVector);
 
 private:
-    static std::unordered_map<std::string, SDL_Scancode> bindings;
+    static std::unordered_map<std::string, SDL_Scancode> s_bindings;
 };

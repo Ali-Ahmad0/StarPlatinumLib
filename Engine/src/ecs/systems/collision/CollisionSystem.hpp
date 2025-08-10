@@ -5,10 +5,10 @@
 
 struct CollisionSystem : public BaseSystem
 {
-    void update(double delta = 0) override;
+    void Update(double delta = 0) override;
 
-    void onEntityAdded(EntityID e) override;
-    void onEntityRemoved(EntityID e) override;
+    void OnEntityAdded(EntityID e) override;
+    void OnEntityRemoved(EntityID e) override;
 
 private:
     struct Edge 
@@ -22,10 +22,10 @@ private:
     };
 
     // X axis edges for AABBs
-    std::vector<Edge> edges;
+    std::vector<Edge> m_edges;
 
     // Keep track of touching edges
-    std::set<EntityID> touching;
+    std::set<EntityID> m_touching;
 
     void sortEdges();
     

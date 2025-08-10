@@ -1,17 +1,17 @@
 #include "InputMap.hpp"
 #include "../common/Utils.hpp"
 
-std::unordered_map<std::string, SDL_Scancode> InputMap::bindings;
+std::unordered_map<std::string, SDL_Scancode> InputMap::s_bindings;
 
 void InputMap::BindKey(const std::string& key, SDL_Scancode scancode)
 {
-    bindings[key] = scancode;
+    s_bindings[key] = scancode;
 }
 
 // Keyboard input
 bool InputMap::IsKeyPressed(const std::string& key)
 {
-    SDL_Scancode scancode = bindings[key];
+    SDL_Scancode scancode = s_bindings[key];
     const Uint8* state = SDL_GetKeyboardState(NULL);
     return state[scancode];
 }

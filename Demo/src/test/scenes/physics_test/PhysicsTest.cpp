@@ -24,35 +24,35 @@ void PhysicsTest::Update(double delta)
         auto* collider = ECS::GetComponent<Collider>(e);
         auto* verlet = ECS::GetComponent<VerletObject>(e);
 
-        if (collider && collider->getShape() == ShapeType::CIRCLE)
+        if (collider && collider->GetShape() == ShapeType::CIRCLE)
         {
-            Debug::DrawCircle(transform->position + collider->centerOffset, collider->getRadius());
+            Debug::DrawCircle(transform->position + collider->centerOffset, collider->GetRadius());
 
             if (verlet && !verlet->isStationary)
             {
                 // Apply gravity
-                verlet->applyForce(Vector2(0, 9.81f));
+                verlet->ApplyForce(Vector2(0, 9.81f));
 
                 // Ring constraint - keep balls inside the ring
                 Vector2 ballPosition = transform->position;
                 Vector2 fromCenter = ballPosition - ringCenter;
-                float distanceFromCenter = fromCenter.magnitude();
+                float distanceFromCenter = fromCenter.Magnitude();
 
                 // If ball is outside the ring, push it back in
-                if (distanceFromCenter > ringRadius - collider->getRadius())
+                if (distanceFromCenter > ringRadius - collider->GetRadius())
                 {
                     // Normalize the direction vector
-                    Vector2 direction = fromCenter.normalize();
+                    Vector2 direction = fromCenter.Normalize();
 
                     // Calculate how far outside the ring the ball is
-                    float overshoot = distanceFromCenter - (ringRadius - collider->getRadius());
+                    float overshoot = distanceFromCenter - (ringRadius - collider->GetRadius());
 
                     // Push the ball back inside
                     transform->position = ballPosition - (direction * overshoot);
 
                     // Add bounce off of walls
                     Vector2 velocity = transform->position - verlet->prevPosition;
-                    Vector2 reflectedVelocity = velocity - (direction * (2.0f * Vector2::dot(velocity, direction)));
+                    Vector2 reflectedVelocity = velocity - (direction * (2.0f * Vector2::Dot(velocity, direction)));
                     verlet->prevPosition = transform->position - (reflectedVelocity * 0.8f);
                 }
             }
@@ -108,8 +108,8 @@ void PhysicsTest::Events(SDL_Event event)
 
         // Calculate initial force direction (from center to mouse)
         Vector2 forceDirection = mousePosition - ringCenter;
-        float forceMagnitude = forceDirection.magnitude() * 1.25f;
-        forceDirection = forceDirection.normalize();
+        float forceMagnitude = forceDirection.Magnitude() * 1.25f;
+        forceDirection = forceDirection.Normalize();
 
         // Create ball at ring center
         EntityID ball = ECS::CreateEntity();

@@ -7,7 +7,7 @@ struct BaseSystem
 {
 	std::array <bool, MAX_ENTITIES> entityRecord;
 
-	virtual void update(double delta) = 0;
-	virtual void onEntityAdded(EntityID e) = 0; 
-	virtual void onEntityRemoved(EntityID e) = 0;
+	virtual void Update(double delta) = 0;
+	virtual void OnEntityAdded(EntityID e) = 0; 
+	virtual void OnEntityRemoved(EntityID e) = 0;
 };

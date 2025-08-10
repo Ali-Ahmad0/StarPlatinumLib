@@ -1,41 +1,41 @@
 #include "ECS.hpp"
 
-std::unique_ptr<EntityManager> ECS::entityManager = nullptr;
-std::unique_ptr<SystemManager> ECS::systemManager = nullptr;
+std::unique_ptr<EntityManager> ECS::s_entityManager = nullptr;
+std::unique_ptr<SystemManager> ECS::s_systemManager = nullptr;
 
-std::unordered_map<std::type_index, ComponentID> ECS::componentRegistry{};
-std::unordered_map<std::type_index, std::unique_ptr<ISparseSet>> ECS::sparseSets{};
+std::unordered_map<std::type_index, ComponentID> ECS::s_componentRegistry{};
+std::unordered_map<std::type_index, std::unique_ptr<ISparseSet>> ECS::s_sparseSets{};
 
-ComponentID ECS::nextComponent = 0;
+ComponentID ECS::s_nextComponentId = 0;
 
 
 void ECS::Init() 
 {
-    entityManager = std::make_unique<EntityManager>();
-    systemManager = std::make_unique<SystemManager>();
+    s_entityManager = std::make_unique<EntityManager>();
+    s_systemManager = std::make_unique<SystemManager>();
 
-    entityManager->Init();
+    s_entityManager->Init();
 }
 
 EntityID ECS::CreateEntity()
 {
-    return entityManager->CreateEntity();
+    return s_entityManager->CreateEntity();
 }
 
 void ECS::DeleteEntity(EntityID entity) 
 {
-    entityManager->DeleteEntity(entity);
+    s_entityManager->DeleteEntity(entity);
 
     // Remove components associated with the entity
-    for (auto& pair : sparseSets)
+    for (auto& pair : s_sparseSets)
     {
         pair.second->OnEntityDestroyed(entity);
     }
 
-    systemManager->OnEntityDestroyed(entity);
+    s_systemManager->OnEntityDestroyed(entity);
 }
 
 size_t ECS::GetEntityCount() 
 {
-    return entityManager->GetEntityCount();
+    return s_entityManager->GetEntityCount();
 }

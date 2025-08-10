@@ -3,13 +3,13 @@
 
 #include "../viewport/ViewPort.hpp"
 
-std::unordered_map<std::string, TTF_Font*> TextManager::fonts{};
+std::unordered_map<std::string, TTF_Font*> TextManager::s_fonts{};
 
 void TextManager::LoadFont(const char* name, const char* path, size_t size)
 {
     // Check if font is already loaded
     std::string fontKey = std::string(name);
-    if (fonts.find(fontKey) != fonts.end()) 
+    if (s_fonts.find(fontKey) != s_fonts.end()) 
     {
         printf("[INFO]: Font already loaded");
         return;
@@ -24,14 +24,14 @@ void TextManager::LoadFont(const char* name, const char* path, size_t size)
     }
 
     // Store the font in the unordered map
-    fonts[fontKey] = font;
+    s_fonts[fontKey] = font;
     printf("[INFO]: Font %s loaded successfully\n", name);
 }
 
 void TextManager::DrawText(const char* text, const char* font, const Vector2& position, const Color& color)
 {
-    auto it = fonts.find(std::string(font));
-    if (it == fonts.end())
+    auto it = s_fonts.find(std::string(font));
+    if (it == s_fonts.end())
     {
         fprintf(stderr, "[ERROR]: Font %s not found. Make sure to load it first.\n", font);
         return;
@@ -85,11 +85,11 @@ void TextManager::DrawText(const char* text, const char* font, const Vector2& po
 void TextManager::Cleanup()
 {
     printf("[INFO]: Cleaning up fonts...\n");
-    for (auto& pair : fonts)
+    for (auto& pair : s_fonts)
     {
         TTF_CloseFont(pair.second);
         printf("[INFO]: Font %s cleaned up\n", pair.first.c_str());
     }
-    fonts.clear();
+    s_fonts.clear();
     printf("[INFO]: All fonts cleaned up successfully\n");
 }

@@ -4,14 +4,14 @@
 
 struct SpriteSystem : BaseSystem
 {
-    void update(double delta = 0) override;
+    void Update(double delta = 0) override;
 
-    void onEntityAdded(EntityID e) override;
-    void onEntityRemoved(EntityID e) override;
+    void OnEntityAdded(EntityID e) override;
+    void OnEntityRemoved(EntityID e) override;
     
 private:
     void sortZ();
-    std::vector<EntityID> entities;
+    std::vector<EntityID> m_entities;
 };
 
 

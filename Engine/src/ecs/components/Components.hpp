@@ -31,7 +31,6 @@ struct Sprite
 
     // Map of animations
     std::unordered_map<std::string, std::vector<size_t>> animations{};
-    const char* animation = "none";
 
     bool fliph = false;
     bool flipv = false;
@@ -43,49 +42,56 @@ struct Sprite
         animations.insert({ "none", {} });
     }
 
-    void addAnim(const char* anim, const std::vector<size_t>& frames) 
+    void AddAnimation(const char* animation, const std::vector<size_t>& frames) 
     {
-        if (animations.find(anim) != animations.end()) 
+        if (animations.find(animation) != animations.end()) 
         {
-            printf("[INFO]: Animation '%s' already added, overriding\n", anim);
+            printf("[INFO]: Animation '%s' already added, overriding\n", animation);
 
             // Override animation
-            animations[anim] = frames;
+            animations[animation] = frames;
             return;
         }
         if (frames.empty()) 
         {
-            fprintf(stderr, "[ERROR]: Animation '%s' cannot have empty frame list\n", anim);
+            fprintf(stderr, "[ERROR]: Animation '%s' cannot have empty frame list\n", animation);
             return;
         }
 
         // Add animation
-        animations[anim] = frames;
+        animations[animation] = frames;
     }
 
-    void setAnim(const char* anim) 
+    void SetAnimation(const char* animation) 
     {
-        if (animations.find(anim) == animations.end())
+        if (animations.find(animation) == animations.end())
         {
-            fprintf(stderr, "[ERROR]: Animation '%s' does not exist\n", anim);
+            fprintf(stderr, "[ERROR]: Animation '%s' does not exist\n", animation);
             return;
         }
 
         // Set animation
-        animation = anim;
+        m_animation = animation;
     }
        
-    void delAnim(const char* anim)
+    void DelAnimation(const char* animation)
     {
-        if (animations.find(anim) == animations.end()) 
+        if (animations.find(animation) == animations.end()) 
         {
-            fprintf(stderr, "[ERROR]: Animation '%s' does not exist\n", anim);
+            fprintf(stderr, "[ERROR]: Animation '%s' does not exist\n", animation);
             return;
         }
 
         // Remove animation
-        animations.erase(anim);
+        animations.erase(animation);
     }
+
+    const char* GetAnimation() {
+        return m_animation;
+    }
+
+private:
+    const char* m_animation = "none";
 };
 
 struct Movement
@@ -113,60 +119,60 @@ struct Collider
 
     // Circle collider constructor
     Collider(const Vector2& centerOffset, float r, bool isSolid = true, bool isStatic = false)
-        : centerOffset(centerOffset), r(r), w(0), h(0), 
-        shape(ShapeType::CIRCLE), isColliding(false), isSolid(isSolid), isStatic(isStatic)
+        : centerOffset(centerOffset), m_r(r), m_w(0), m_h(0), 
+        m_shape(ShapeType::CIRCLE), isColliding(false), isSolid(isSolid), isStatic(isStatic)
     {
         // Initialize the collider AABB
-        aabb = AABB(r, r);
+        m_aabb = AABB(r, r);
     }
 
     // Box collider constructor
     Collider(const Vector2& centerOffset, float w, float h, bool isSolid = true, bool isStatic = false)
-        : centerOffset(centerOffset), r(0), w(w), h(h), 
-        shape(ShapeType::BOX), isColliding(false), isSolid(isSolid), isStatic(isStatic)
+        : centerOffset(centerOffset), m_r(0), m_w(w), m_h(h), 
+        m_shape(ShapeType::BOX), isColliding(false), isSolid(isSolid), isStatic(isStatic)
     {
         // Initialize the collider AABB
-        aabb = AABB(w, h);
+        m_aabb = AABB(w, h);
         
         // Initialize box vertices
-        vertices[0] = Vector2(-w / 2,  h / 2); // Top left
-        vertices[1] = Vector2( w / 2,  h / 2); // Top right
-        vertices[2] = Vector2( w / 2, -h / 2); // Bottom right
-        vertices[3] = Vector2(-w / 2, -h / 2); // Bottom left
+        m_vertices[0] = Vector2(-w / 2,  h / 2); // Top left
+        m_vertices[1] = Vector2( w / 2,  h / 2); // Top right
+        m_vertices[2] = Vector2( w / 2, -h / 2); // Bottom right
+        m_vertices[3] = Vector2(-w / 2, -h / 2); // Bottom left
 
-        transformedVertices = vertices;
+        m_transformedVertices = m_vertices;
     }
 
     // Get updated vertices
-    std::array<Vector2, 4>& getTransformedVertices(const Transform* transform)
+    std::array<Vector2, 4>& GetTransformedVertices(const Transform* transform)
     {
         // Return if no need to update vertices
-        if (shape == ShapeType::CIRCLE)
-            return transformedVertices;
+        if (m_shape == ShapeType::CIRCLE)
+            return m_transformedVertices;
 
         float radians = transform->rotation * ((float)M_PI / 180.0f);
 
         // Create a transformation matrix
         Matrix3x2 transformationMatrix = 
-            Matrix3x2::createScale(transform->scale) * 
-            Matrix3x2::createRotation(radians) * 
-            Matrix3x2::createTranslation(centerOffset * (float)transform->scale + transform->position);
+            Matrix3x2::CreateScale(transform->scale) * 
+            Matrix3x2::CreateRotation(radians) * 
+            Matrix3x2::CreateTranslation(centerOffset * (float)transform->scale + transform->position);
 
         // Update transformed vertices using the transformation matrix
-        for (int i = 0; i < vertices.size(); i++) 
+        for (int i = 0; i < m_vertices.size(); i++) 
         {
-            transformedVertices[i] = vertices[i].transform(transformationMatrix);
+            m_transformedVertices[i] = m_vertices[i].Transform(transformationMatrix);
         }
 
-        return transformedVertices;
+        return m_transformedVertices;
     }
 
     // Get updated aabb
-    AABB* getAABB(const Transform* transform)
+    AABB* GetAABB(const Transform* transform)
     { 
-        if (shape == ShapeType::BOX) 
+        if (m_shape == ShapeType::BOX) 
         {
-            const auto& vertices = getTransformedVertices(transform);
+            const auto& vertices = GetTransformedVertices(transform);
 
             // Find min and max position of edges using vertices
             float minX = std::numeric_limits<float>::infinity();
@@ -183,74 +189,74 @@ struct Collider
             }
 
             // Update the passed AABB
-            aabb.min = Vector2(minX, minY);
-            aabb.max = Vector2(maxX, maxY);
+            m_aabb.min = Vector2(minX, minY);
+            m_aabb.max = Vector2(maxX, maxY);
         }
         else 
         {
             Vector2 worldCenter = centerOffset + transform->position;
-            aabb.min = Vector2(worldCenter.x - r, worldCenter.y - r);
-            aabb.max = Vector2(worldCenter.x + r, worldCenter.y + r);
+            m_aabb.min = Vector2(worldCenter.x - m_r, worldCenter.y - m_r);
+            m_aabb.max = Vector2(worldCenter.x + m_r, worldCenter.y + m_r);
         }
 
-        return &aabb;
+        return &m_aabb;
     }
 
-    ShapeType getShape() 
+    ShapeType GetShape() 
     { 
-        return shape; 
+        return m_shape; 
     }
 
-    float getRadius() 
+    float GetRadius() 
     { 
-        return r; 
+        return m_r; 
     }
     
-    float getWidth() 
+    float GetWidth() 
     { 
-        return w; 
+        return m_w; 
     }
     
-    float getHeight() 
+    float GetHeight() 
     { 
-        return h; 
+        return m_h; 
     }
 
-    bool isOnFloor() 
+    bool IsOnFloor() 
     {
         return normal.y > 0.5f;
     }
 
-    bool isOnLeftWall() 
+    bool IsOnLeftWall() 
     {
         return normal.x > 0.5f;
     }
 
-    bool isOnRightWall()
+    bool IsOnRightWall()
     {
         return normal.x < -0.5f;
     }
 
-    bool isOnCeiling() 
+    bool IsOnCeiling() 
     {
         return normal.y < -0.5f;
     }
 
 private:
     // Dimensions
-    float r;
-    float w;
-    float h;
+    float m_r;
+    float m_w;
+    float m_h;
 
     // Shape type
-    ShapeType shape; 
+    ShapeType m_shape; 
 
     // Vertices 
-    std::array<Vector2, 4> vertices{ Vector2::ZERO };
-    std::array<Vector2, 4> transformedVertices{ Vector2::ZERO };
+    std::array<Vector2, 4> m_vertices{ Vector2::ZERO };
+    std::array<Vector2, 4> m_transformedVertices{ Vector2::ZERO };
     
     // Bounding box
-    AABB aabb;
+    AABB m_aabb;
 };
 
 struct VerletObject 
@@ -262,29 +268,29 @@ struct VerletObject
     VerletObject(const Vector2& position, float mass = 1.0f, bool isStationary = false) 
         : prevPosition(position), acceleration(Vector2::ZERO), isStationary(isStationary)
     {
-        setMass(mass);
+        SetMass(mass);
     }
 
     // Apply a force
-    void applyForce(const Vector2& amount) 
+    void ApplyForce(const Vector2& amount) 
     {
-        acceleration = Vector2::divide(amount, mass);
+        acceleration = Vector2::Divide(amount, m_mass);
     }
 
-    float getMass() 
+    float GetMass() 
     {
-        return mass;
+        return m_mass;
     }
 
-    void setMass(float mass) 
+    void SetMass(float mass) 
     {
         if (mass <= 0.0f)
         {
             throw std::runtime_error("[RUNTIME ERROR]: Mass must be positive");
         }
-        this->mass = mass;
+        this->m_mass = mass;
     }
 
 private:
-    float mass;
+    float m_mass;
 };

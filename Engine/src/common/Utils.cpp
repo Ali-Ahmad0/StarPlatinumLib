@@ -15,7 +15,7 @@ const Vector2 Vector2::DOWN  = {  0, 1 };
 const Vector2 Vector2::RIGHT = {  1, 0 };
 
 // Vector2 matrix transformation
-Vector2 Vector2::transform(const Matrix3x2& matrix)
+Vector2 Vector2::Transform(const Matrix3x2& matrix)
 {
     return 
     {

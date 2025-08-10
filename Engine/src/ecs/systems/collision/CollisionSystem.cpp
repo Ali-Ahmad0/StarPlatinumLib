@@ -4,29 +4,29 @@
 void CollisionSystem::sortEdges()
 {
     // Insertion sort on the edges
-    for (size_t i = 1; i < edges.size(); i++)
+    for (size_t i = 1; i < m_edges.size(); i++)
     {
-        Edge k = edges[i];
+        Edge k = m_edges[i];
         int j = (int)i - 1;
 
         // Compare current edge with the previous
-        while (j >= 0 && edges[j].x > k.x)
+        while (j >= 0 && m_edges[j].x > k.x)
         {
-            edges[j + 1] = edges[j]; 
+            m_edges[j + 1] = m_edges[j]; 
             j--;
         }
 
         // Place the current in the correct position
-        edges[j + 1] = k;
+        m_edges[j + 1] = k;
     }
 }
 
-void CollisionSystem::update(double delta)
+void CollisionSystem::Update(double delta)
 {
     // Sort edges from left to right
     sortEdges();
 
-    for (auto& edge : edges)
+    for (auto& edge : m_edges)
     {
         // Get the entity and components
         EntityID entityA = edge.entity;
@@ -37,14 +37,14 @@ void CollisionSystem::update(double delta)
         Vector2 centerA = colliderA->centerOffset;
         centerA += transformA->position;
 
-        AABB* boxA = colliderA->getAABB(transformA);
+        AABB* boxA = colliderA->GetAABB(transformA);
 
         edge.x = edge.isLeft ? boxA->min.x : boxA->max.x;
 
         if (edge.isLeft)
         {
             // Handle for all touching entities
-            for (EntityID entityB : touching) 
+            for (EntityID entityB : m_touching) 
             {
                 // Get components for other entity
                 auto* transformB = ECS::GetComponent<Transform>(entityB);
@@ -53,23 +53,23 @@ void CollisionSystem::update(double delta)
                 Vector2 centerB = colliderB->centerOffset;
                 centerB += transformB->position;
 
-                AABB* boxB = colliderB->getAABB(transformB);
+                AABB* boxB = colliderB->GetAABB(transformB);
 
                 // FIrst: Check for AABB intersection
-                if (boxA->checkIntersect(*boxB))
+                if (boxA->IsIntersecting(*boxB))
                 {
                     // Case 1: Check for circle - circle collision
-                    if (colliderA->getShape() == ShapeType::CIRCLE && colliderB->getShape() == ShapeType::CIRCLE)
+                    if (colliderA->GetShape() == ShapeType::CIRCLE && colliderB->GetShape() == ShapeType::CIRCLE)
                     {
                         // Check for precise collision using radii
-                        float distance = Vector2::magnitude(centerB - centerA);
+                        float distance = Vector2::Magnitude(centerB - centerA);
                         
                         float totalRadii = 
-                            (colliderA->getRadius() + colliderB->getRadius());
+                            (colliderA->GetRadius() + colliderB->GetRadius());
                         
                         // Calculate collision normal and depth
                         Vector2 normal = distance > 0 
-                            ? Vector2::normalize(centerB - centerA)
+                            ? Vector2::Normalize(centerB - centerA)
                             : Vector2::RIGHT;
                         float depth = totalRadii - distance;
 
@@ -105,7 +105,7 @@ void CollisionSystem::update(double delta)
                     }
 
                     // Case 2: Check for box - box collision (SAT)
-                    else if (colliderA->getShape() == ShapeType::BOX && colliderB->getShape() == ShapeType::BOX) 
+                    else if (colliderA->GetShape() == ShapeType::BOX && colliderB->GetShape() == ShapeType::BOX) 
                     {
                         // Collision data
                         Vector2 normal = Vector2::ZERO;
@@ -113,8 +113,8 @@ void CollisionSystem::update(double delta)
 
                         bool isColliding = true;
 
-                        std::array<Vector2, 4> verticesA = colliderA->getTransformedVertices(transformA);
-                        std::array<Vector2, 4> verticesB = colliderB->getTransformedVertices(transformB);
+                        std::array<Vector2, 4> verticesA = colliderA->GetTransformedVertices(transformA);
+                        std::array<Vector2, 4> verticesB = colliderB->GetTransformedVertices(transformB);
 
                         // Polygon A
                         for (size_t i = 0; i < verticesA.size(); i++) 
@@ -127,7 +127,7 @@ void CollisionSystem::update(double delta)
 
                             // Get the axis
                             Vector2 axis = Vector2(-edge.y, edge.x);
-                            axis = Vector2::normalize(axis);
+                            axis = Vector2::Normalize(axis);
                             
                             // Project the vertices onto the axis
                             float minA = (float)INFINITY;
@@ -167,7 +167,7 @@ void CollisionSystem::update(double delta)
 
                             // Get the axis
                             Vector2 axis = Vector2(-edge.y, edge.x);
-                            axis = Vector2::normalize(axis);
+                            axis = Vector2::Normalize(axis);
 
                             // Project the vertices onto the axis
                             float minA = (float)INFINITY;
@@ -204,7 +204,7 @@ void CollisionSystem::update(double delta)
                             {
                                 normal = Vector2::RIGHT;
                             }
-                            else if (Vector2::dot(direction, normal) < 0)
+                            else if (Vector2::Dot(direction, normal) < 0)
                             {
                                 normal = -normal;
                             }
@@ -248,23 +248,23 @@ void CollisionSystem::update(double delta)
                         float radius = 0;
 
                         // First shape is circle and second shape is box
-                        if (colliderA->getShape() == ShapeType::CIRCLE && colliderB->getShape() == ShapeType::BOX) 
+                        if (colliderA->GetShape() == ShapeType::CIRCLE && colliderB->GetShape() == ShapeType::BOX) 
                         {
                             centerC = centerA;
                             centerP = centerB;
 
-                            radius = colliderA->getRadius();
-                            vertices = colliderB->getTransformedVertices(transformB);
+                            radius = colliderA->GetRadius();
+                            vertices = colliderB->GetTransformedVertices(transformB);
                         }
 
                         // First shape is box and second shape is circle
-                        else if (colliderA->getShape() == ShapeType::BOX && colliderB->getShape() == ShapeType::CIRCLE) 
+                        else if (colliderA->GetShape() == ShapeType::BOX && colliderB->GetShape() == ShapeType::CIRCLE) 
                         {
                             centerC = centerB;
                             centerP = centerA;
 
-                            radius = colliderB->getRadius();
-                            vertices = colliderA->getTransformedVertices(transformA);
+                            radius = colliderB->GetRadius();
+                            vertices = colliderA->GetTransformedVertices(transformA);
                         }
 
                         // Polygon
@@ -278,7 +278,7 @@ void CollisionSystem::update(double delta)
 
                             // Get the axis
                             Vector2 axis = Vector2(-edge.y, edge.x);
-                            axis = Vector2::normalize(axis);
+                            axis = Vector2::Normalize(axis);
 
                             // Project the vertices and circle onto the axis
                             float minA = (float)INFINITY;
@@ -309,7 +309,7 @@ void CollisionSystem::update(double delta)
                         {
                             // Get closest polygon vertex to center and compute axis
                             Vector2 closestVertex = vertices[findClosestVertex(centerC, vertices)];
-                            Vector2 axis = Vector2::normalize(closestVertex - centerC);
+                            Vector2 axis = Vector2::Normalize(closestVertex - centerC);
 
                             // Project vertices and circle onto this axis
                             float minA = (float)INFINITY;
@@ -349,7 +349,7 @@ void CollisionSystem::update(double delta)
                                 {
                                     normal = Vector2::RIGHT;
                                 }
-                                else if (Vector2::dot(direction, normal) < 0)
+                                else if (Vector2::Dot(direction, normal) < 0)
                                 {
                                     normal = -normal;
                                 }
@@ -384,12 +384,12 @@ void CollisionSystem::update(double delta)
                 }
             }
 
-            touching.insert(edge.entity);
+            m_touching.insert(edge.entity);
         }
 
         else 
         {
-            touching.erase(edge.entity);
+            m_touching.erase(edge.entity);
         }
     }
 }
@@ -403,7 +403,7 @@ size_t CollisionSystem::findClosestVertex(const Vector2& center, const std::arra
     for (int i = 0; i < vertices.size(); i++) 
     {
         // Get distance squared
-        float distanceSquared = Vector2::magnitudeSquared(Vector2::subtract(center, vertices[i]));
+        float distanceSquared = Vector2::MagnitudeSquared(Vector2::Subtract(center, vertices[i]));
 
         // Update minimum value
         if (distanceSquared < min) 
@@ -422,7 +422,7 @@ void CollisionSystem::projectVertices(const std::array<Vector2, 4>& vertices, co
     for (auto& vertex : vertices) 
     {
         // Projection using dot product
-        float projection = Vector2::dot(vertex, axis);
+        float projection = Vector2::Dot(vertex, axis);
 
         if (projection < *min) *min = projection;
         if (projection > *max) *max = projection;
@@ -437,15 +437,15 @@ void CollisionSystem::projectCircle(const Vector2& center, float radius, const V
     on the circumference that the line
     intersects
     */
-    Vector2 radiusVector = Vector2::multiply(axis, radius);
+    Vector2 radiusVector = Vector2::Multiply(axis, radius);
 
     // Get points on both ends of the line
-    Vector2 pointA = Vector2::add(center, radiusVector);
-    Vector2 pointB = Vector2::subtract(center, radiusVector);
+    Vector2 pointA = Vector2::Add(center, radiusVector);
+    Vector2 pointB = Vector2::Subtract(center, radiusVector);
 
     // Projection using dot product
-    *min = Vector2::dot(pointA, axis);
-    *max = Vector2::dot(pointB, axis);
+    *min = Vector2::Dot(pointA, axis);
+    *max = Vector2::Dot(pointB, axis);
 
     if (*min > *max)
         std::swap(*min, *max);
@@ -474,28 +474,28 @@ void CollisionSystem::separate(Transform* transformA, Transform* transformB, con
     else
     {
         // Move each object by half the separation
-        Vector2 halfSeparation = Vector2::multiply(separation, 0.5);
+        Vector2 halfSeparation = Vector2::Multiply(separation, 0.5);
         transformA->position -= halfSeparation;
         transformB->position += halfSeparation;
     }
 }
 
-void CollisionSystem::onEntityAdded(EntityID e)
+void CollisionSystem::OnEntityAdded(EntityID e)
 {
     Transform* transform = ECS::GetComponent<Transform>(e);
     Collider* collider = ECS::GetComponent<Collider>(e);
     
-    AABB* aabb = collider->getAABB(transform);
+    AABB* aabb = collider->GetAABB(transform);
     Edge edge1 = { e, aabb->min.x,  true };
     Edge edge2 = { e, aabb->max.x, false };
 
-    edges.push_back(edge1);
-    edges.push_back(edge2);
+    m_edges.push_back(edge1);
+    m_edges.push_back(edge2);
 }
 
-void CollisionSystem::onEntityRemoved(EntityID e)
+void CollisionSystem::OnEntityRemoved(EntityID e)
 {
     // Find and delete edges for entity
-    edges.erase(std::remove_if(edges.begin(), edges.end(),
-        [e](const Edge& edge) { return edge.entity == e; }), edges.end());
+    m_edges.erase(std::remove_if(m_edges.begin(), m_edges.end(),
+        [e](const Edge& edge) { return edge.entity == e; }), m_edges.end());
 }

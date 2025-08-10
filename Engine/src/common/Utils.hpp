@@ -162,98 +162,98 @@ struct Vector2
     static const Vector2 RIGHT;
 
     // Add two vectors
-    static Vector2 add(const Vector2& a, const Vector2& b)
+    static Vector2 Add(const Vector2& a, const Vector2& b)
     {
         return { a.x + b.x, a.y + b.y };
     }
 
-    Vector2 add(const Vector2& b)
+    Vector2 Add(const Vector2& b)
     {
         return { x + b.x, y + b.y };
     }
 
     // Subtract two vectors
-    static Vector2 subtract(const Vector2& a, const Vector2& b)
+    static Vector2 Subtract(const Vector2& a, const Vector2& b)
     {
         return { a.x - b.x, a.y - b.y };
     }
 
-    Vector2 subtract(const Vector2& b)
+    Vector2 Subtract(const Vector2& b)
     {
         return { x - b.x, y - b.y };
     }
 
     // Multiply the vector by a number
-    static Vector2 multiply(const Vector2& a, const float value)
+    static Vector2 Multiply(const Vector2& a, const float value)
     {
         return { a.x * value, a.y * value };
     }
 
     // Multiply the vector by a number
-    Vector2 multiply(float value)
+    Vector2 Multiply(float value)
     {
         return { x * value, y * value };
     }
 
     // Divide the vector by a number
-    static Vector2 divide(const Vector2& a, float value)
+    static Vector2 Divide(const Vector2& a, float value)
     {
         return { a.x / value, a.y / value };
     }
 
-    Vector2 divide(const float value)
+    Vector2 Divide(const float value)
     {
         return { x / value, y / value };
     }
 
     // Negate a vector
-    Vector2 negate() const
+    Vector2 Negate() const
     {
         return { -x, -y };
     }
 
-    static Vector2 negate(const Vector2& a)
+    static Vector2 Negate(const Vector2& a)
     {
         return { -a.x, -a.y };
     }
 
     // Dot product of two vectors
-    static float dot(const Vector2& a, const Vector2& b)
+    static float Dot(const Vector2& a, const Vector2& b)
     {
         return a.x * b.x + a.y * b.y;
     }
 
-    Vector2 dot(const Vector2& b)
+    Vector2 Dot(const Vector2& b)
     {
         return { x * b.x, y * b.y };
     }
 
     // Get length squared of a vector
-    static float magnitudeSquared(const Vector2& a)
+    static float MagnitudeSquared(const Vector2& a)
     {
         return a.x * a.x + a.y * a.y;
     }
 
-    float magnitudeSquared()
+    float MagnitudeSquared()
     {
         return x * x + y * y;
     }
 
     // Get length of vector
-    static float magnitude(const Vector2& a)
+    static float Magnitude(const Vector2& a)
     {
-        return std::sqrt(magnitudeSquared(a));
+        return std::sqrt(MagnitudeSquared(a));
     }
 
-    float magnitude()
+    float Magnitude()
     {
-        return std::sqrt(magnitudeSquared());
+        return std::sqrt(MagnitudeSquared());
     }
 
     // Convert into unit vector
-    static Vector2 normalize(const Vector2& a)
+    static Vector2 Normalize(const Vector2& a)
     {
-        const float length = magnitude(a);
+        const float length = Magnitude(a);
 
         if (length == 0)
         {
@@ -264,9 +264,9 @@ struct Vector2
     }
 
     // Convert into unit vector
-    Vector2 normalize()
+    Vector2 Normalize()
     {
-        const float length = magnitude();
+        const float length = Magnitude();
 
         if (length == 0)
         {
@@ -277,12 +277,12 @@ struct Vector2
     }
 
     // Check if 2 vectors are equal
-    static bool equals(const Vector2& a, const Vector2& b)
+    static bool Equals(const Vector2& a, const Vector2& b)
     {
         return a.x == b.x && a.y == b.y;
     }
 
-    bool equals(const Vector2& b) const
+    bool Equals(const Vector2& b) const
     {
         return x == b.x && y == b.y;
     }
@@ -291,7 +291,7 @@ struct Vector2
     // Arithmetic operators
     Vector2 operator+(const Vector2& b) 
     {
-        return this->add(b);
+        return this->Add(b);
     }
 
     Vector2& operator+=(const Vector2& b) 
@@ -304,7 +304,7 @@ struct Vector2
 
     Vector2 operator-(const Vector2& b) 
     {
-        return this->subtract(b);
+        return this->Subtract(b);
     }
 
     Vector2& operator-=(const Vector2& b)
@@ -316,7 +316,7 @@ struct Vector2
 
     Vector2 operator*(float value)
     {
-        return this->multiply(value);
+        return this->Multiply(value);
     }
 
     Vector2& operator*=(float value)
@@ -328,7 +328,7 @@ struct Vector2
 
     Vector2 operator/(float value)
     {
-        return this->divide(value);
+        return this->Divide(value);
     }
 
     Vector2& operator/=(float value)
@@ -340,42 +340,42 @@ struct Vector2
 
     Vector2 operator-()
     {
-        return this->negate();
+        return this->Negate();
     }
 
     // Comparison operators
     bool operator==(const Vector2& b)
     {
-        return this->equals(b);
+        return this->Equals(b);
     }
 
     bool operator!=(const Vector2& b)
     {
-        return !this->equals(b);
+        return !this->Equals(b);
     }
 
     bool operator>(const Vector2& b) 
     {
-        return this->magnitudeSquared() > Vector2::magnitudeSquared(b);
+        return this->MagnitudeSquared() > Vector2::MagnitudeSquared(b);
     }
     
     bool operator>=(const Vector2& b) 
     {
-        return this->magnitudeSquared() >= Vector2::magnitudeSquared(b);
+        return this->MagnitudeSquared() >= Vector2::MagnitudeSquared(b);
     }
 
     bool operator<(const Vector2& b) 
     {
-        return this->magnitudeSquared() < Vector2::magnitudeSquared(b);
+        return this->MagnitudeSquared() < Vector2::MagnitudeSquared(b);
     }
 
     bool operator<=(const Vector2& b) 
     {
-        return this->magnitudeSquared() <= Vector2::magnitudeSquared(b);
+        return this->MagnitudeSquared() <= Vector2::MagnitudeSquared(b);
     }
 
     // Apply transformation using a 3x2 matrix
-    Vector2 transform(const Matrix3x2& matrix);
+    Vector2 Transform(const Matrix3x2& matrix);
 };
 
 struct Matrix3x2 
@@ -384,19 +384,19 @@ struct Matrix3x2
     float m21, m22;
     float m31, m32;
 
-    static Matrix3x2 createRotation(float rotation) 
+    static Matrix3x2 CreateRotation(float rotation) 
     {
         float cos = std::cos(rotation);
         float sin = std::sin(rotation);
         return { cos, sin, -sin, cos, 0, 0 };
     }
 
-    static Matrix3x2 createTranslation(const Vector2& position) 
+    static Matrix3x2 CreateTranslation(const Vector2& position) 
     {
         return { 1, 0, 0, 1, position.x, position.y };
     }
 
-    static Matrix3x2 createScale(size_t scale) 
+    static Matrix3x2 CreateScale(size_t scale) 
     {
         return { (float)scale, 0, 0, (float)scale, 0, 0 };
     }
@@ -421,22 +421,22 @@ struct AABB
     Vector2 min;
     Vector2 max;
 
-    AABB(float w = 0, float h = 0) : isIntersecting(false)
+    AABB(float w = 0, float h = 0) : m_isIntersecting(false)
     {
         min = { -w / 2, -h / 2 };
         max = { w / 2,  h / 2 };
     }
 
     // Check for AABB intersection
-    bool checkIntersect(AABB& other)
+    bool IsIntersecting(AABB& other)
     {
         // Set isColliding to true if there is overlap on both the X and Y axes
-        isIntersecting = !(max.x < other.min.x || min.x > other.max.x || max.y < other.min.y || min.y > other.max.y);
-        other.isIntersecting = isIntersecting;
+        m_isIntersecting = !(max.x < other.min.x || min.x > other.max.x || max.y < other.min.y || min.y > other.max.y);
+        other.m_isIntersecting = m_isIntersecting;
 
-        return isIntersecting;
+        return m_isIntersecting;
     }
 
 private:
-    bool isIntersecting;
+    bool m_isIntersecting;
 };

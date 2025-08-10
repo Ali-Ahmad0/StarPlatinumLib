@@ -20,7 +20,7 @@ public:
 		if (!isAdded(name)) 
 		{
 			auto scene = std::make_shared<T>();
-			scenes[name] = std::move(scene);
+			s_scenes[name] = std::move(scene);
 			return;
 		}
 
@@ -35,13 +35,13 @@ public:
 
 private:
 	// Map from scene type to scene itself
-	static std::unordered_map<const char*, std::shared_ptr<IScene>> scenes;
-	static IScene* currentScene;
+	static std::unordered_map<const char*, std::shared_ptr<IScene>> s_scenes;
+	static IScene* s_currentScenes;
 
 	// Returns if scene has been added or not
 	static bool isAdded(const char* name)
 	{
-		return scenes.find(name) != scenes.end();
+		return s_scenes.find(name) != s_scenes.end();
 	}
 
 	// Private constructor to prevent instantiation

@@ -14,7 +14,7 @@ public:
 		if (!isRegistered(typeIndex)) 
 		{
 			auto system = std::make_shared<T>();
-			systems[typeIndex] = system;
+			m_systems[typeIndex] = system;
 			printf("[INFO]: Registered system: %s\n", typeIndex.name());
 			return system;
 		}
@@ -28,7 +28,7 @@ public:
 		const std::type_index typeIndex = typeid(T);
 		if (isRegistered(typeIndex))
 		{
-			return std::static_pointer_cast<T>(systems[typeIndex]);
+			return std::static_pointer_cast<T>(m_systems[typeIndex]);
 		}
 		throw std::runtime_error("[RUNTIME ERROR]: Cannot get unregistered system");
 	}
@@ -39,7 +39,7 @@ public:
 		const std::type_index typeIndex = typeid(T);
 		if (isRegistered(typeIndex))
 		{
-			return signatures[typeIndex];
+			return m_signatures[typeIndex];
 		}
 
 		throw std::runtime_error("[RUNTIME ERROR]: Cannot get signature on unregistered system");
@@ -51,7 +51,7 @@ public:
 		const std::type_index typeIndex = typeid(T);
 		if (isRegistered(typeIndex)) 
 		{
-			signatures[typeIndex] = signature;
+			m_signatures[typeIndex] = signature;
 		}
 
 		else 
@@ -68,15 +68,15 @@ public:
 
 private:
 	// Map from type of system to signature
-	std::unordered_map<std::type_index, Signature> signatures{};
+	std::unordered_map<std::type_index, Signature> m_signatures{};
 
 	// Map from type of system to the system
-	std::unordered_map<std::type_index, std::shared_ptr<BaseSystem>> systems{};
+	std::unordered_map<std::type_index, std::shared_ptr<BaseSystem>> m_systems{};
 
 	// Returns if system has been registered or not
 	bool isRegistered(std::type_index typeIndex) 
 	{
-		return systems.find(typeIndex) != systems.end();
+		return m_systems.find(typeIndex) != m_systems.end();
 	}
 };
 

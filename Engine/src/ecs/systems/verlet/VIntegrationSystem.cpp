@@ -3,9 +3,9 @@
 
 #define METER 32 // Meter to pixel conversion
 
-void VIntegrationSystem::update(double delta)
+void VIntegrationSystem::Update(double delta)
 {
-	for (const EntityID e : entities) 
+	for (const EntityID e : m_entities) 
 	{
 		auto* transform = ECS::GetComponent<Transform>(e);
 		auto* verlet = ECS::GetComponent<VerletObject>(e);
@@ -30,15 +30,15 @@ void VIntegrationSystem::update(double delta)
 	}
 }
 
-void VIntegrationSystem::onEntityAdded(EntityID e)
+void VIntegrationSystem::OnEntityAdded(EntityID e)
 {
 	// Add the entity
-	entities.push_back(e);
+	m_entities.push_back(e);
 }
 
-void VIntegrationSystem::onEntityRemoved(EntityID e)
+void VIntegrationSystem::OnEntityRemoved(EntityID e)
 {
 	// Find and delete entity
-	auto position = std::find(entities.begin(), entities.end(), e);
-	entities.erase(position);
+	auto position = std::find(m_entities.begin(), m_entities.end(), e);
+	m_entities.erase(position);
 }

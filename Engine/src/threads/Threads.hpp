@@ -33,14 +33,14 @@ public:
 
         auto result = task->get_future();
         {
-            std::lock_guard<std::mutex> lock(mutex);
-            if (shutdownRequested) 
+            std::lock_guard<std::mutex> lock(m_mutex);
+            if (m_shutdownRequested) 
             {
                 throw std::runtime_error("[RUNTIME ERROR]: ThreadPool is shutting down");
             }
-            tasks.emplace([task]() { (*task)(); });
+            m_tasks.emplace([task]() { (*task)(); });
         }
-        condition.notify_one();
+        m_condition.notify_one();
         return result;
     }
 
@@ -56,49 +56,49 @@ public:
 private:
     class ThreadWorker {
     public:
-        ThreadWorker(ThreadPool* pool) : pool(pool) {}
+        ThreadWorker(ThreadPool* pool) : m_pool(pool) {}
 
         void operator()() {
-            std::unique_lock<std::mutex> lock(pool->mutex);
+            std::unique_lock<std::mutex> lock(m_pool->m_mutex);
 
-            while (!pool->shutdownRequested || !pool->tasks.empty()) 
+            while (!m_pool->m_shutdownRequested || !m_pool->m_tasks.empty()) 
             {
                 // Wait for task or shutdown signal
-                pool->condition.wait(lock, [this] {
-                    return !this->pool->tasks.empty() || this->pool->shutdownRequested;
+                m_pool->m_condition.wait(lock, [this] {
+                    return !this->m_pool->m_tasks.empty() || this->m_pool->m_shutdownRequested;
                 });
 
-                if (this->pool->shutdownRequested && this->pool->tasks.empty())
+                if (this->m_pool->m_shutdownRequested && this->m_pool->m_tasks.empty())
                 {
                     break;
                 }
 
-                if (!this->pool->tasks.empty())
+                if (!this->m_pool->m_tasks.empty())
                 {
-                    auto task = std::move(pool->tasks.front());
-                    pool->tasks.pop();
-                    ++pool->busyThreads;
+                    auto task = std::move(m_pool->m_tasks.front());
+                    m_pool->m_tasks.pop();
+                    ++m_pool->m_busyThreadCount;
 
                     lock.unlock();
                     task();
                     lock.lock();
 
-                    --pool->busyThreads;
+                    --m_pool->m_busyThreadCount;
                 }
             }
         }
 
     private:
-        ThreadPool* pool;
+        ThreadPool* m_pool;
     };
 
-    mutable std::mutex mutex;
-    std::condition_variable condition;
+    mutable std::mutex m_mutex;
+    std::condition_variable m_condition;
 
-    std::vector<std::thread> threads;
-    size_t busyThreads;
+    std::vector<std::thread> m_threads;
+    size_t m_busyThreadCount;
     
-    std::queue<std::function<void()>> tasks;
+    std::queue<std::function<void()>> m_tasks;
     
-    bool shutdownRequested;
+    bool m_shutdownRequested;
 };

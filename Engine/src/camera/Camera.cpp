@@ -2,8 +2,8 @@
 #include "Camera.hpp"
 #include "../viewport/ViewPort.hpp"
 
-std::array<float, 4> Camera::boundaries = { -(float)_HUGE_ENUF, (float)(_HUGE_ENUF), -(float)_HUGE_ENUF, (float)_HUGE_ENUF };
-Vector2 Camera::offset = { 0, 0 };
+std::array<float, 4> Camera::s_boundaries = { -(float)_HUGE_ENUF, (float)(_HUGE_ENUF), -(float)_HUGE_ENUF, (float)_HUGE_ENUF };
+Vector2 Camera::s_offset = { 0, 0 };
 
 // Set offset within boundaries
 void Camera::SetOffset(const Vector2& newOffset)
@@ -22,37 +22,37 @@ void Camera::SetOffset(const Vector2& newOffset)
     Vector2 clampedOffset = newOffset;
 
     // Check left boundary
-    if (cameraLeft < boundaries[0]) 
+    if (cameraLeft < s_boundaries[0]) 
     {
-        clampedOffset.x = boundaries[0];
+        clampedOffset.x = s_boundaries[0];
     }
 
     // Check right boundary  
-    if (cameraRight > boundaries[1]) 
+    if (cameraRight > s_boundaries[1]) 
     {
-        clampedOffset.x = boundaries[1] - (float)viewPortWidth;
+        clampedOffset.x = s_boundaries[1] - (float)viewPortWidth;
     }
 
     // Check top boundary
-    if (cameraTop < boundaries[2]) 
+    if (cameraTop < s_boundaries[2]) 
     {
-        clampedOffset.y = boundaries[2];
+        clampedOffset.y = s_boundaries[2];
     }
 
     // Check bottom boundary
-    if (cameraBottom > boundaries[3]) 
+    if (cameraBottom > s_boundaries[3]) 
     {
-        clampedOffset.y = boundaries[3] - (float)viewPortHeight;
+        clampedOffset.y = s_boundaries[3] - (float)viewPortHeight;
     }
 
     // Set the clamped offset
-    offset = clampedOffset;
+    s_offset = clampedOffset;
 }
 
 // Return camera offset
 Vector2& Camera::GetOffset() 
 {
-    return offset;
+    return s_offset;
 }
 
 void Camera::SetBoundaries(float left, float right, float up, float down)
@@ -86,5 +86,5 @@ void Camera::SetBoundaries(float left, float right, float up, float down)
         down += padding;
     }
 
-    boundaries = { left, right, up, down };
+    s_boundaries = { left, right, up, down };
 }

@@ -12,5 +12,5 @@ public:
 	void Update(double delta) override;
 
 private:
-	TDPlayer player;
+	TDPlayer m_player;
 };

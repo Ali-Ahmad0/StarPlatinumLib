@@ -4,24 +4,24 @@ void EntityManager::Init()
 {
     for (EntityID e = 0; e < MAX_ENTITIES; e++)
     {
-        availableEntities.push(e);
+        m_availableEntities.push(e);
     }
 }
 
 bool EntityManager::IsActive(const EntityID entity)
 {
-    return entity < MAX_ENTITIES && entityStatus[entity];
+    return entity < MAX_ENTITIES && m_entityStatus[entity];
 }
 
 EntityID EntityManager::CreateEntity() 
 {
-    if (count < MAX_ENTITIES)
+    if (m_entityCount < MAX_ENTITIES)
     {
-        const EntityID entity = availableEntities.front();
-        availableEntities.pop();
-        entityStatus[entity] = true;
+        const EntityID entity = m_availableEntities.front();
+        m_availableEntities.pop();
+        m_entityStatus[entity] = true;
 
-        count++;
+        m_entityCount++;
         return entity;
     }
 
@@ -33,9 +33,9 @@ void EntityManager::DeleteEntity(EntityID entity)
 {
     if (IsActive(entity))
     {
-        availableEntities.push(entity);
-        entityStatus[entity] = false;
-        count--;
+        m_availableEntities.push(entity);
+        m_entityStatus[entity] = false;
+        m_entityCount--;
     }
     else 
     {
@@ -46,14 +46,14 @@ void EntityManager::DeleteEntity(EntityID entity)
 
 size_t EntityManager::GetEntityCount()
 {
-    return count;
+    return m_entityCount;
 }
 
 void EntityManager::SetSignature(EntityID entity, Signature signature)
 {
     if (IsActive(entity)) 
     {
-        signatures[entity] = signature;
+        m_signatures[entity] = signature;
     }
     else 
     {
@@ -65,7 +65,7 @@ Signature EntityManager::GetSignature(EntityID entity)
 {
     if (IsActive(entity)) 
     {
-        return signatures[entity];
+        return m_signatures[entity];
     }
 
     throw std::runtime_error("[RUNTIME ERROR]: Cannot get signature on non existent entity");

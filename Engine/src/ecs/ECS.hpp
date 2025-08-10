@@ -15,13 +15,9 @@ public:
     // Initialize ECS
     static void Init();
 
-
     static EntityID CreateEntity();
-
     static void DeleteEntity(EntityID entity);
-
     static size_t GetEntityCount();
-
 
     template <typename T>
     static void RegisterComponent()
@@ -31,11 +27,11 @@ public:
         auto sparseSet = std::make_unique<SparseSet<T>>();        
         sparseSet->Init();
 
-        sparseSets[typeIndex] = std::move(sparseSet);
+        s_sparseSets[typeIndex] = std::move(sparseSet);
 
         // Assign component ID
-        componentRegistry[typeIndex] = nextComponent;
-        nextComponent++;
+        s_componentRegistry[typeIndex] = s_nextComponentId;
+        s_nextComponentId++;
 
         printf("[INFO]: Registered component: %s\n", typeIndex.name());
     }
@@ -43,7 +39,7 @@ public:
     template <typename T>
     static void AddComponent(EntityID entity, T component)
     {
-        if (!entityManager->IsActive(entity)) 
+        if (!s_entityManager->IsActive(entity)) 
         {
             fprintf(stderr, "[ERROR]: Cannot add component on non existing entity\n");
             return;
@@ -56,7 +52,7 @@ public:
     template <typename T>
     static void RemoveComponent(EntityID entity)
     {
-        if (!entityManager->IsActive(entity))
+        if (!s_entityManager->IsActive(entity))
         {
             fprintf(stderr, "[ERROR]: Cannot remove component on non existing entity\n");
             return;
@@ -84,10 +80,10 @@ public:
         std::type_index typeIndex = typeid(T);
         
         // Find component ID of component
-        if (componentRegistry.find(typeIndex) != componentRegistry.end())
+        if (s_componentRegistry.find(typeIndex) != s_componentRegistry.end())
         {
             // Return ID
-            return componentRegistry[typeIndex];
+            return s_componentRegistry[typeIndex];
         }
         throw std::runtime_error("[RUNTIME ERROR]: Cannot get ID on unregistered component");
     }
@@ -96,45 +92,44 @@ public:
     template <typename T>
     static std::shared_ptr<T> RegisterSystem() 
     {
-        return systemManager->RegisterSystem<T>();
+        return s_systemManager->RegisterSystem<T>();
     }
 
     template <typename T>
     static std::shared_ptr<T> GetSystem()
     {
-        return std::static_pointer_cast<T>(systemManager->GetSystem<T>());
+        return std::static_pointer_cast<T>(s_systemManager->GetSystem<T>());
     }
 
     template <typename T, typename U>
     static void AddComponentToSystem() 
     {
-        Signature signature = systemManager->GetSignature<U>();
+        Signature signature = s_systemManager->GetSignature<U>();
         signature.set(GetComponentID<T>(), true);
-        systemManager->SetSignature<U>(signature);
-        
+        s_systemManager->SetSignature<U>(signature);
     }
    
 private:
     // Managers
-    static std::unique_ptr<EntityManager> entityManager;
-    static std::unique_ptr<SystemManager> systemManager;
+    static std::unique_ptr<EntityManager> s_entityManager;
+    static std::unique_ptr<SystemManager> s_systemManager;
 
     // Map that assigns an ID to each component type
-    static std::unordered_map<std::type_index, ComponentID> componentRegistry;
+    static std::unordered_map<std::type_index, ComponentID> s_componentRegistry;
 
     // Map that stores all registered component pools
-    static std::unordered_map<std::type_index, std::unique_ptr<ISparseSet>> sparseSets;
+    static std::unordered_map<std::type_index, std::unique_ptr<ISparseSet>> s_sparseSets;
 
     // Next component ID
-    static ComponentID nextComponent;
+    static ComponentID s_nextComponentId;
 
     // Get the component pool for a specific type
     template <typename T>
     static SparseSet<T>* getComponentSparseSet() 
     {
         const std::type_index typeIndex(typeid(T));
-        const auto it = sparseSets.find(typeIndex);
-        if (it != sparseSets.end())
+        const auto it = s_sparseSets.find(typeIndex);
+        if (it != s_sparseSets.end())
         {
             return static_cast<SparseSet<T>*>(it->second.get());
         }
@@ -145,11 +140,11 @@ private:
     template <typename T>
     static void updateEntitySignature(EntityID entity, bool value) 
     {
-        Signature signature = entityManager->GetSignature(entity);
+        Signature signature = s_entityManager->GetSignature(entity);
         signature.set(GetComponentID<T>(), value);
-        entityManager->SetSignature(entity, signature);
+        s_entityManager->SetSignature(entity, signature);
 
-        systemManager->OnEntitySignatureChanged(entity, signature);
+        s_systemManager->OnEntitySignatureChanged(entity, signature);
     }
 };
 

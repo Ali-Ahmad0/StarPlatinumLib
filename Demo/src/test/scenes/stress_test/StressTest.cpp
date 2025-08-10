@@ -4,7 +4,7 @@
 
 void StressTest::Ready() 
 {
-	texture = TextureManager::LoadTexture("src/test/assets/preview.png");
+	m_texture = TextureManager::LoadTexture("src/test/assets/preview.png");
 	TextManager::LoadFont("default", "src/test/assets/font.ttf");
 }
 
@@ -70,7 +70,7 @@ void StressTest::Events(SDL_Event event)
 
 					// Assign components to the entity
 					ECS::AddComponent(entity, Transform(Vector2(randomX, randomY), 0, 3));
-					ECS::AddComponent(entity, Sprite(texture));
+					ECS::AddComponent(entity, Sprite(m_texture));
 				}
 			}
 

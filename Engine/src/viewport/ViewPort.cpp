@@ -1,9 +1,9 @@
 #include "ViewPort.hpp"
 
-SDL_Window* ViewPort::window = nullptr;
-SDL_Renderer* ViewPort::renderer = nullptr;
+SDL_Window* ViewPort::s_window = nullptr;
+SDL_Renderer* ViewPort::s_renderer = nullptr;
 
-Color ViewPort::Modulate = Color::WHITE;
+Color ViewPort::modulate = Color::WHITE;
 
 bool ViewPort::Init(const char* title, int w, int h, bool fullscreen)
 {
@@ -15,11 +15,11 @@ bool ViewPort::Init(const char* title, int w, int h, bool fullscreen)
 		printf("[INFO]: Initialized subsystems\n");
 
 		// Create window
-		window = SDL_CreateWindow(
+		s_window = SDL_CreateWindow(
 			title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, flags
 		);
 
-		if (window == nullptr)
+		if (s_window == nullptr)
 		{
 			fprintf(stderr, "[ERROR]: Unable to create SDL window, exiting...\n");
 			return false;
@@ -29,15 +29,15 @@ bool ViewPort::Init(const char* title, int w, int h, bool fullscreen)
 
 
 		// Create renderer
-		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-		if (renderer == nullptr)
+		s_renderer = SDL_CreateRenderer(s_window, -1, SDL_RENDERER_ACCELERATED);
+		if (s_renderer == nullptr)
 		{
 			fprintf(stderr, "[ERROR]: Unable to create SDL renderer, exiting...\n");
 			return false;
 		}
 
 		printf("[INFO]: Renderer created\n");
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+		SDL_SetRenderDrawColor(s_renderer, 0, 0, 0, 255);
 	}
 
 	else
@@ -51,21 +51,21 @@ bool ViewPort::Init(const char* title, int w, int h, bool fullscreen)
 
 void ViewPort::Exit() 
 {
-	SDL_DestroyWindow(window);
-	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(s_window);
+	SDL_DestroyRenderer(s_renderer);
 }
 
 SDL_Window* ViewPort::GetWindow() 
 { 
-	return window; 
+	return s_window; 
 }
 
 SDL_Renderer* ViewPort::GetRenderer() 
 { 
-	return renderer; 
+	return s_renderer; 
 }
 
 void ViewPort::GetSize(int* w, int* h)
 {
-	SDL_GetWindowSize(window, w, h);
+	SDL_GetWindowSize(s_window, w, h);
 }

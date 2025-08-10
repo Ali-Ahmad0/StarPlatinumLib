@@ -1,9 +1,9 @@
 #include "MovementSystem.hpp"
 #include "../../ECS.hpp"
 
-void MovementSystem::update(double delta) 
+void MovementSystem::Update(double delta) 
 {
-	for (EntityID e : entities)
+	for (EntityID e : m_entities)
 	{
 		auto* transform = ECS::GetComponent<Transform>(e);
 		auto* movement = ECS::GetComponent<Movement>(e);
@@ -14,15 +14,15 @@ void MovementSystem::update(double delta)
 	}
 }
 
-void MovementSystem::onEntityAdded(EntityID e)
+void MovementSystem::OnEntityAdded(EntityID e)
 {
 	// Add the entity
-	entities.push_back(e);
+	m_entities.push_back(e);
 }
 
-void MovementSystem::onEntityRemoved(EntityID e)
+void MovementSystem::OnEntityRemoved(EntityID e)
 {
 	// Find and delete entity
-	auto position = std::find(entities.begin(), entities.end(), e);
-	entities.erase(position);
+	auto position = std::find(m_entities.begin(), m_entities.end(), e);
+	m_entities.erase(position);
 }

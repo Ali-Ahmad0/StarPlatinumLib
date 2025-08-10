@@ -4,17 +4,27 @@
 
 void TDScene::Ready()
 {
-    Tilemap tilemap = Tilemap(Vector2::ZERO, 16, 3);
+    // Initialize the world tilemap
+    const size_t tileSize = 16;
+    const size_t tileScale = 3;
 
-    tilemap.AddTileset("src/test/assets/topdown/tileset.png");
-    tilemap.LoadMap("src/test/assets/topdown/level/map.json");
+    Tilemap tilemap = Tilemap(tileSize, tileScale);
 
-    tilemap.AddCollision(1, { 89, 90, 97, 98, 110, 111, 118, 119 });
+    tilemap.LoadTileset("src/test/assets/topdown/tileset.png");
+    tilemap.LoadMapFile("src/test/assets/topdown/level/map.json");
+    tilemap.GenerateMap();
 
-    player.Ready();
+    const size_t collisionLayer = 1;
+    const std::vector<size_t> collisionTiles = { 89, 90, 97, 98, 110, 111, 118, 119 };
+
+    tilemap.AddCollision(collisionLayer, collisionTiles);
+
+    // Initialize the player
+    m_player.Ready();
 }
 
 void TDScene::Update(double delta)
 {
-    player.Update(delta);
+    // Update the player
+    m_player.Update(delta);
 }

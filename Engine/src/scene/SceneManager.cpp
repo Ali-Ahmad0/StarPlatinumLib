@@ -1,21 +1,21 @@
 #include "SceneManager.hpp"
 
-std::unordered_map<const char*, std::shared_ptr<IScene>> SceneManager::scenes{};
-IScene* SceneManager::currentScene = nullptr;
+std::unordered_map<const char*, std::shared_ptr<IScene>> SceneManager::s_scenes{};
+IScene* SceneManager::s_currentScenes = nullptr;
 
 void SceneManager::Update(double delta) 
 {
-	if (currentScene)
+	if (s_currentScenes)
 	{
-		currentScene->Update(delta);
+		s_currentScenes->Update(delta);
 	}
 }
 
 void SceneManager::Events(SDL_Event event) 
 {
-	if (currentScene) 
+	if (s_currentScenes) 
 	{
-		currentScene->Events(event);
+		s_currentScenes->Events(event);
 	}
 }
 
@@ -23,11 +23,11 @@ void SceneManager::DeleteScene(const char* name)
 {
 	if (isAdded(name)) 
 	{
-		if (currentScene == scenes[name].get()) 
+		if (s_currentScenes == s_scenes[name].get()) 
 		{
-			currentScene = nullptr;
+			s_currentScenes = nullptr;
 		}
-		scenes.erase(name);
+		s_scenes.erase(name);
 		printf("[INFO]: Successfully deleted scene: %s\n", name);
 	}
 	else 
@@ -40,13 +40,13 @@ void SceneManager::ChangeScene(const char* name)
 {
 	if (isAdded(name)) 
 	{
-		auto newScene = scenes[name].get();
-		if (currentScene != newScene) 
+		auto newScene = s_scenes[name].get();
+		if (s_currentScenes != newScene) 
 		{
-			if (currentScene) currentScene->Leave();
+			if (s_currentScenes) s_currentScenes->Leave();
 
-			currentScene = newScene;
-			currentScene->Ready();
+			s_currentScenes = newScene;
+			s_currentScenes->Ready();
 			printf("[INFO]: Successfully changed scene to: %s\n", name);
 		}
 	}

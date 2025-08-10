@@ -2,7 +2,7 @@
 #include <Windows.h>
 #include <SDL_ttf.h>
 
-StarPlatinumEngine::StarPlatinumEngine(const char* title, int w, int h, bool fullscreen) : delta(0), substeps(12)
+StarPlatinumEngine::StarPlatinumEngine(const char* title, int w, int h, bool fullscreen)
 {
 	SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_HIGHEST);
 
@@ -52,17 +52,17 @@ bool StarPlatinumEngine::events()
 }
 
 void StarPlatinumEngine::update() {
-	SceneManager::Update(delta);
+	SceneManager::Update(m_deltaTime);
 
-	ECS::GetSystem<MovementSystem>()->update(delta);
+	ECS::GetSystem<MovementSystem>()->Update(m_deltaTime);
 	
-	ECS::GetSystem<CollisionSystem>()->update();
-	ECS::GetSystem<VIntegrationSystem>()->update(delta);
+	ECS::GetSystem<CollisionSystem>()->Update();
+	ECS::GetSystem<VIntegrationSystem>()->Update(m_deltaTime);
 }
 
 void StarPlatinumEngine::render() 
 {
-	ECS::GetSystem<SpriteSystem>()->update();
+	ECS::GetSystem<SpriteSystem>()->Update();
 }
 
 void StarPlatinumEngine::Run() 
@@ -93,13 +93,13 @@ void StarPlatinumEngine::Run()
 		if (targetDelta > frameDrawTime) 
 		{
 			SDL_Delay(targetDelta - frameDrawTime);
-			delta = (double)targetDelta / 1000;
+			m_deltaTime = (double)targetDelta / 1000;
 		}
 
 		// FPS is less than target FPS
 		else 
 		{
-			delta = (double)frameDrawTime / 1000;
+			m_deltaTime = (double)frameDrawTime / 1000;
 		}
 	}
 

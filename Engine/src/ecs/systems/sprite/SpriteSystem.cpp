@@ -7,25 +7,25 @@
 void SpriteSystem::sortZ() 
 {
     // Insertion sort entities based on z indices
-    for (size_t i = 1; i < entities.size(); i++)
+    for (size_t i = 1; i < m_entities.size(); i++)
     {
-        EntityID key = entities[i];
+        EntityID key = m_entities[i];
         auto* spriteA = ECS::GetComponent<Sprite>(key);
 
         int j = (int)i - 1;
-        auto* spriteB = ECS::GetComponent<Sprite>(entities[j]);
+        auto* spriteB = ECS::GetComponent<Sprite>(m_entities[j]);
 
         while (j >= 0 && spriteB->z_index > spriteA->z_index)
         {
-            entities[j + 1] = entities[j];
+            m_entities[j + 1] = m_entities[j];
             j--;
         }
-        entities[j + 1] = key;
+        m_entities[j + 1] = key;
     }
 }
 
 
-void SpriteSystem::update(double delta) 
+void SpriteSystem::Update(double delta) 
 {
     // Get viewport and camera properties
     Vector2 cameraOffset = Camera::GetOffset();
@@ -33,13 +33,13 @@ void SpriteSystem::update(double delta)
     ViewPort::GetSize(&screenWidth, &screenHeight);
     
     // Update and animate all sprites
-    for (const EntityID e : entities)
+    for (const EntityID e : m_entities)
     {
         auto* transform = ECS::GetComponent<Transform>(e);
         auto* sprite = ECS::GetComponent<Sprite>(e);
 
         // Apply modulate to the sprite texture
-        SDL_SetTextureColorMod(sprite->texture, ViewPort::Modulate.r, ViewPort::Modulate.g, ViewPort::Modulate.b);
+        SDL_SetTextureColorMod(sprite->texture, ViewPort::modulate.r, ViewPort::modulate.g, ViewPort::modulate.b);
 
         // Get the full width and height of the texture
         int textureWidth, textureHeight;
@@ -56,10 +56,11 @@ void SpriteSystem::update(double delta)
         if (transform->position.y + CAMERA_MARGIN > (cameraOffset.y + screenHeight)) continue;
 
         // Animate the sprite
-        if (sprite->animation != "none")
+        const char* animation = sprite->GetAnimation();
+        if (animation != "none")
         {
             // Get list of frames to animate
-            std::vector<size_t> frames = sprite->animations[sprite->animation];
+            std::vector<size_t> frames = sprite->animations[animation];
             size_t frameIndex = (SDL_GetTicks() / (1000 / sprite->speed)) % frames.size();
 
             // Get current frame
@@ -67,7 +68,7 @@ void SpriteSystem::update(double delta)
 
             if (frame >= sprite->hframes * sprite->vframes)
             {
-                fprintf(stderr, "[ERROR] Invalid frame %zu in animation '%s'\n", sprite->frame, sprite->animation);
+                fprintf(stderr, "[ERROR] Invalid frame %zu in animation '%s'\n", sprite->frame, animation);
                 continue;
             }
 
@@ -103,17 +104,17 @@ void SpriteSystem::update(double delta)
     }
 }
 
-void SpriteSystem::onEntityAdded(EntityID e) 
+void SpriteSystem::OnEntityAdded(EntityID e) 
 {
     // Add the entity, sort the layers
-    entities.push_back(e);
+    m_entities.push_back(e);
     sortZ();
 }
 
-void SpriteSystem::onEntityRemoved(EntityID e) 
+void SpriteSystem::OnEntityRemoved(EntityID e) 
 {
     // Delete the entity, sort the layers
-    auto position = std::find(entities.begin(), entities.end(), e);
-    entities.erase(position);
+    auto position = std::find(m_entities.begin(), m_entities.end(), e);
+    m_entities.erase(position);
     sortZ();
 }

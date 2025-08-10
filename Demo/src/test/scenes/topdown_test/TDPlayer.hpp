@@ -8,12 +8,11 @@ public:
 	void Update(double delta);
 	
 private:
-	EntityID player;
-	SDL_Texture* texture;
+	EntityID m_entityId;
 
-	Vector2 direction;
+	Vector2 m_direction;
 
-	Transform* transform;
-	Sprite* sprite;
-	Movement* movement;
+	Transform* m_transform;
+	Sprite* m_sprite;
+	Movement* m_movement;
 };

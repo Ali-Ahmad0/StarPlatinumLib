@@ -2,7 +2,7 @@
 #include <Windows.h>
 #include <SDL_ttf.h>
 
-SPLib::SPLib(const char* title, int w, int h, bool fullscreen) : delta(0), substeps(12)
+StarPlatinumEngine::StarPlatinumEngine(const char* title, int w, int h, bool fullscreen) : delta(0), substeps(12)
 {
 	SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_HIGHEST);
 
@@ -29,7 +29,7 @@ SPLib::SPLib(const char* title, int w, int h, bool fullscreen) : delta(0), subst
 	printf("[INFO]: Engine systems initialized\n");
 }
 
-bool SPLib::events()
+bool StarPlatinumEngine::events()
 {
 	SDL_Event event;
 
@@ -51,7 +51,7 @@ bool SPLib::events()
 	return true;
 }
 
-void SPLib::update() {
+void StarPlatinumEngine::update() {
 	SceneManager::Update(delta);
 
 	ECS::GetSystem<MovementSystem>()->update(delta);
@@ -60,12 +60,12 @@ void SPLib::update() {
 	ECS::GetSystem<VIntegrationSystem>()->update(delta);
 }
 
-void SPLib::render() 
+void StarPlatinumEngine::render() 
 {
 	ECS::GetSystem<SpriteSystem>()->update();
 }
 
-void SPLib::Run() 
+void StarPlatinumEngine::Run() 
 {
 	// Times in milliseconds
 	uint32_t targetDelta = 1000 / 60;
@@ -107,7 +107,7 @@ void SPLib::Run()
 	exit();
 }
 
-void SPLib::exit()
+void StarPlatinumEngine::exit()
 {
 	printf("[INFO]: Exiting...\n");
 	

@@ -10,7 +10,7 @@
 
 int main() 
 {
-	SPLib game = SPLib();
+	StarPlatinumEngine game = StarPlatinumEngine();
 
 	SceneManager::AddScene<TDScene>("topdown_test");
 	SceneManager::AddScene<StressTest>("stress_test");
@@ -22,7 +22,7 @@ int main()
 	InputMap::BindKey("move_d", SDL_SCANCODE_DOWN);
 	InputMap::BindKey("move_r", SDL_SCANCODE_RIGHT);
 
-	SceneManager::ChangeScene("physics_test");
+	SceneManager::ChangeScene("topdown_test");
 
 	game.Run();
 

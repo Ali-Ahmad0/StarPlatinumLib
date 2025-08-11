@@ -1,9 +1,17 @@
 #include "TDScene.hpp"
 #include "main/debug/Debug.hpp"
+#include "input/InputMap.hpp"
 #include <iostream>
 
 void TDScene::Ready()
 {
+    // Bind keys
+    InputMap::BindKey("move_u", SDL_SCANCODE_UP);
+    InputMap::BindKey("move_l", SDL_SCANCODE_LEFT);
+    InputMap::BindKey("move_d", SDL_SCANCODE_DOWN);
+    InputMap::BindKey("move_r", SDL_SCANCODE_RIGHT);
+
+
     // Initialize the world tilemap
     const size_t tileSize = 16;
     const size_t tileScale = 3;

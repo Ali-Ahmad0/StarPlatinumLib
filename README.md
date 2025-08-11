@@ -13,8 +13,6 @@
 #include "test/scenes/stress_test/StressTest.hpp"
 #include "test/scenes/physics_test/PhysicsTest.hpp"
 
-#include "input/InputMap.hpp"
-
 #undef main
 
 int main() 
@@ -24,8 +22,6 @@ int main()
     SceneManager::AddScene<TDScene>("topdown_test");
     SceneManager::AddScene<StressTest>("stress_test");
     SceneManager::AddScene<PhysicsTest>("physics_test");
-
-    /* Other stuff */
 
     SceneManager::ChangeScene("topdown_test");
 

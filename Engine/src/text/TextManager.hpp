@@ -15,6 +15,5 @@ public:
 
 private:
 	static std::unordered_map<std::string, TTF_Font*> s_fonts;
-	static bool s_initialized;
 };
 

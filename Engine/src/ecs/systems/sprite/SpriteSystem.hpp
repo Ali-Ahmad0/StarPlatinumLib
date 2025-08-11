@@ -5,7 +5,6 @@
 struct SpriteSystem : BaseSystem
 {
     void Update(double delta = 0) override;
-    void Destroy();
 
     void OnEntityAdded(EntityID e) override;
     void OnEntityRemoved(EntityID e) override;

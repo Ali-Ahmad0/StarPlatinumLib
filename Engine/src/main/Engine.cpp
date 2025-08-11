@@ -1,6 +1,6 @@
 #include "Engine.hpp"
 #include <Windows.h>
-#include <SDL_ttf.h>
+#include "../text/TextManager.hpp"
 
 StarPlatinumEngine::StarPlatinumEngine(const char* title, int w, int h, bool fullscreen)
 {
@@ -111,7 +111,8 @@ void StarPlatinumEngine::exit()
 {
 	printf("[INFO]: Exiting...\n");
 
-	ECS::GetSystem<SpriteSystem>()->Destroy();
+	TextManager::Cleanup();
+	TextureManager::Cleanup();
 
 	ViewPort::Exit(); 
 	SDL_Quit();

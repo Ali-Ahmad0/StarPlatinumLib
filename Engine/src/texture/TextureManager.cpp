@@ -1,5 +1,6 @@
 #include "TextureManager.hpp"
 
+std::vector<SDL_Texture*> TextureManager::s_textures{};
 
 SDL_Texture* TextureManager::LoadTexture(const char* path)
 {
@@ -15,6 +16,8 @@ SDL_Texture* TextureManager::LoadTexture(const char* path)
 	printf("[INFO]: Texture loaded successfully!\n");
 
 	SDL_FreeSurface(tmpSurface);
+	s_textures.push_back(texture);
+
 	return texture;
 }
 
@@ -25,4 +28,14 @@ void TextureManager::DestroyTexture(SDL_Texture* texture)
 		return;
 	}
 	SDL_DestroyTexture(texture);
+}
+
+void TextureManager::Cleanup() 
+{
+	printf("[INFO]: Cleaning up textures\n");
+	for (auto& texture : s_textures) 
+	{
+		DestroyTexture(texture);
+	}
+	printf("[INFO]: All textures cleaned up successfully");
 }

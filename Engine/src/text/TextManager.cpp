@@ -88,7 +88,6 @@ void TextManager::Cleanup()
     for (auto& pair : s_fonts)
     {
         TTF_CloseFont(pair.second);
-        printf("[INFO]: Font %s cleaned up\n", pair.first.c_str());
     }
     s_fonts.clear();
     printf("[INFO]: All fonts cleaned up successfully\n");

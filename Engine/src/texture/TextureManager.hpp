@@ -13,6 +13,10 @@ public:
 	// Load an image as SDL texture using path
 	static SDL_Texture* LoadTexture(const char* path);
 	static void DestroyTexture(SDL_Texture* texture);
+	static void Cleanup();
+
+private:
+	static std::vector<SDL_Texture*> s_textures;
 };
 
 

@@ -108,7 +108,7 @@ public:
         signature.set(GetComponentID<T>(), true);
         s_systemManager->SetSignature<U>(signature);
     }
-   
+
 private:
     // Managers
     static std::unique_ptr<EntityManager> s_entityManager;

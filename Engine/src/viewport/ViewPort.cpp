@@ -51,6 +51,7 @@ bool ViewPort::Init(const char* title, int w, int h, bool fullscreen)
 
 void ViewPort::Exit() 
 {
+	printf("[INFO]: Destroying window and renderer\n");
 	SDL_DestroyWindow(s_window);
 	SDL_DestroyRenderer(s_renderer);
 }

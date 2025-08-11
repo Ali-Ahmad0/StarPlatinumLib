@@ -110,8 +110,11 @@ void StarPlatinumEngine::Run()
 void StarPlatinumEngine::exit()
 {
 	printf("[INFO]: Exiting...\n");
-	
-	ViewPort::Exit(); SDL_Quit();
+
+	ECS::GetSystem<SpriteSystem>()->Destroy();
+
+	ViewPort::Exit(); 
+	SDL_Quit();
 
 	printf("[INFO]: Game exited\n");
 }

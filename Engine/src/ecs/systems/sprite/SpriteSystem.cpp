@@ -104,6 +104,16 @@ void SpriteSystem::Update(double delta)
     }
 }
 
+void SpriteSystem::Destroy()
+{
+    printf("[INFO]: Cleaning up all sprite textures\n");
+    for (const EntityID e : m_entities) 
+    {
+        auto* sprite = ECS::GetComponent<Sprite>(e);
+        TextureManager::DestroyTexture(sprite->texture);
+    }
+}
+
 void SpriteSystem::OnEntityAdded(EntityID e) 
 {
     // Add the entity, sort the layers
@@ -114,7 +124,10 @@ void SpriteSystem::OnEntityAdded(EntityID e)
 void SpriteSystem::OnEntityRemoved(EntityID e) 
 {
     // Delete the entity, sort the layers
-    auto position = std::find(m_entities.begin(), m_entities.end(), e);
+    auto position = std::find(
+        m_entities.begin(), 
+        m_entities.end(), e
+    );
     m_entities.erase(position);
     sortZ();
 }

@@ -12,6 +12,7 @@ class TextureManager
 public:
 	// Load an image as SDL texture using path
 	static SDL_Texture* LoadTexture(const char* path);
+	static void DestroyTexture(SDL_Texture* texture);
 };
 
 

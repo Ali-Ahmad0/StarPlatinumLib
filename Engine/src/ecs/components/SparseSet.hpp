@@ -84,7 +84,10 @@ public:
     // Remove data for entity when it is destroyed
     void OnEntityDestroyed(EntityID e) override
     {
-        RemoveData(e);
+        if (HasData(e)) 
+        {
+            RemoveData(e);
+        }
     }
 
 private:

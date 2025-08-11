@@ -8,12 +8,21 @@ SDL_Texture* TextureManager::LoadTexture(const char* path)
 	SDL_Surface* tmpSurface = IMG_Load(path);
 	if (!tmpSurface) 
 	{
-		fprintf(stderr, "[ERROR] Unable to load image: %s\n", IMG_GetError());
+		fprintf(stderr, "[ERROR]: Unable to load image - %s\n", IMG_GetError());
 	}
 
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(ViewPort::GetRenderer(), tmpSurface);
-	printf("[INFO]: Texture loadeds successfully!\n");
+	printf("[INFO]: Texture loaded successfully!\n");
 
 	SDL_FreeSurface(tmpSurface);
 	return texture;
+}
+
+void TextureManager::DestroyTexture(SDL_Texture* texture)
+{
+	if (!texture) 
+	{
+		return;
+	}
+	SDL_DestroyTexture(texture);
 }

@@ -1,6 +1,7 @@
 #include "StressTest.hpp"
 #include "texture/TextureManager.hpp"
 #include "text/TextManager.hpp"
+#include "input/InputMap.hpp"
 
 void StressTest::Ready() 
 {
@@ -80,6 +81,7 @@ void StressTest::Events(SDL_Event event)
 			}
 
 			break;
+
 		default: 
 			break;
 	}

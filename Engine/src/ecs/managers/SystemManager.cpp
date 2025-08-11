@@ -6,8 +6,11 @@ void SystemManager::OnEntityDestroyed(EntityID entity)
 	{
 		// Remove deleted entity from all systems
 		auto const& system = pair.second;
-		system->entityRecord[entity] = false;
-		system->OnEntityRemoved(entity);
+		if (system->entityRecord[entity]) 
+		{	
+			system->entityRecord[entity] = false;
+			system->OnEntityRemoved(entity);
+		}
 	}
 }
 

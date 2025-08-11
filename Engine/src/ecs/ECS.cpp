@@ -24,15 +24,15 @@ EntityID ECS::CreateEntity()
 
 void ECS::DeleteEntity(EntityID entity) 
 {
+    // Handle entity record and system updates
     s_entityManager->DeleteEntity(entity);
-
+    s_systemManager->OnEntityDestroyed(entity);
+    
     // Remove components associated with the entity
     for (auto& pair : s_sparseSets)
     {
         pair.second->OnEntityDestroyed(entity);
     }
-
-    s_systemManager->OnEntityDestroyed(entity);
 }
 
 size_t ECS::GetEntityCount() 

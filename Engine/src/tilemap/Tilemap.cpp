@@ -38,6 +38,8 @@ void Tilemap::LoadTileset(const char* path)
             m_tiles.push_back(tile);
         }
     }
+
+    TextureManager::DestroyTexture(tileset);
 }
 
 void Tilemap::initTextureMap(size_t layers, size_t rows, size_t cols) 
@@ -134,6 +136,16 @@ void Tilemap::LoadMapFile(const char* path)
         SDL_SetRenderTarget(ViewPort::GetRenderer(), NULL);
     }
     printf("[INFO]: Tilemap file loaded successfully\n");
+
+    for (auto& tileTexture : m_tiles) 
+    {
+        if (tileTexture) 
+        {
+            TextureManager::DestroyTexture(tileTexture);
+        }
+    }
+
+    m_tiles.clear();
 }
 
 void Tilemap::GenerateMap(const Vector2& origin, float rotation, int8_t z_index)

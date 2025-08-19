@@ -37,5 +37,5 @@ void TextureManager::Cleanup()
 	{
 		DestroyTexture(texture);
 	}
-	printf("[INFO]: All textures cleaned up successfully");
+	printf("[INFO]: All textures cleaned up successfully\n");
 }

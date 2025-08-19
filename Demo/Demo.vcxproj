@@ -116,14 +116,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Engine\libs\SDL2_IMG\include;$(SolutionDir)\Engine\libs\SDL2\include;$(SolutionDir)\Engine\libs\JSON\single_include\nlohmann;$(SolutionDir)\Engine\src\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Engine\libs\SDL2_TTF\include;$(SolutionDir)\Engine\libs\SDL2_IMG\include;$(SolutionDir)\Engine\libs\SDL2\include;$(SolutionDir)\Engine\libs\JSON\single_include\nlohmann;$(SolutionDir)\Engine\src\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\Engine\libs\SDL2_IMG\lib\x64;$(SolutionDir)\Engine\bin\x64\Debug;$(SolutionDir)\Engine\libs\SDL2\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Engine\libs\SDL2_TTF\lib\x64;$(SolutionDir)\Engine\libs\SDL2_IMG\lib\x64;$(SolutionDir)\Engine\bin\x64\Debug;$(SolutionDir)\Engine\libs\SDL2\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;Engine.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

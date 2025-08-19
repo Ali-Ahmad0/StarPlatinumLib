@@ -13,17 +13,18 @@ void SpriteSystem::sortZ()
         auto* spriteA = ECS::GetComponent<Sprite>(key);
 
         int j = (int)i - 1;
-        auto* spriteB = ECS::GetComponent<Sprite>(m_entities[j]);
 
-        while (j >= 0 && spriteB->z_index > spriteA->z_index)
+        while (j >= 0)
         {
+            auto* spriteB = ECS::GetComponent<Sprite>(m_entities[j]);
+            if (spriteB->GetZIndex() <= spriteA->GetZIndex()) break;
+
             m_entities[j + 1] = m_entities[j];
             j--;
         }
         m_entities[j + 1] = key;
     }
 }
-
 
 void SpriteSystem::Update(double delta) 
 {
@@ -32,11 +33,18 @@ void SpriteSystem::Update(double delta)
     int screenWidth, screenHeight;
     ViewPort::GetSize(&screenWidth, &screenHeight);
     
+    bool sortingNeeded = false;
+
     // Update and animate all sprites
     for (const EntityID e : m_entities)
     {
         auto* transform = ECS::GetComponent<Transform>(e);
         auto* sprite = ECS::GetComponent<Sprite>(e);
+
+        if (sprite->IsZIndexChanged()) 
+        {
+            sortingNeeded = true;
+        }
 
         // Apply modulate to the sprite texture
         SDL_SetTextureColorMod(sprite->texture, ViewPort::modulate.r, ViewPort::modulate.g, ViewPort::modulate.b);
@@ -102,6 +110,11 @@ void SpriteSystem::Update(double delta)
         // Render sprite
         SDL_RenderCopyEx(ViewPort::GetRenderer(), sprite->texture, &sprite->src, &sprite->dst, transform->rotation, NULL, flip);
     }
+
+    if (sortingNeeded) 
+    {
+        sortZ();
+    }
 }
 
 void SpriteSystem::OnEntityAdded(EntityID e) 
@@ -113,11 +126,10 @@ void SpriteSystem::OnEntityAdded(EntityID e)
 
 void SpriteSystem::OnEntityRemoved(EntityID e) 
 {
-    // Delete the entity, sort the layers
+    // Delete the entity
     auto position = std::find(
         m_entities.begin(), 
         m_entities.end(), e
     );
     m_entities.erase(position);
-    sortZ();
 }

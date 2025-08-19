@@ -11,7 +11,6 @@ void TDScene::Ready()
     InputMap::BindKey("move_d", SDL_SCANCODE_DOWN);
     InputMap::BindKey("move_r", SDL_SCANCODE_RIGHT);
 
-
     // Initialize the world tilemap
     const size_t tileSize = 16;
     const size_t tileScale = 3;

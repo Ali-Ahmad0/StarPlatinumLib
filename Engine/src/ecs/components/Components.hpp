@@ -27,17 +27,15 @@ struct Sprite
 
     size_t speed;
 
-    int8_t z_index;
-
     // Map of animations
     std::unordered_map<std::string, std::vector<size_t>> animations{};
 
     bool fliph = false;
     bool flipv = false;
 
-    Sprite(SDL_Texture* texture = nullptr, size_t hframes = 1, size_t vframes = 1, size_t speed = 0, int8_t z_index = 0)
+    Sprite(SDL_Texture* texture = nullptr, size_t hframes = 1, size_t vframes = 1, size_t speed = 0, int8_t zIndex = 0)
         : texture(texture), src({ 0, 0, 0, 0 }), dst({ 0, 0, 0, 0 }),
-        frame(0), hframes(hframes), vframes(vframes), speed(speed), z_index(z_index)
+        frame(0), hframes(hframes), vframes(vframes), speed(speed), m_zIndex(zIndex)
     {
         animations.insert({ "none", {} });
     }
@@ -90,8 +88,29 @@ struct Sprite
         return m_animation;
     }
 
+    void SetZIndex(int8_t zIndex) 
+    {
+        m_zIndex = zIndex;
+        m_zIndexChanged = true;
+    }
+
+    int8_t GetZIndex() 
+    {
+        return m_zIndex;
+    }
+
+    // Returns if Z Index was changed since the last time this function was called
+    bool IsZIndexChanged() 
+    {
+        bool changed = m_zIndexChanged;
+        m_zIndexChanged = false;
+        return changed;
+    }
+
 private:
     const char* m_animation = "none";
+    int8_t m_zIndex = 0;
+    bool m_zIndexChanged = false;
 };
 
 struct Movement

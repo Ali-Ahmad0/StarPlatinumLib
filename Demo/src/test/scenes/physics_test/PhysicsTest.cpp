@@ -8,6 +8,8 @@
 
 #define MARGIN 4.0f
 
+static const Vector2 g_gravity = Vector2(0, 9.81f);
+
 void PhysicsTest::Ready()
 {
     TextManager::LoadFont("default", "src/test/assets/font.ttf");
@@ -31,7 +33,7 @@ void PhysicsTest::Update(double delta)
             if (verlet && !verlet->isStationary)
             {
                 // Apply gravity
-                verlet->ApplyForce(Vector2(0, 9.81f));
+                verlet->ApplyForce(g_gravity);
 
                 // Ring constraint - keep balls inside the ring
                 Vector2 ballPosition = transform->position;

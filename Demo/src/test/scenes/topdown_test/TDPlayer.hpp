@@ -1,15 +1,14 @@
 #pragma once
 #include "texture/TextureManager.hpp"
+#include "scene/Scene.hpp"
 
-class TDPlayer
+class TDPlayer : IScene
 {
 public:
-	void Ready();
-	void Update(double delta);
+	void Ready() override;
+	void Update(double delta) override;
 	
 private:
-	EntityID m_entityId;
-
 	Vector2 m_direction;
 
 	Transform* m_transform;

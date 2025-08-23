@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../definitions.hpp"
+#include "../Definitions.hpp"
 
 class EntityManager 
 {

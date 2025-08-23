@@ -10,6 +10,7 @@ SDL_Texture* TextureManager::LoadTexture(const char* path)
 	if (!tmpSurface) 
 	{
 		fprintf(stderr, "[ERROR]: Unable to load image - %s\n", IMG_GetError());
+		return nullptr;
 	}
 
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(ViewPort::GetRenderer(), tmpSurface);

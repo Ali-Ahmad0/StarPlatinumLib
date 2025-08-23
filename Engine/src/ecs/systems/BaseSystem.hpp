@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../definitions.hpp"
+#include "../Definitions.hpp"
 
 // Base class for all systems with a set of entities
 struct BaseSystem 

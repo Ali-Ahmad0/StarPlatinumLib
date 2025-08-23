@@ -171,6 +171,8 @@
     <ClCompile Include="src\camera\Camera.cpp" />
     <ClCompile Include="src\common\Utils.cpp" />
     <ClCompile Include="src\ecs\ECS.cpp" />
+    <ClCompile Include="src\ecs\managers\EntityManager.cpp" />
+    <ClCompile Include="src\ecs\managers\SystemManager.cpp" />
     <ClCompile Include="src\ecs\systems\collision\CollisionSystem.cpp" />
     <ClCompile Include="src\ecs\systems\movement\MovementSystem.cpp" />
     <ClCompile Include="src\ecs\systems\sprite\SpriteSystem.cpp" />
@@ -179,8 +181,6 @@
     <ClCompile Include="src\main\debug\Debug.cpp" />
     <ClCompile Include="src\viewport\ViewPort.cpp" />
     <ClCompile Include="src\scene\SceneManager.cpp" />
-    <ClCompile Include="src\ecs\managers\EntityManager.cpp" />
-    <ClCompile Include="src\ecs\managers\SystemManager.cpp" />
     <ClCompile Include="src\main\Engine.cpp" />
     <ClCompile Include="src\main\init\Init.cpp" />
     <ClCompile Include="src\texture\TextureManager.cpp" />
@@ -189,20 +189,23 @@
     <ClCompile Include="src\text\TextManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\ecs\systems\verlet\VIntegrationSystem.hpp" />
-    <ClInclude Include="src\main\debug\Debug.hpp" />
-    <ClInclude Include="src\camera\Camera.hpp" />
-    <ClInclude Include="src\ecs\systems\collision\CollisionSystem.hpp" />
-    <ClInclude Include="src\common\Utils.hpp" />
-    <ClInclude Include="src\ecs\components\SparseSet.hpp" />
+    <ClInclude Include="src\animation\Animation.hpp" />
+    <ClInclude Include="src\animation\Animator.hpp" />
     <ClInclude Include="src\ecs\components\Components.hpp" />
-    <ClInclude Include="src\ecs\definitions.hpp" />
+    <ClInclude Include="src\ecs\components\SparseSet.hpp" />
+    <ClInclude Include="src\ecs\Definitions.hpp" />
+    <ClInclude Include="src\ecs\ECS.hpp" />
     <ClInclude Include="src\ecs\managers\EntityManager.hpp" />
     <ClInclude Include="src\ecs\managers\SystemManager.hpp" />
     <ClInclude Include="src\ecs\systems\BaseSystem.hpp" />
+    <ClInclude Include="src\ecs\systems\collision\CollisionSystem.hpp" />
     <ClInclude Include="src\ecs\systems\movement\MovementSystem.hpp" />
     <ClInclude Include="src\ecs\systems\sprite\SpriteSystem.hpp" />
     <ClInclude Include="src\ecs\systems\System.hpp" />
+    <ClInclude Include="src\ecs\systems\verlet\VIntegrationSystem.hpp" />
+    <ClInclude Include="src\main\debug\Debug.hpp" />
+    <ClInclude Include="src\camera\Camera.hpp" />
+    <ClInclude Include="src\common\Utils.hpp" />
     <ClInclude Include="src\input\InputMap.hpp" />
     <ClInclude Include="src\viewport\ViewPort.hpp" />
     <ClInclude Include="src\main\init\Init.hpp" />
@@ -210,7 +213,6 @@
     <ClInclude Include="src\tilemap\Tilemap.hpp" />
     <ClInclude Include="src\scene\Scene.hpp" />
     <ClInclude Include="src\scene\SceneManager.hpp" />
-    <ClInclude Include="src\ecs\ECS.hpp" />
     <ClInclude Include="src\main\Engine.hpp" />
     <ClInclude Include="src\texture\TextureManager.hpp" />
     <ClInclude Include="src\text\TextManager.hpp" />

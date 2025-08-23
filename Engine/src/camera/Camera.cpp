@@ -1,4 +1,3 @@
-#include <iostream>
 #include "Camera.hpp"
 #include "../viewport/ViewPort.hpp"
 

@@ -54,6 +54,9 @@ void ViewPort::Exit()
 	printf("[INFO]: Destroying window and renderer\n");
 	SDL_DestroyWindow(s_window);
 	SDL_DestroyRenderer(s_renderer);
+
+	s_window = nullptr;
+	s_renderer = nullptr;
 }
 
 SDL_Window* ViewPort::GetWindow() 

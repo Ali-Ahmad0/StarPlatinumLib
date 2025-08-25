@@ -34,7 +34,7 @@ void StressTest::Update(double delta)
 	}
 
 	// Draw the FPS text
-	TextManager::DrawText(cachedFPSText.c_str(), "default", Vector2(16, 16));
+	TextManager::DisplayText(cachedFPSText.c_str(), "default", Vector2(16, 16));
 
 	// Get entity count
 	std::ostringstream countStream;
@@ -42,7 +42,7 @@ void StressTest::Update(double delta)
 	std::string countText = countStream.str();
 
 	// Draw entity count
-	TextManager::DrawText(countText.c_str(), "default", Vector2(500, 16));
+	TextManager::DisplayText(countText.c_str(), "default", Vector2(500, 16));
 }
 
 void StressTest::Events(SDL_Event event)

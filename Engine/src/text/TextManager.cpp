@@ -28,7 +28,7 @@ void TextManager::LoadFont(const char* name, const char* path, size_t size)
     printf("[INFO]: Font %s loaded successfully\n", name);
 }
 
-void TextManager::DrawText(const char* text, const char* font, const Vector2& position, const Color& color)
+void TextManager::DisplayText(const char* text, const char* font, const Vector2& position, const Color& color)
 {
     auto it = s_fonts.find(std::string(font));
     if (it == s_fonts.end())

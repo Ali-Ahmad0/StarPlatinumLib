@@ -22,7 +22,7 @@ EntityID ECS::CreateEntity()
     return s_entityManager->CreateEntity();
 }
 
-void ECS::DeleteEntity(EntityID entity) 
+void ECS::DeleteEntity(EntityID entity)
 {
     // Handle entity record and system updates
     s_entityManager->DeleteEntity(entity);
@@ -32,6 +32,19 @@ void ECS::DeleteEntity(EntityID entity)
     for (auto& pair : s_sparseSets)
     {
         pair.second->OnEntityDestroyed(entity);
+    }
+}
+
+void ECS::DeleteAllEntities()
+{
+    // Handle clearing entity and system data
+    s_entityManager->ClearEntites();
+    s_systemManager->OnAllEntitesDestroyed();
+
+    // Clear all component data from sparse sets
+    for (auto& pair : s_sparseSets) 
+    {
+        pair.second->OnAllEntitiesDestroyed();
     }
 }
 

@@ -197,11 +197,11 @@
     <ClInclude Include="src\ecs\ECS.hpp" />
     <ClInclude Include="src\ecs\managers\EntityManager.hpp" />
     <ClInclude Include="src\ecs\managers\SystemManager.hpp" />
-    <ClInclude Include="src\ecs\systems\BaseSystem.hpp" />
+    <ClInclude Include="src\ecs\systems\ISystem.hpp" />
     <ClInclude Include="src\ecs\systems\collision\CollisionSystem.hpp" />
     <ClInclude Include="src\ecs\systems\movement\MovementSystem.hpp" />
     <ClInclude Include="src\ecs\systems\sprite\SpriteSystem.hpp" />
-    <ClInclude Include="src\ecs\systems\System.hpp" />
+    <ClInclude Include="src\ecs\systems\SystemsExport.hpp" />
     <ClInclude Include="src\ecs\systems\verlet\VIntegrationSystem.hpp" />
     <ClInclude Include="src\main\debug\Debug.hpp" />
     <ClInclude Include="src\camera\Camera.hpp" />

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../systems/BaseSystem.hpp"
+#include "../systems/ISystem.hpp"
 
 class SystemManager 
 {
@@ -63,15 +63,19 @@ public:
 	// Notify all systems that an entity has been destroyed
 	void OnEntityDestroyed(EntityID entity);
 
+	// Notify all systems that all entites have been cleared
+	void OnAllEntitesDestroyed();
+
 	// Notify all systems that entity signature has changed
 	void OnEntitySignatureChanged(EntityID entity, Signature entitySignature);
+
 
 private:
 	// Map from type of system to signature
 	std::unordered_map<std::type_index, Signature> m_signatures{};
 
 	// Map from type of system to the system
-	std::unordered_map<std::type_index, std::shared_ptr<BaseSystem>> m_systems{};
+	std::unordered_map<std::type_index, std::shared_ptr<ISystem>> m_systems{};
 
 	// Returns if system has been registered or not
 	bool isRegistered(std::type_index typeIndex) 

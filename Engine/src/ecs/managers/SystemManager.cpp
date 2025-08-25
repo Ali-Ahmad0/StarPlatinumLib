@@ -14,6 +14,17 @@ void SystemManager::OnEntityDestroyed(EntityID entity)
 	}
 }
 
+void SystemManager::OnAllEntitesDestroyed()
+{
+	for (auto const& pair: m_systems) 
+	{
+		auto const& system = pair.second;
+	
+		std::fill(system->entityRecord.begin(), system->entityRecord.end(), false);
+		system->OnAllEntitiesRemoved();
+	}
+}
+
 void SystemManager::OnEntitySignatureChanged(EntityID entity, Signature entitySignature)
 {
 	for (auto const& pair : m_systems)

@@ -36,7 +36,7 @@ public:
 private:
 	// Map from scene type to scene itself
 	static std::unordered_map<const char*, std::shared_ptr<IScene>> s_scenes;
-	static IScene* s_currentScenes;
+	static IScene* s_currentScene;
 
 	// Returns if scene has been added or not
 	static bool isAdded(const char* name)

@@ -18,5 +18,3 @@ public:
 private:
 	static std::vector<SDL_Texture*> s_textures;
 };
-
-

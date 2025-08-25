@@ -1,6 +1,6 @@
 #include "Init.hpp"
 
-void Init::InitComponents() 
+void EngineInitializer::InitComponents() 
 {
 	ECS::RegisterComponent<Transform>();
 	ECS::RegisterComponent<Sprite>();
@@ -9,7 +9,7 @@ void Init::InitComponents()
 	ECS::RegisterComponent<VerletObject>();
 }
 
-void Init::InitSystems() 
+void EngineInitializer::InitSystems() 
 {
 	// Sprite System
 	ECS::RegisterSystem<SpriteSystem>();

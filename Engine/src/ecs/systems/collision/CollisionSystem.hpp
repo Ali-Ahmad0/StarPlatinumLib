@@ -1,14 +1,15 @@
 #pragma once
 
-#include "../BaseSystem.hpp"
+#include "../ISystem.hpp"
 #include "../../components/Components.hpp"
 
-struct CollisionSystem : public BaseSystem
+struct CollisionSystem : public ISystem
 {
     void Update(double delta = 0) override;
 
     void OnEntityAdded(EntityID e) override;
     void OnEntityRemoved(EntityID e) override;
+    void OnAllEntitiesRemoved() override;
 
 private:
     struct Edge 

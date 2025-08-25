@@ -17,6 +17,7 @@ public:
 
     static EntityID CreateEntity();
     static void DeleteEntity(EntityID entity);
+    static void DeleteAllEntities();
     static size_t GetEntityCount();
 
     template <typename T>

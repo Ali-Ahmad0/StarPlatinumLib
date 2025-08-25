@@ -146,10 +146,10 @@
     <ClInclude Include="src\ecs\systems\verlet\VIntegrationSystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ecs\systems\BaseSystem.hpp">
+    <ClInclude Include="src\ecs\systems\ISystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ecs\systems\System.hpp">
+    <ClInclude Include="src\ecs\systems\SystemsExport.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ecs\Definitions.hpp">

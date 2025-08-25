@@ -131,5 +131,11 @@ void SpriteSystem::OnEntityRemoved(EntityID e)
         m_entities.begin(), 
         m_entities.end(), e
     );
+
     m_entities.erase(position);
+}
+
+void SpriteSystem::OnAllEntitiesRemoved()
+{
+    m_entities.clear();
 }

@@ -7,6 +7,7 @@ class ISparseSet
 public:
     virtual ~ISparseSet() = default;
     virtual void OnEntityDestroyed(EntityID e) = 0;
+    virtual void OnAllEntitiesDestroyed() = 0;
 };
 
 template <typename T>
@@ -79,6 +80,15 @@ public:
         // Remove the last component and its corresponding entity ID
         m_dense.pop_back();
         m_denseToEntity.pop_back();
+    }
+
+    // Remove the data for all the entities
+    void OnAllEntitiesDestroyed() override
+    {
+        // Clear the sparse set
+        m_dense.clear();
+        m_denseToEntity.clear();
+        m_sparsePages.clear();
     }
 
     // Remove data for entity when it is destroyed

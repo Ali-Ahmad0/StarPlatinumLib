@@ -1,11 +1,13 @@
 #include "EntityManager.hpp"
+#include <numeric>
 
 void EntityManager::Init() 
 {
-    for (EntityID e = 0; e < MAX_ENTITIES; e++)
-    {
-        m_availableEntities.push(e);
-    }
+    // Initialize available IDs
+    std::deque<EntityID> temp;
+    temp.resize(MAX_ENTITIES);
+    std::iota(temp.begin(), temp.end(), 0);
+    m_availableEntities = std::queue<EntityID>(temp);
 }
 
 bool EntityManager::IsActive(const EntityID entity)
@@ -36,6 +38,7 @@ void EntityManager::DeleteEntity(EntityID entity)
         m_availableEntities.push(entity);
         m_entityStatus[entity] = false;
         m_entityCount--;
+        m_signatures[entity].reset();
     }
     else 
     {
@@ -44,7 +47,28 @@ void EntityManager::DeleteEntity(EntityID entity)
     
 }
 
-size_t EntityManager::GetEntityCount()
+void EntityManager::ClearEntites()
+{
+    // Reset entity status
+    std::fill(m_entityStatus.begin(), m_entityStatus.end(), false);
+
+    // Reset available IDs
+    std::deque<EntityID> temp;
+    temp.resize(MAX_ENTITIES);
+    std::iota(temp.begin(), temp.end(), 0);
+    m_availableEntities = std::queue<EntityID>(temp);
+
+    // Reset the signatures
+    for (auto& signature: m_signatures) 
+    { 
+        signature.reset(); 
+    }
+
+    // Reset the entity count
+    m_entityCount = 0;
+}
+
+uint16_t EntityManager::GetEntityCount()
 {
     return m_entityCount;
 }

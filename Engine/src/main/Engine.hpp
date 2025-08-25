@@ -7,7 +7,7 @@
 #include "init/Init.hpp"
 
 
-#include "../ecs/systems/System.hpp"
+#include "../ecs/systems/SystemsExport.hpp"
 #include "../ecs/ECS.hpp"
 
 #include "../tilemap/Tilemap.hpp"

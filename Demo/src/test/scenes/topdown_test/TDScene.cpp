@@ -1,7 +1,5 @@
 #include "TDScene.hpp"
-#include "main/debug/Debug.hpp"
 #include "input/InputMap.hpp"
-#include "animation/Animator.hpp"
 
 void TDScene::Ready()
 {
@@ -26,12 +24,12 @@ void TDScene::Ready()
 
     tilemap.AddCollision(collisionLayer, collisionTiles);
 
-    // Initialize the player
+    // Init the player
     m_player.Ready();
 }
 
 void TDScene::Update(double delta)
 {
     // Update the player
-    m_player.Update(delta); 
+    m_player.Update(delta);
 }

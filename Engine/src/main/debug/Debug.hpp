@@ -11,4 +11,3 @@ public:
 	static void DrawRect(const Vector2& center, float w, float h, float rotation = 0, 
 		const Color& color = Color::WHITE, bool fill = true);
 };
-

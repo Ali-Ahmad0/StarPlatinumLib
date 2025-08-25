@@ -22,10 +22,10 @@ StarPlatinumEngine::StarPlatinumEngine(const char* title, int w, int h, bool ful
 	ECS::Init();
 	printf("[INFO]: ECS initialized\n");
 
-	Init::InitComponents();
+	EngineInitializer::InitComponents();
 	printf("[INFO]: Engine components initialized\n");
 
-	Init::InitSystems();
+	EngineInitializer::InitSystems();
 	printf("[INFO]: Engine systems initialized\n");
 }
 
@@ -83,8 +83,8 @@ void StarPlatinumEngine::Run()
 		
 		// Events, update and rendering
 		if (!events()) break;
-		update();
 		render();
+		update();
 		SDL_RenderPresent(ViewPort::GetRenderer());
 
 		frameDrawTime = SDL_GetTicks() - frameStartTime;
@@ -119,4 +119,3 @@ void StarPlatinumEngine::exit()
 
 	printf("[INFO]: Game exited\n");
 }
-

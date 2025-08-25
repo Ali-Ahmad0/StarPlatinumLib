@@ -16,9 +16,12 @@ public:
 	
 	// Make entity ID available again
 	void DeleteEntity(EntityID entity);
-	
-	// Returns number of entities
-	size_t GetEntityCount();
+
+	// Make all entity IDs available
+	void ClearEntites();
+
+	// Returns the number of entities
+	uint16_t GetEntityCount();
 
 	// Update the signature of an entity
 	void SetSignature(EntityID entity, Signature signature);
@@ -30,13 +33,12 @@ private:
 	// Queue of available entity IDs
 	std::queue<EntityID> m_availableEntities{};
 
-	// An array that stores whether an entity is active or not
+	// Active/inactive entity status 
 	std::array<bool, MAX_ENTITIES> m_entityStatus{};
 
-	// Array of signatures for each entity
-	// Array index represents entity ID
+	// Bitset signatures for entities
 	std::array<Signature, MAX_ENTITIES> m_signatures{};
 
 	// Total entities
-	size_t m_entityCount = 0;
+	uint16_t m_entityCount = 0;
 };

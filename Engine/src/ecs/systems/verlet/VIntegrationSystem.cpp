@@ -39,6 +39,15 @@ void VIntegrationSystem::OnEntityAdded(EntityID e)
 void VIntegrationSystem::OnEntityRemoved(EntityID e)
 {
 	// Find and delete entity
-	auto position = std::find(m_entities.begin(), m_entities.end(), e);
+	auto position = std::find(
+		m_entities.begin(), 
+		m_entities.end(), e
+	);
+	
 	m_entities.erase(position);
+}
+
+void VIntegrationSystem::OnAllEntitiesRemoved() 
+{
+	m_entities.clear();
 }

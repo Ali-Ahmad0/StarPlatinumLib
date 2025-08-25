@@ -1,12 +1,13 @@
 #pragma once
-#include "../BaseSystem.hpp"
+#include "../ISystem.hpp"
 
-struct VIntegrationSystem : BaseSystem 
+struct VIntegrationSystem : ISystem
 {
 	void Update(double delta) override;
 
 	void OnEntityAdded(EntityID e) override;
 	void OnEntityRemoved(EntityID e) override;
+	void OnAllEntitiesRemoved() override;
 
 private:
 	std::vector<EntityID> m_entities;

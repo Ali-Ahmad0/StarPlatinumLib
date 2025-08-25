@@ -1,7 +1,7 @@
 #include "Tilemap.hpp"
 #include "../main/Engine.hpp"
 
-Tilemap::Tilemap(size_t tilesize, size_t scale) : m_tilesize(tilesize), m_tileScale(scale) { }
+Tilemap::Tilemap(size_t tilesize, size_t scale) : m_tilesize(tilesize), m_tileScale(scale) {}
 
 void Tilemap::LoadTileset(const char* path)
 {

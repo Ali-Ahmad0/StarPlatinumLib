@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../ISystem.hpp"
+#include "../../ECS.hpp"
 
 struct SpriteSystem : ISystem
 {
@@ -10,7 +11,11 @@ struct SpriteSystem : ISystem
     void OnEntityRemoved(EntityID e) override;
     void OnAllEntitiesRemoved() override;
     
+    // Flag to toggle Y sort
+    bool enableYSort = false;
+
 private:
-    void sortZ();
+    void sortRenderingOrder();
+    float getGlobalYSortOrigin(Transform* transform, Sprite* sprite);
     std::vector<EntityID> m_entities;
 };

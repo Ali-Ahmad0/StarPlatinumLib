@@ -34,6 +34,7 @@
 		m_transform = ECS::GetComponent<Transform>(e);
 
 		m_sprite = ECS::GetComponent<Sprite>(e);
+		m_sprite->applyYSort = true;
 
 		m_sprite->AddAnimation("idle_right", { 10 });
 		m_sprite->AddAnimation("idle_left", { 7 });

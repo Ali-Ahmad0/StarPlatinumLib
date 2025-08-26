@@ -1,29 +1,70 @@
 #include "SpriteSystem.hpp"
-#include "../../ECS.hpp"
 #include "../../../main/Engine.hpp"
 
 #define CAMERA_MARGIN 32
 
-void SpriteSystem::sortZ() 
+void SpriteSystem::sortRenderingOrder()
 {
-    // Insertion sort entities based on z indices
+    // Insertion sort entities based on Z indexes and Y sort origins
     for (size_t i = 1; i < m_entities.size(); i++)
     {
         EntityID key = m_entities[i];
+
+        auto* transformA = ECS::GetComponent<Transform>(key);
         auto* spriteA = ECS::GetComponent<Sprite>(key);
+        
+        float ySortOriginA = getGlobalYSortOrigin(transformA, spriteA);
 
         int j = (int)i - 1;
-
         while (j >= 0)
         {
+            auto* transformB = ECS::GetComponent<Transform>(m_entities[j]);
             auto* spriteB = ECS::GetComponent<Sprite>(m_entities[j]);
-            if (spriteB->GetZIndex() <= spriteA->GetZIndex()) break;
+
+            float ySortOriginB = getGlobalYSortOrigin(transformB, spriteB);
+
+            bool move = false;
+
+            // Compare Z
+            if (spriteB->GetZIndex() > spriteA->GetZIndex())
+            {
+                move = true;
+            }
+
+            // Compare Y
+            else if (spriteB->GetZIndex() == spriteA->GetZIndex() &&
+                enableYSort && spriteA->applyYSort && spriteB->applyYSort)
+            {
+                if (ySortOriginB > ySortOriginA)
+                {
+                    move = true;
+                }
+            }
+
+            if (!move) break;
 
             m_entities[j + 1] = m_entities[j];
             j--;
         }
         m_entities[j + 1] = key;
     }
+}
+
+float SpriteSystem::getGlobalYSortOrigin(Transform* transform, Sprite* sprite)
+{
+    Vector2 position = transform->position;
+    float ySortOrigin = sprite->ySortOrigin;
+
+    int textureWidth, textureHeight;
+    SDL_QueryTexture(sprite->texture, NULL, NULL, &textureWidth, &textureHeight);
+
+    size_t scaledFrameWidth = (textureWidth / sprite->hframes) * transform->scale;
+    size_t scaledFrameHeight = (textureHeight / sprite->vframes) * transform->scale;
+
+    // Calculate global coordinates of the y-sort point
+    float y = position.y + scaledFrameHeight / 2 + ySortOrigin;
+
+    return y;
 }
 
 void SpriteSystem::Update(double delta) 
@@ -111,9 +152,9 @@ void SpriteSystem::Update(double delta)
         SDL_RenderCopyEx(ViewPort::GetRenderer(), sprite->texture, &sprite->src, &sprite->dst, transform->rotation, NULL, flip);
     }
 
-    if (sortingNeeded) 
+    if (sortingNeeded || enableYSort) 
     {
-        sortZ();
+        sortRenderingOrder();
     }
 }
 
@@ -121,7 +162,7 @@ void SpriteSystem::OnEntityAdded(EntityID e)
 {
     // Add the entity, sort the layers
     m_entities.push_back(e);
-    sortZ();
+    sortRenderingOrder();
 }
 
 void SpriteSystem::OnEntityRemoved(EntityID e) 

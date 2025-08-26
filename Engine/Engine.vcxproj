@@ -179,6 +179,7 @@
     <ClCompile Include="src\ecs\systems\verlet\VIntegrationSystem.cpp" />
     <ClCompile Include="src\input\InputMap.cpp" />
     <ClCompile Include="src\main\debug\Debug.cpp" />
+    <ClCompile Include="src\sounds\AudioPlayer.cpp" />
     <ClCompile Include="src\viewport\ViewPort.cpp" />
     <ClCompile Include="src\scene\SceneManager.cpp" />
     <ClCompile Include="src\main\Engine.cpp" />
@@ -207,6 +208,7 @@
     <ClInclude Include="src\camera\Camera.hpp" />
     <ClInclude Include="src\common\Utils.hpp" />
     <ClInclude Include="src\input\InputMap.hpp" />
+    <ClInclude Include="src\sounds\AudioPlayer.hpp" />
     <ClInclude Include="src\viewport\ViewPort.hpp" />
     <ClInclude Include="src\main\init\Init.hpp" />
     <ClInclude Include="src\threads\Threads.hpp" />

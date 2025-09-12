@@ -99,9 +99,9 @@ void SpriteSystem::Update(double delta)
         size_t frameHeight = textureHeight / sprite->vframes;
 
         // Skip rendering if sprite is not visible to camera
-        if ((transform->position.x + frameWidth) < cameraOffset.x - CAMERA_MARGIN) continue;
+        if ((transform->position.x + frameWidth * transform->scale) < cameraOffset.x - CAMERA_MARGIN) continue;
         if (transform->position.x + CAMERA_MARGIN > (cameraOffset.x + screenWidth)) continue;
-        if ((transform->position.y + frameHeight) < cameraOffset.y - CAMERA_MARGIN) continue;
+        if ((transform->position.y + frameHeight * transform->scale) < cameraOffset.y - CAMERA_MARGIN) continue;
         if (transform->position.y + CAMERA_MARGIN > (cameraOffset.y + screenHeight)) continue;
 
         // Animate the sprite
@@ -109,8 +109,9 @@ void SpriteSystem::Update(double delta)
         if (animation != "none")
         {
             // Get list of frames to animate
-            std::vector<size_t> frames = sprite->animations[animation];
-            size_t frameIndex = (SDL_GetTicks() / (1000 / sprite->speed)) % frames.size();
+            SpriteAnimationData animationData = sprite->animations[animation];
+            std::vector<size_t> frames = animationData.frames;
+            size_t frameIndex = (SDL_GetTicks() / (1000 / animationData.speed)) % frames.size();
 
             // Get current frame
             size_t frame = frames[frameIndex];

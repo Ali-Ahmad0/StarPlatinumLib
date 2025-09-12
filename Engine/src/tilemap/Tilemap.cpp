@@ -3,7 +3,7 @@
 
 Tilemap::Tilemap(size_t tilesize, size_t scale) : m_tilesize(tilesize), m_tileScale(scale) {}
 
-void Tilemap::LoadTileset(const char* path)
+void Tilemap::AddTileset(const char* path, size_t firstgid)
 {
     // Load tileset texture
     SDL_Texture* tileset = TextureManager::LoadTexture(path);
@@ -14,6 +14,14 @@ void Tilemap::LoadTileset(const char* path)
 
     size_t rows = height / m_tilesize;
     size_t columns = width / m_tilesize;
+    size_t totalTiles = rows * columns;
+
+    // Ensure the tiles vector is large enough to hold all tiles
+    size_t requiredSize = firstgid + totalTiles - 1;
+    if (m_tiles.size() < requiredSize)
+    {
+        m_tiles.resize(requiredSize, nullptr);
+    }
 
     for (int i = 0; i < rows; i++)
     {
@@ -34,12 +42,11 @@ void Tilemap::LoadTileset(const char* path)
             // Reset the render target 
             SDL_SetRenderTarget(ViewPort::GetRenderer(), NULL);
 
-            // Add the new tile texture to the tiles vector
-            m_tiles.push_back(tile);
+            // Calculate the correct index based on firstgid
+            size_t tileIndex = firstgid - 1 + (i * columns + j);
+            m_tiles[tileIndex] = tile;
         }
     }
-
-    TextureManager::DestroyTexture(tileset);
 }
 
 void Tilemap::initTextureMap(size_t layers, size_t rows, size_t cols) 
@@ -56,7 +63,7 @@ void Tilemap::initTextureMap(size_t layers, size_t rows, size_t cols)
     }
 }
 
-void Tilemap::LoadMapFile(const char* path)
+void Tilemap::LoadTilemap(const char* path)
 {
     printf("[INFO]: Loading tilemap file: %s\n", path);
     // Open file
@@ -82,6 +89,36 @@ void Tilemap::LoadMapFile(const char* path)
         return;
     }
 
+    // Check if this is an infinite tilemap
+    bool isInfinite = mapfilejson.value("infinite", false);
+
+    if (isInfinite)
+    {
+        printf("[INFO]: Processing infinite tilemap\n");
+        loadInfiniteTilemap(mapfilejson);
+    }
+    else
+    {
+        printf("[INFO]: Processing finite tilemap\n");
+        loadFiniteTilemap(mapfilejson);
+    }
+
+    printf("[INFO]: Tilemap file loaded successfully\n");
+
+    // Clean up individual tile textures
+    for (auto& tileTexture : m_tiles)
+    {
+        if (tileTexture)
+        {
+            TextureManager::DestroyTexture(tileTexture);
+        }
+    }
+
+    m_tiles.clear();
+}
+
+void Tilemap::loadFiniteTilemap(const nlohmann::json& mapfilejson) 
+{
     // Height and width of tilemap (in number of tiles)
     m_mapHeight = mapfilejson["height"];
     m_mapWidth = mapfilejson["width"];
@@ -89,7 +126,7 @@ void Tilemap::LoadMapFile(const char* path)
     initTextureMap(mapfilejson["layers"].size(), m_mapHeight, m_mapWidth);
 
     printf("[INFO]: Generating tilemap texture\n");
-    // Get the layout for the layer
+    // Get the layout for each layer
     for (size_t i = 0; i < mapfilejson["layers"].size(); i++)
     {
         auto layout = mapfilejson["layers"][i]["data"];
@@ -135,28 +172,159 @@ void Tilemap::LoadMapFile(const char* path)
         // Reset the render target to the default renderer target
         SDL_SetRenderTarget(ViewPort::GetRenderer(), NULL);
     }
-    printf("[INFO]: Tilemap file loaded successfully\n");
+}
 
-    for (auto& tileTexture : m_tiles) 
+void Tilemap::loadInfiniteTilemap(const nlohmann::json& mapfilejson) 
+{
+    // For infinite tilemaps, we need to calculate the bounding box from chunks
+    int minX = INT_MAX, minY = INT_MAX, maxX = INT_MIN, maxY = INT_MIN;
+
+    // First pass: find the bounding box of all chunks
+    for (size_t layerIdx = 0; layerIdx < mapfilejson["layers"].size(); layerIdx++)
     {
-        if (tileTexture) 
+        const auto& layer = mapfilejson["layers"][layerIdx];
+
+        if (layer.contains("chunks") && !layer["chunks"].empty())
         {
-            TextureManager::DestroyTexture(tileTexture);
+            for (const auto& chunk : layer["chunks"])
+            {
+                int chunkX = chunk["x"];
+                int chunkY = chunk["y"];
+                int chunkWidth = chunk["width"];
+                int chunkHeight = chunk["height"];
+
+                minX = std::min(minX, chunkX);
+                minY = std::min(minY, chunkY);
+                maxX = std::max(maxX, chunkX + chunkWidth);
+                maxY = std::max(maxY, chunkY + chunkHeight);
+            }
         }
     }
 
-    m_tiles.clear();
+    // If no chunks found, set default dimensions
+    if (minX == INT_MAX)
+    {
+        minX = minY = 0;
+        maxX = maxY = 16; // Default chunk size
+    }
+
+    // Calculate total map dimensions
+    m_mapWidth = maxX - minX;
+    m_mapHeight = maxY - minY;
+    m_offsetX = minX;
+    m_offsetY = minY;
+
+    printf("[INFO]: Map bounds: (%d,%d) to (%d,%d), size: %zux%zu\n",
+        minX, minY, maxX, maxY, m_mapWidth, m_mapHeight);
+
+    initTextureMap(mapfilejson["layers"].size(), m_mapHeight, m_mapWidth);
+
+    printf("[INFO]: Generating tilemap texture from chunks\n");
+
+    // Process each layer
+    for (size_t layerIdx = 0; layerIdx < mapfilejson["layers"].size(); layerIdx++)
+    {
+        const auto& layer = mapfilejson["layers"][layerIdx];
+
+        // Skip layers without chunks or with empty chunks
+        if (!layer.contains("chunks") || layer["chunks"].empty())
+        {
+            // Create empty layer texture
+            size_t mapWidthPixels = m_mapWidth * m_tilesize;
+            size_t mapHeightPixels = m_mapHeight * m_tilesize;
+
+            SDL_Texture* emptyLayer = SDL_CreateTexture(ViewPort::GetRenderer(),
+                SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET,
+                (int)mapWidthPixels, (int)mapHeightPixels);
+
+            SDL_SetTextureBlendMode(emptyLayer, SDL_BLENDMODE_BLEND);
+            SDL_SetRenderTarget(ViewPort::GetRenderer(), emptyLayer);
+            SDL_SetRenderDrawColor(ViewPort::GetRenderer(), 0, 0, 0, 0);
+            SDL_RenderClear(ViewPort::GetRenderer());
+            SDL_SetRenderTarget(ViewPort::GetRenderer(), NULL);
+
+            m_layers.push_back(emptyLayer);
+            continue;
+        }
+
+        // Create layer texture
+        size_t mapWidthPixels = m_mapWidth * m_tilesize;
+        size_t mapHeightPixels = m_mapHeight * m_tilesize;
+
+        m_layers.push_back(SDL_CreateTexture(ViewPort::GetRenderer(),
+            SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET,
+            (int)mapWidthPixels, (int)mapHeightPixels));
+
+        SDL_SetTextureBlendMode(m_layers[layerIdx], SDL_BLENDMODE_BLEND);
+        SDL_SetRenderTarget(ViewPort::GetRenderer(), m_layers[layerIdx]);
+        SDL_SetRenderDrawColor(ViewPort::GetRenderer(), 0, 0, 0, 0);
+        SDL_RenderClear(ViewPort::GetRenderer());
+
+        // Process each chunk in the layer
+        for (const auto& chunk : layer["chunks"])
+        {
+            int chunkX = chunk["x"];
+            int chunkY = chunk["y"];
+            int chunkWidth = chunk["width"];
+            int chunkHeight = chunk["height"];
+            auto chunkData = chunk["data"];
+
+            printf("[INFO]: Processing chunk at (%d,%d) size %dx%d\n",
+                chunkX, chunkY, chunkWidth, chunkHeight);
+
+            // Process each tile in the chunk
+            for (int chunkTileIdx = 0; chunkTileIdx < chunkData.size(); chunkTileIdx++)
+            {
+                int localCol = chunkTileIdx % chunkWidth;
+                int localRow = chunkTileIdx / chunkWidth;
+
+                // Calculate global tile position
+                int globalCol = chunkX + localCol - m_offsetX;
+                int globalRow = chunkY + localRow - m_offsetY;
+
+                // Skip tiles outside our map bounds
+                if (globalCol < 0 || globalRow < 0 ||
+                    globalCol >= (int)m_mapWidth || globalRow >= (int)m_mapHeight)
+                {
+                    continue;
+                }
+
+                int tileId = chunkData[chunkTileIdx];
+                int index = tileId - 1;
+
+                m_texture[layerIdx][globalRow][globalCol] = index;
+
+                // Skip empty tiles
+                if (index < 0 || index >= (int)m_tiles.size())
+                {
+                    continue;
+                }
+
+                // Render the tile
+                SDL_Rect dst = {
+                    (int)(globalCol * m_tilesize),
+                    (int)(globalRow * m_tilesize),
+                    (int)m_tilesize,
+                    (int)m_tilesize
+                };
+                SDL_RenderCopy(ViewPort::GetRenderer(), m_tiles[index], NULL, &dst);
+            }
+        }
+
+        SDL_SetRenderTarget(ViewPort::GetRenderer(), NULL);
+    }
 }
 
-void Tilemap::GenerateMap(const Vector2& origin, float rotation, int8_t z_index)
+void Tilemap::GenerateMap(const Vector2& origin, float rotation, int8_t startZIndex)
 {
-    for (auto& layerTexture : m_layers)
+    int8_t zIndex = startZIndex;
+    for (auto& layer : m_layers)
     {
-        if (layerTexture)
+        if (layer)
         {
             EntityID layerEntity = ECS::CreateEntity();
             ECS::AddComponent<Transform>(layerEntity, Transform(origin, rotation, m_tileScale));
-            ECS::AddComponent<Sprite>(layerEntity, Sprite(layerTexture, 1, 1, 0, z_index));
+            ECS::AddComponent<Sprite>(layerEntity, Sprite(layer, 1, 1, zIndex++));
         }
     }
 

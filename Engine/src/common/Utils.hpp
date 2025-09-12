@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <vector>
 #include <iomanip>
 #include <string>
 
@@ -413,6 +414,14 @@ struct Matrix3x2
             m31 * other.m12 + m32 * other.m22 + other.m32
         };
     }
+};
+
+struct SpriteAnimationData
+{
+    std::vector<size_t> frames{};
+    size_t speed; // In frames per second
+
+    SpriteAnimationData(const std::vector<size_t>& frames = {}, size_t speed = 1) : frames(frames), speed(speed) {}
 };
 
 struct AABB

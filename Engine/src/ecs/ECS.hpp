@@ -1,11 +1,11 @@
 #pragma once
 
 #include "Definitions.hpp"
-#include "components/Components.hpp"
-#include "components/SparseSet.hpp"
+#include "../common/Components.hpp"
+#include "SparseSet.hpp"
 
-#include "managers/EntityManager.hpp"
-#include "managers/SystemManager.hpp"
+#include "EntityManager.hpp"
+#include "SystemManager.hpp"
 
 // Entity Component System Manager
 class ECS
@@ -40,13 +40,14 @@ public:
     template <typename T>
     static void AddComponent(EntityID entity, T component)
     {
-        if (!s_entityManager->IsActive(entity)) 
+        if (!s_entityManager->IsActive(entity))
         {
             fprintf(stderr, "[ERROR]: Cannot add component on non existing entity\n");
             return;
         }
 
-        getComponentSparseSet<T>()->AddData(entity, component);
+        // Use a different name for the pointer we get back
+        getComponentSparseSet<T>()->AddData(entity, std::move(component));
         updateEntitySignature<T>(entity, true);
     }
 

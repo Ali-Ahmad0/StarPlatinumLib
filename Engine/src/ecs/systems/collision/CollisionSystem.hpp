@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../ISystem.hpp"
-#include "../../components/Components.hpp"
+#include "../../../common/Components.hpp"
 
 struct CollisionSystem : public ISystem
 {
@@ -30,9 +30,24 @@ private:
 
     void sortEdges();
     
+    bool checkCircleCircleCollision(
+        Transform* transformA, Transform* transformB,
+        Collider* colliderA, Collider* colliderB, Vector2* normal, float* depth
+    );
+
+    bool checkBoxBoxCollision(
+        Transform* transformA, Transform* transformB,
+        Collider* colliderA, Collider* colliderB, Vector2* normal, float* depth
+    );
+
+    bool checkCircleBoxCollision(
+        Transform* transformA, Transform* transformB,
+        Collider* colliderA, Collider* colliderB, Vector2* normal, float* depth
+    );
+
     size_t findClosestVertex(const Vector2& center, const std::array<Vector2, 4>& vertices);
     void projectVertices(const std::array<Vector2, 4>& vertices, const Vector2& axis, float* min, float* max);
     void projectCircle(const Vector2& center, float radius, const Vector2& axis, float* min, float* max);
 
-    void separate(Transform* transformA, Transform* transformB, const Vector2& seperation, bool isStaticA, bool isStaticB);
+    void seperateBodies(Transform* transformA, Transform* transformB, const Vector2& normal, float depth, bool isStaticA, bool isStaticB);
 };

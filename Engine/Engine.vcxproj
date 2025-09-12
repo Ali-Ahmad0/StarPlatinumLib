@@ -171,8 +171,8 @@
     <ClCompile Include="src\camera\Camera.cpp" />
     <ClCompile Include="src\common\Utils.cpp" />
     <ClCompile Include="src\ecs\ECS.cpp" />
-    <ClCompile Include="src\ecs\managers\EntityManager.cpp" />
-    <ClCompile Include="src\ecs\managers\SystemManager.cpp" />
+    <ClCompile Include="src\ecs\EntityManager.cpp" />
+    <ClCompile Include="src\ecs\SystemManager.cpp" />
     <ClCompile Include="src\ecs\systems\collision\CollisionSystem.cpp" />
     <ClCompile Include="src\ecs\systems\movement\MovementSystem.cpp" />
     <ClCompile Include="src\ecs\systems\sprite\SpriteSystem.cpp" />
@@ -192,12 +192,12 @@
   <ItemGroup>
     <ClInclude Include="src\animation\Animation.hpp" />
     <ClInclude Include="src\animation\Animator.hpp" />
-    <ClInclude Include="src\ecs\components\Components.hpp" />
-    <ClInclude Include="src\ecs\components\SparseSet.hpp" />
+    <ClInclude Include="src\common\Components.hpp" />
+    <ClInclude Include="src\ecs\SparseSet.hpp" />
     <ClInclude Include="src\ecs\Definitions.hpp" />
     <ClInclude Include="src\ecs\ECS.hpp" />
-    <ClInclude Include="src\ecs\managers\EntityManager.hpp" />
-    <ClInclude Include="src\ecs\managers\SystemManager.hpp" />
+    <ClInclude Include="src\ecs\EntityManager.hpp" />
+    <ClInclude Include="src\ecs\SystemManager.hpp" />
     <ClInclude Include="src\ecs\systems\ISystem.hpp" />
     <ClInclude Include="src\ecs\systems\collision\CollisionSystem.hpp" />
     <ClInclude Include="src\ecs\systems\movement\MovementSystem.hpp" />

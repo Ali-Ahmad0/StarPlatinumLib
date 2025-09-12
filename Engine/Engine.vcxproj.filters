@@ -54,10 +54,10 @@
     <ClCompile Include="src\text\TextManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ecs\managers\EntityManager.cpp">
+    <ClCompile Include="src\ecs\EntityManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ecs\managers\SystemManager.cpp">
+    <ClCompile Include="src\ecs\SystemManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ecs\systems\collision\CollisionSystem.cpp">
@@ -125,16 +125,16 @@
     <ClInclude Include="src\animation\Animator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ecs\components\Components.hpp">
+    <ClInclude Include="src\common\Components.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ecs\components\SparseSet.hpp">
+    <ClInclude Include="src\ecs\SparseSet.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ecs\managers\EntityManager.hpp">
+    <ClInclude Include="src\ecs\EntityManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ecs\managers\SystemManager.hpp">
+    <ClInclude Include="src\ecs\SystemManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ecs\systems\collision\CollisionSystem.hpp">

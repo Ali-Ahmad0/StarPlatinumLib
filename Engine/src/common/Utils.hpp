@@ -19,6 +19,9 @@ struct Color
     uint8_t b;
     uint8_t a;
 
+    // Default constructor for pure white color
+    Color() : r(255), g(255), b(255), a(255) {}
+
     // Constructor to initialize color values using RGB values
     Color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha = 255)
         : r(clamp(red)), g(clamp(green)), b(clamp(blue)), a(clamp(alpha)) {}
@@ -30,7 +33,7 @@ struct Color
     static const Color WHITE;
 
     // Constructor to initialize color values using HSV values
-    Color(const float h,const float s, const float v, const int alpha = 255)
+    Color(float h, float s, float v, uint8_t alpha = 255)
     {
         // Temporary variables to store the normalized RGB values
         float r = 0, g = 0, b = 0;

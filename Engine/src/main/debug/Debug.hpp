@@ -10,4 +10,10 @@ public:
 	
 	static void DrawRect(const Vector2& center, float w, float h, float rotation = 0, 
 		const Color& color = Color::WHITE, bool fill = true);
+
+	static void ShowFramesPerSecond(const char* font, const Vector2& position, double delta, const Color& color = Color::WHITE);
+	static void DisplayEntityCount(const char* font, const Vector2& position, double delta, const Color& color = Color::WHITE);
+
+	// Flags
+	static bool showCollisionShapes;
 };

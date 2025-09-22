@@ -3,19 +3,17 @@
 #include "input/InputMap.hpp"
 #include "texture/TextureManager.hpp"
 
-EntityID playerID;
-
-void Player::Ready() 
+void Player::Ready()
 {
-	playerID = ECS::CreateEntity();
+	m_id = ECS::CreateEntity();
 	
 	// Add transform component
 	const Vector2 position = Vector2(160.0f, 120.0f);
 	const float rotation = 0.0f;
 	const size_t scaling = 3;
 
-	ECS::AddComponent(playerID, Transform(position, rotation, scaling));
-	m_transform = ECS::GetComponent<Transform>(playerID);
+	ECS::AddComponent(m_id, Transform(position, rotation, scaling));
+	m_transform = ECS::GetComponent<Transform>(m_id);
 
 	// Add sprite component
 	SDL_Texture* texture = TextureManager::LoadTexture("src/assets/characters/player.png");
@@ -24,8 +22,8 @@ void Player::Ready()
 	const size_t animationSpeed = 12;
 	const int8_t zIndex = 2;
 
-	ECS::AddComponent(playerID, Sprite(texture, hframes, vframes, zIndex));
-	m_sprite = ECS::GetComponent<Sprite>(playerID);
+	ECS::AddComponent(m_id, Sprite(texture, hframes, vframes, zIndex));
+	m_sprite = ECS::GetComponent<Sprite>(m_id);
 
 	// Add sprite animations
 	m_sprite->AddAnimation("idle_down", { 0, 1, 2, 3, 4, 5 }, animationSpeed);
@@ -37,15 +35,15 @@ void Player::Ready()
 	m_sprite->AddAnimation("walk_up", { 30, 31, 32, 33, 34, 35 }, animationSpeed);
 
 	// Add movement component
-	ECS::AddComponent(playerID, Movement());
-	m_movement = ECS::GetComponent<Movement>(playerID);
+	ECS::AddComponent(m_id, Movement());
+	m_movement = ECS::GetComponent<Movement>(m_id);
 
 	// Add collider component
 	const Vector2 centerOffset = Vector2(24.0f, 40.0f);
 	const float colliderWidth = 10.0f;
 	const float colliderHeight = 6.0f;
 
-	ECS::AddComponent(playerID, Collider(centerOffset, colliderWidth, colliderHeight));
+	ECS::AddComponent(m_id, Collider(centerOffset, colliderWidth, colliderHeight));
 
 	// Set camera boundaries
 	Camera::SetBoundaries(0, 960, 0, 720);
@@ -123,5 +121,5 @@ void Player::Update(double delta)
 	// Update camera position
 	Camera::SetOffset(Vector2(m_transform->position.x - 320, m_transform->position.y - 240));
 
-	Collider* collider = ECS::GetComponent<Collider>(playerID);
+	Collider* collider = ECS::GetComponent<Collider>(m_id);
 }

@@ -4,6 +4,10 @@
 
 #include "../../viewport/ViewPort.hpp"
 #include "../../camera/Camera.hpp"
+#include "../../text/TextManager.hpp"
+#include "../../ecs/ECS.hpp"
+
+bool Debug::showCollisionShapes = false;
 
 void Debug::DrawCircle(const Vector2& center, float r, const Color& color, bool fill)
 {
@@ -175,4 +179,28 @@ void Debug::DrawRect(const Vector2& center, float w, float h, float rotation, co
     }
 
     SDL_SetRenderDrawColor(ViewPort::GetRenderer(), 0, 0, 0, 255);
+}
+
+void Debug::ShowFramesPerSecond(const char* font, const Vector2& position, double delta, const Color& color)
+{
+    static double fps = delta > 0.0 ? 1.0 / delta : 1.0;
+
+    // Create the FPS text string
+    char fpsText[32];
+    snprintf(fpsText, sizeof(fpsText), "FPS: %.1f", fps);
+
+    // Display the FPS
+    TextManager::DisplayText(fpsText, font, position, color);
+}
+
+void Debug::DisplayEntityCount(const char* font, const Vector2& position, double delta, const Color& color) 
+{
+    static size_t entityCount = ECS::GetEntityCount();
+
+    // Create the entity count string
+    char entityCountText[32];
+    snprintf(entityCountText, sizeof(entityCountText), "Entities: %zu", entityCount);
+
+    // Display the entity count
+    TextManager::DisplayText(entityCountText, font, position, color);
 }

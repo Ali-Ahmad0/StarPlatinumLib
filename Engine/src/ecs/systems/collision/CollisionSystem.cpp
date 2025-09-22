@@ -35,6 +35,32 @@ void CollisionSystem::Update(double delta)
         auto* transformA = ECS::GetComponent<Transform>(entityA);
         auto* colliderA = ECS::GetComponent<Collider>(entityA);
 
+        if (Debug::showCollisionShapes) 
+        {
+            switch (colliderA->GetShape()) 
+            {
+            
+            // Draw circle
+            case ShapeType::CIRCLE:
+                Debug::DrawCircle(
+                    transformA->position + colliderA->centerOffset * (float)transformA->scale,
+                    colliderA->GetRadius() * transformA->scale, colliderA->debugDrawColor
+                );
+                break;
+
+            // Draw box
+            case ShapeType::BOX:
+                Debug::DrawRect(
+                    transformA->position + colliderA->centerOffset * (float)transformA->scale,
+                    colliderA->GetWidth() * (float)transformA->scale,
+                    colliderA->GetHeight() * (float)transformA->scale, 
+                    transformA->rotation, colliderA->debugDrawColor
+                );
+                break;
+
+            }
+        }
+
         AABB* boxA = colliderA->GetAABB(transformA);
 
         edge.x = edge.isLeft ? boxA->min.x : boxA->max.x;

@@ -136,6 +136,9 @@ struct Collider
     bool isStatic;
     bool isSolid;
 
+    // Draw shape (for debugging)
+    Color debugDrawColor = Color((uint8_t)100, (uint8_t)100, (uint8_t)255, (uint8_t)100);
+
     // Circle collider constructor
     Collider(const Vector2& centerOffset, float r, bool isSolid = true, bool isStatic = false)
         : centerOffset(centerOffset), m_r(r), m_w(0), m_h(0), 

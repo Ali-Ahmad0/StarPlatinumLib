@@ -8,6 +8,8 @@ public:
 	void Update(double delta);
 
 private:
+	EntityID m_id;
+
 	Transform* m_transform = nullptr;
 	Sprite* m_sprite = nullptr;
 	Movement* m_movement = nullptr;

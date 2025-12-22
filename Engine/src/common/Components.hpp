@@ -38,7 +38,13 @@ struct Sprite
         : texture(texture), src({ 0, 0, 0, 0 }), dst({ 0, 0, 0, 0 }),
         frame(0), hframes(hframes), vframes(vframes), m_zIndex(zIndex)
     {
+        // Initialize the default animation
         animations["none"] = SpriteAnimationData();
+
+        // Set texture and frame dimensions
+        SDL_QueryTexture(this->texture, NULL, NULL, &m_textureWidth, &m_textureHeight);
+        m_frameWidth = (int)(m_textureWidth / hframes);
+        m_frameHeight = (int)(m_textureHeight / vframes);
     }
 
     void AddAnimation(const char* animation, const std::vector<size_t>& frames, size_t speed) 
@@ -109,10 +115,40 @@ struct Sprite
         return changed;
     }
 
+    int GetTextureWidth() 
+    {
+        return m_textureWidth;
+    }
+
+    int GetTextureHeight() 
+    {
+        return m_textureHeight;
+    }
+
+    int GetFrameWidth() 
+    {
+        return m_frameWidth;
+    }
+
+    int GetFrameHeight() 
+    {
+        return m_frameHeight;
+    }
+
 private:
+    // Current animation name
     const char* m_animation = "none";
+
+    // Z Index properties
     int8_t m_zIndex = 0;
     bool m_zIndexChanged = false;
+
+    // Texture and frame dimensions
+    int m_textureWidth;
+    int m_textureHeight;
+
+    int m_frameWidth;
+    int m_frameHeight;
 };
 
 struct Movement

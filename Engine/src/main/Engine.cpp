@@ -18,14 +18,20 @@ StarPlatinumEngine::StarPlatinumEngine(const char* title, int w, int h, bool ful
 	}
 	printf("[INFO]: SDL_ttf initialized successfully\n");
 
-	// Initialize ECS related stuff
+	// Initialize ECS
 	ECS::Init();
 	printf("[INFO]: ECS initialized\n");
 
+	// Initialize components
 	EngineInitializer::InitComponents();
 	printf("[INFO]: Engine components initialized\n");
 
+	// Initialize systems
 	EngineInitializer::InitSystems();
+	ECS::GetSystem<CollisionSystem>()->SetThreadPool(&m_pool);
+	ECS::GetSystem<MovementSystem>()->SetThreadPool(&m_pool);
+	ECS::GetSystem<SpriteSystem>()->SetThreadPool(&m_pool);
+	ECS::GetSystem<VIntegrationSystem>()->SetThreadPool(&m_pool);
 	printf("[INFO]: Engine systems initialized\n");
 }
 
@@ -52,17 +58,46 @@ bool StarPlatinumEngine::events()
 }
 
 void StarPlatinumEngine::update() {
-	SceneManager::Update(m_deltaTime);
-
-	ECS::GetSystem<MovementSystem>()->Update(m_deltaTime);
+	// Scene updates
+	auto sceneTask = m_pool.AddTask([this]() {
+		SceneManager::Update(m_deltaTime);
+	});
+	sceneTask.wait();
 	
-	ECS::GetSystem<CollisionSystem>()->Update();
-	ECS::GetSystem<VIntegrationSystem>()->Update(m_deltaTime);
+	// Physics updates
+	auto physicsTask = m_pool.AddTask([this]() {
+		ECS::GetSystem<MovementSystem>()->Update(m_deltaTime);
+		ECS::GetSystem<VIntegrationSystem>()->Update(m_deltaTime);
+	});
+	physicsTask.wait();
+
+	// Collision updates
+	auto collisionTask = m_pool.AddTask([this]() {
+		ECS::GetSystem<CollisionSystem>()->Update();
+	});
+	collisionTask.wait();
 }
 
 void StarPlatinumEngine::render() 
 {
-	ECS::GetSystem<SpriteSystem>()->Update();
+	// Rendering updates
+	auto renderingTask = m_pool.AddTask([this]() {
+		ECS::GetSystem<SpriteSystem>()->Update();
+	});
+	renderingTask.wait();
+}
+
+void StarPlatinumEngine::exit()
+{
+	printf("[INFO]: Exiting...\n");
+
+	TextManager::Cleanup();
+	TextureManager::Cleanup();
+
+	ViewPort::Exit();
+	SDL_Quit();
+
+	printf("[INFO]: Game exited\n");
 }
 
 void StarPlatinumEngine::Run() 
@@ -105,17 +140,4 @@ void StarPlatinumEngine::Run()
 
 	// Close when exiting game loop
 	exit();
-}
-
-void StarPlatinumEngine::exit()
-{
-	printf("[INFO]: Exiting...\n");
-
-	TextManager::Cleanup();
-	TextureManager::Cleanup();
-
-	ViewPort::Exit(); 
-	SDL_Quit();
-
-	printf("[INFO]: Game exited\n");
 }

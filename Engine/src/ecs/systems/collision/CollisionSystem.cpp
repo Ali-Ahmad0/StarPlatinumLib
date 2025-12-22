@@ -34,6 +34,7 @@ void CollisionSystem::Update(double delta)
 
         auto* transformA = ECS::GetComponent<Transform>(entityA);
         auto* colliderA = ECS::GetComponent<Collider>(entityA);
+        Vector2 scaledCenterOffsetA = colliderA->centerOffset * (float)transformA->scale;
 
         if (Debug::showCollisionShapes) 
         {
@@ -43,18 +44,20 @@ void CollisionSystem::Update(double delta)
             // Draw circle
             case ShapeType::CIRCLE:
                 Debug::DrawCircle(
-                    transformA->position + colliderA->centerOffset * (float)transformA->scale,
-                    colliderA->GetRadius() * transformA->scale, colliderA->debugDrawColor
+                    transformA->position + scaledCenterOffsetA,
+                    colliderA->GetRadius() * transformA->scale, 
+                    colliderA->debugDrawColor
                 );
                 break;
 
             // Draw box
             case ShapeType::BOX:
                 Debug::DrawRect(
-                    transformA->position + colliderA->centerOffset * (float)transformA->scale,
+                    transformA->position + scaledCenterOffsetA,
                     colliderA->GetWidth() * (float)transformA->scale,
                     colliderA->GetHeight() * (float)transformA->scale, 
-                    transformA->rotation, colliderA->debugDrawColor
+                    transformA->rotation, 
+                    colliderA->debugDrawColor
                 );
                 break;
 
@@ -73,6 +76,7 @@ void CollisionSystem::Update(double delta)
                 // Get components for other entity
                 auto* transformB = ECS::GetComponent<Transform>(entityB);
                 auto* colliderB = ECS::GetComponent<Collider>(entityB);
+                Vector2 scaledCenterOffsetB = colliderB->centerOffset * (float)transformB->scale;
 
                 AABB* boxB = colliderB->GetAABB(transformB);
 

@@ -54,7 +54,7 @@ float SpriteSystem::getGlobalYSortOrigin(Transform* transform, Sprite* sprite)
 {
     Vector2 position = transform->position;
     float ySortOrigin = sprite->ySortOrigin;
-
+    
     int textureWidth, textureHeight;
     SDL_QueryTexture(sprite->texture, NULL, NULL, &textureWidth, &textureHeight);
 
@@ -77,8 +77,10 @@ void SpriteSystem::Update(double delta)
     bool sortingNeeded = false;
 
     // Update and animate all sprites
-    for (const EntityID e : m_entities)
+    for (size_t i = 0; i < m_entities.size(); i++)
     {
+        EntityID e = m_entities[i];
+
         auto* transform = ECS::GetComponent<Transform>(e);
         auto* sprite = ECS::GetComponent<Sprite>(e);
 
@@ -91,12 +93,12 @@ void SpriteSystem::Update(double delta)
         SDL_SetTextureColorMod(sprite->texture, ViewPort::modulate.r, ViewPort::modulate.g, ViewPort::modulate.b);
 
         // Get the full width and height of the texture
-        int textureWidth, textureHeight;
-        SDL_QueryTexture(sprite->texture, NULL, NULL, &textureWidth, &textureHeight);
+        int textureWidth = sprite->GetTextureWidth();
+        int textureHeight = sprite->GetTextureHeight();
 
-        // Calculate the width of each frame
-        size_t frameWidth = textureWidth / sprite->hframes;
-        size_t frameHeight = textureHeight / sprite->vframes;
+        // Get width and height of the frame
+        int frameWidth = sprite->GetFrameWidth();
+        int frameHeight = sprite->GetFrameHeight();
 
         // Skip rendering if sprite is not visible to camera
         if ((transform->position.x + frameWidth * transform->scale) < cameraOffset.x - CAMERA_MARGIN) continue;

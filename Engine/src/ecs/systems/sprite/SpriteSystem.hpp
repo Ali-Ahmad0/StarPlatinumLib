@@ -17,5 +17,8 @@ struct SpriteSystem : ISystem
 private:
     void sortRenderingOrder();
     float getGlobalYSortOrigin(Transform* transform, Sprite* sprite);
+    
     std::vector<EntityID> m_entities;
+    std::vector<std::future<bool>> m_futures;
+    static constexpr size_t MAX_THREADS = 4;
 };

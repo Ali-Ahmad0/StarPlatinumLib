@@ -31,18 +31,17 @@ private:
     void sortEdges();
     
     bool checkCircleCircleCollision(
-        Transform* transformA, Transform* transformB,
-        Collider* colliderA, Collider* colliderB, Vector2* normal, float* depth
+        Vector2& centerA, Vector2& centerB, float radiusA, float radiusB, Vector2* normal, float* depth
     );
 
     bool checkBoxBoxCollision(
-        Transform* transformA, Transform* transformB,
-        Collider* colliderA, Collider* colliderB, Vector2* normal, float* depth
+        Vector2& centerA, Vector2& centerB,
+        std::array<Vector2, 4>& verticesA, std::array<Vector2, 4>& verticesB, Vector2* normal, float* depth
     );
 
     bool checkCircleBoxCollision(
-        Transform* transformA, Transform* transformB,
-        Collider* colliderA, Collider* colliderB, Vector2* normal, float* depth
+        Vector2& centerC, Vector2& centerP,
+        float radius, std::array<Vector2, 4>& vertices, Vector2* normal, float* depth
     );
 
     size_t findClosestVertex(const Vector2& center, const std::array<Vector2, 4>& vertices);

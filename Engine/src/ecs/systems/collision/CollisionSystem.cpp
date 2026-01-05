@@ -35,6 +35,7 @@ void CollisionSystem::Update(double delta)
         auto* transformA = ECS::GetComponent<Transform>(entityA);
         auto* colliderA = ECS::GetComponent<Collider>(entityA);
         Vector2 scaledCenterOffsetA = colliderA->centerOffset * (float)transformA->scale;
+        Vector2 worldCenterA = scaledCenterOffsetA + transformA->position;
 
         if (Debug::showCollisionShapes) 
         {
@@ -44,7 +45,7 @@ void CollisionSystem::Update(double delta)
             // Draw circle
             case ShapeType::CIRCLE:
                 Debug::DrawCircle(
-                    transformA->position + scaledCenterOffsetA,
+                    worldCenterA,
                     colliderA->GetRadius() * transformA->scale, 
                     colliderA->debugDrawColor
                 );
@@ -53,7 +54,7 @@ void CollisionSystem::Update(double delta)
             // Draw box
             case ShapeType::BOX:
                 Debug::DrawRect(
-                    transformA->position + scaledCenterOffsetA,
+                    worldCenterA,
                     colliderA->GetWidth() * (float)transformA->scale,
                     colliderA->GetHeight() * (float)transformA->scale, 
                     transformA->rotation, 
@@ -77,6 +78,7 @@ void CollisionSystem::Update(double delta)
                 auto* transformB = ECS::GetComponent<Transform>(entityB);
                 auto* colliderB = ECS::GetComponent<Collider>(entityB);
                 Vector2 scaledCenterOffsetB = colliderB->centerOffset * (float)transformB->scale;
+                Vector2 worldCenterB = scaledCenterOffsetB + transformB->position;
 
                 AABB* boxB = colliderB->GetAABB(transformB);
 
@@ -91,7 +93,8 @@ void CollisionSystem::Update(double delta)
                     if (colliderA->GetShape() == ShapeType::CIRCLE && colliderB->GetShape() == ShapeType::CIRCLE)
                     {
                         isColliding = checkCircleCircleCollision(
-                            transformA, transformB, colliderA, colliderB, &normal, &depth
+                            worldCenterA, worldCenterB, 
+                            colliderA->GetRadius(), colliderB->GetRadius() * transformA->scale, &normal, &depth
                         );
                     }
 
@@ -99,15 +102,40 @@ void CollisionSystem::Update(double delta)
                     else if (colliderA->GetShape() == ShapeType::BOX && colliderB->GetShape() == ShapeType::BOX)
                     {
                         isColliding = checkBoxBoxCollision(
-                            transformA, transformB, colliderA, colliderB, &normal, &depth
+                            worldCenterA, worldCenterB, 
+                            colliderA->GetTransformedVertices(transformA), 
+                            colliderB->GetTransformedVertices(transformB), &normal, &depth
                         );
                     }
 
                     // Case 3: Check for circle - box or box - circle collision (SAT)
                     else
                     {
+                        Vector2 centerC = Vector2::ZERO; // Polygon center
+                        Vector2 centerP = Vector2::ZERO; //  Circle center
+                        
+                        std::array<Vector2, 4> vertices; // Polygon vertices
+                        float radius = 0.0f;             // Circle radius
+
+                        if (colliderA->GetShape() == ShapeType::BOX) 
+                        {
+                            centerC = worldCenterB;
+                            radius = colliderB->GetRadius() * transformB->scale;
+
+                            centerP = worldCenterA;
+                            vertices = colliderA->GetTransformedVertices(transformA);
+                        }
+                        else 
+                        {
+                            centerC = worldCenterA;
+                            radius = colliderA->GetRadius() * transformA->scale;
+
+                            centerP = worldCenterB;
+                            vertices = colliderB->GetTransformedVertices(transformB);
+                        }
+
                         isColliding = checkCircleBoxCollision(
-                            transformA, transformB, colliderA, colliderB, &normal, &depth
+                            centerC, centerP, radius, vertices, &normal, &depth
                         );
                     }
 
@@ -145,19 +173,12 @@ void CollisionSystem::Update(double delta)
     }
 }
 
-bool CollisionSystem::checkCircleCircleCollision(Transform* transformA, Transform* transformB, Collider* colliderA, Collider* colliderB, Vector2* normal, float* depth)
+bool CollisionSystem::checkCircleCircleCollision(
+    Vector2& centerA, Vector2& centerB, float radiusA, float radiusB,  Vector2* normal, float* depth
+)
 {
     *normal = Vector2::ZERO;
     *depth = 0.0f;
-
-    Vector2 centerA = transformA->position;
-    Vector2 centerB = transformB->position;
-
-    centerA += Vector2::Multiply(colliderA->centerOffset, (float)transformA->scale);
-    centerB += Vector2::Multiply(colliderB->centerOffset, (float)transformB->scale);
-
-    float radiusA = colliderA->GetRadius() * transformA->scale;
-    float radiusB = colliderB->GetRadius() * transformB->scale;
 
     float distance = Vector2::Magnitude(centerB - centerA);
     float totalRadii = radiusA + radiusB;
@@ -169,19 +190,13 @@ bool CollisionSystem::checkCircleCircleCollision(Transform* transformA, Transfor
     return distance < totalRadii;
 }
 
-bool CollisionSystem::checkBoxBoxCollision(Transform* transformA, Transform* transformB, Collider* colliderA, Collider* colliderB, Vector2* normal, float* depth)
+bool CollisionSystem::checkBoxBoxCollision(
+    Vector2& centerA, Vector2& centerB, 
+    std::array<Vector2, 4>& verticesA, std::array<Vector2, 4>& verticesB, Vector2* normal, float* depth
+)
 {
     *normal = Vector2::ZERO;
     *depth = (float)INFINITY;
-
-    Vector2 centerA = transformA->position;
-    Vector2 centerB = transformB->position;
-
-    centerA += Vector2::Multiply(colliderA->centerOffset, (float)transformA->scale);
-    centerB += Vector2::Multiply(colliderB->centerOffset, (float)transformB->scale);
-
-    auto& verticesA = colliderA->GetTransformedVertices(transformA);
-    auto& verticesB = colliderB->GetTransformedVertices(transformB);
 
     // Polygon A
     for (size_t i = 0; i < verticesA.size(); i++) 
@@ -250,42 +265,13 @@ bool CollisionSystem::checkBoxBoxCollision(Transform* transformA, Transform* tra
     return true;
 }
 
-bool CollisionSystem::checkCircleBoxCollision(Transform* transformA, Transform* transformB, Collider* colliderA, Collider* colliderB, Vector2* normal, float* depth)
+bool CollisionSystem::checkCircleBoxCollision(
+    Vector2& centerC, Vector2& centerP,
+    float radius, std::array<Vector2, 4>& vertices, Vector2* normal, float* depth
+)
 {
     *normal = Vector2::ZERO;
     *depth = (float)INFINITY;
-
-    Vector2 centerC = Vector2::ZERO; // Polygon center
-    Vector2 centerP = Vector2::ZERO; //  Circle center
-    
-    std::array<Vector2, 4> vertices; // Polygon vertices
-    float radius = 0.0f;             // Circle radius
-
-    if (colliderA->GetShape() == ShapeType::BOX) 
-    {
-        centerP = transformA->position;
-        centerC = transformB->position;
-
-        centerP += Vector2::Multiply(colliderA->centerOffset, (float)transformA->scale);
-        centerC += Vector2::Multiply(colliderB->centerOffset, (float)transformB->scale);
-
-        radius = colliderB->GetRadius();
-
-        vertices = colliderA->GetTransformedVertices(transformA);
-    }
-
-    else 
-    {
-        centerP = transformB->position;
-        centerC = transformA->position;
-
-        centerP += Vector2::Multiply(colliderB->centerOffset, (float)transformB->scale);
-        centerC += Vector2::Multiply(colliderA->centerOffset, (float)transformA->scale);
-
-        radius = colliderA->GetRadius();
-
-        vertices = colliderB->GetTransformedVertices(transformB);
-    }
 
     Vector2 axis = Vector2::ZERO;
     float axisDepth = 0.0f;
@@ -343,10 +329,7 @@ bool CollisionSystem::checkCircleBoxCollision(Transform* transformA, Transform* 
     }
  
     // Make sure normal always faces in the direction of centerB to centerA
-    Vector2 direction = colliderA->GetShape() == ShapeType::BOX 
-        ? centerC - centerP 
-        : centerP - centerC;
-
+    Vector2 direction = centerP - centerC;
     *normal = Vector2::Dot(direction, *normal) < 0.0f ? -*normal : *normal;
 
     return true;

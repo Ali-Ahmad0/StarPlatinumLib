@@ -252,12 +252,18 @@ struct Collider
         }
         else 
         {
-            Vector2 worldCenter = centerOffset + transform->position;
-            m_aabb.min = Vector2(worldCenter.x - m_r, worldCenter.y - m_r);
-            m_aabb.max = Vector2(worldCenter.x + m_r, worldCenter.y + m_r);
+            Vector2 worldCenter = centerOffset * (float)transform->scale + transform->position;
+            m_aabb.min = Vector2(worldCenter.x - m_r * transform->scale, worldCenter.y - m_r * transform->scale);
+            m_aabb.max = Vector2(worldCenter.x + m_r * transform->scale, worldCenter.y + m_r * transform->scale);
         }
 
         return &m_aabb;
+    }
+
+    Vector2& GetGlobalCenter(const Transform* transform) 
+    {
+        Vector2 globalCenter = centerOffset * (float)transform->scale + transform->position;
+        return globalCenter;
     }
 
     ShapeType GetShape() 
@@ -265,19 +271,19 @@ struct Collider
         return m_shape; 
     }
 
-    float GetRadius() 
+    float GetRadius(size_t scale) 
     { 
-        return m_r; 
+        return m_r * scale; 
     }
     
-    float GetWidth() 
+    float GetWidth(size_t scale) 
     { 
-        return m_w; 
+        return m_w * scale; 
     }
     
-    float GetHeight() 
+    float GetHeight(size_t scale) 
     { 
-        return m_h; 
+        return m_h * scale; 
     }
 
     bool IsOnFloor() 

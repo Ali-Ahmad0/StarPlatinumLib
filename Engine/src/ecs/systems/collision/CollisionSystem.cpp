@@ -34,11 +34,11 @@ void CollisionSystem::Update(double delta)
 
         auto* transformA = ECS::GetComponent<Transform>(entityA);
         auto* colliderA = ECS::GetComponent<Collider>(entityA);
-        Vector2 scaledCenterOffsetA = colliderA->centerOffset * (float)transformA->scale;
-        Vector2 worldCenterA = scaledCenterOffsetA + transformA->position;
+
 
         if (Debug::showCollisionShapes) 
         {
+            Vector2 worldCenterA = colliderA->GetGlobalCenter(transformA);
             switch (colliderA->GetShape()) 
             {
             
@@ -46,7 +46,7 @@ void CollisionSystem::Update(double delta)
             case ShapeType::CIRCLE:
                 Debug::DrawCircle(
                     worldCenterA,
-                    colliderA->GetRadius() * transformA->scale, 
+                    colliderA->GetRadius(transformA->scale), 
                     colliderA->debugDrawColor
                 );
                 break;
@@ -55,8 +55,8 @@ void CollisionSystem::Update(double delta)
             case ShapeType::BOX:
                 Debug::DrawRect(
                     worldCenterA,
-                    colliderA->GetWidth() * (float)transformA->scale,
-                    colliderA->GetHeight() * (float)transformA->scale, 
+                    colliderA->GetWidth(transformA->scale),
+                    colliderA->GetHeight(transformA->scale), 
                     transformA->rotation, 
                     colliderA->debugDrawColor
                 );
@@ -77,8 +77,6 @@ void CollisionSystem::Update(double delta)
                 // Get components for other entity
                 auto* transformB = ECS::GetComponent<Transform>(entityB);
                 auto* colliderB = ECS::GetComponent<Collider>(entityB);
-                Vector2 scaledCenterOffsetB = colliderB->centerOffset * (float)transformB->scale;
-                Vector2 worldCenterB = scaledCenterOffsetB + transformB->position;
 
                 AABB* boxB = colliderB->GetAABB(transformB);
 
@@ -89,12 +87,16 @@ void CollisionSystem::Update(double delta)
                     float depth = 0.0f;
                     bool isColliding = false;
 
+                    Vector2 worldCenterA = colliderA->GetGlobalCenter(transformA);
+                    Vector2 worldCenterB = colliderB->GetGlobalCenter(transformB);
+
                     // Case 1: Check for circle - circle collision
                     if (colliderA->GetShape() == ShapeType::CIRCLE && colliderB->GetShape() == ShapeType::CIRCLE)
                     {
                         isColliding = checkCircleCircleCollision(
                             worldCenterA, worldCenterB, 
-                            colliderA->GetRadius(), colliderB->GetRadius() * transformA->scale, &normal, &depth
+                            colliderA->GetRadius(transformA->scale), 
+                            colliderB->GetRadius(transformB->scale), &normal, &depth
                         );
                     }
 
@@ -120,7 +122,7 @@ void CollisionSystem::Update(double delta)
                         if (colliderA->GetShape() == ShapeType::BOX) 
                         {
                             centerC = worldCenterB;
-                            radius = colliderB->GetRadius() * transformB->scale;
+                            radius = colliderB->GetRadius(transformB->scale);
 
                             centerP = worldCenterA;
                             vertices = colliderA->GetTransformedVertices(transformA);
@@ -128,7 +130,7 @@ void CollisionSystem::Update(double delta)
                         else 
                         {
                             centerC = worldCenterA;
-                            radius = colliderA->GetRadius() * transformA->scale;
+                            radius = colliderA->GetRadius(transformA->scale);
 
                             centerP = worldCenterB;
                             vertices = colliderB->GetTransformedVertices(transformB);
